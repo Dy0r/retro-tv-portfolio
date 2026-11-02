@@ -1,0 +1,20 @@
+{
+  "name": "Dylan Prasodjo",
+  "pageTitle": "[COPY: browser tab / search result title]",
+  "metaDescription": "[COPY: 150-character description for search engines and link previews]",
+  "tagline": "[COPY: one-line intro shown under your name on the loading screen]",
+  "introLines": [
+    "[COPY: short line about you #1]",
+    "[COPY: short line about you #2]",
+    "[COPY: short line about you #3]"
+  ],
+  "pressStart": "[COPY: prompt that tells visitors to press start]",
+  "skipLink": "[COPY: label for the 'skip to projects' link]",
+  "contact": {
+    "email": "dylanprasodjo@gmail.com"
+  },
+  "socials": [
+    { "label": "LinkedIn", "url": "https://www.linkedin.com/in/dylanprasodjo/" },
+    { "label": "Instagram", "url": "https://www.instagram.com/dylanprasodjo" }
+  ]
+}

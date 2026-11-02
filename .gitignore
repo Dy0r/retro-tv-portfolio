@@ -1,0 +1,9 @@
+node_modules
+dist
+.DS_Store
+*.blend1
+.wrangler
+
+# Third-party reference models: local only, licences forbid redistribution
+References/*.glb
+References/retro-crt-tv/

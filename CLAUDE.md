@@ -1,0 +1,114 @@
+# Dylan Prasodjo — Retro TV Portfolio
+
+## Decisions log (keep up to date)
+- Project lives in `~/retro-tv-portfolio`. Node.js is installed locally at `~/.local/node` (on PATH via `~/.zprofile`).
+- Seed projects use titles/years from dylanprasodjo.com: Plinth (2025), Holocare (2024), Violetta Rebrand (2025), Design is Addition (2023), plus This Portfolio. All other text is `[COPY: …]`.
+- Contact email is `dylanprasodjo@gmail.com` (the old site's mailto pointed at a wrong address — never reuse it).
+- Domain: this site replaces dylanprasodjo.com.
+- INSERTING may take up to ~2 s (approved) because it includes a hand animation.
+- Hand: first-person hand with a plain black shirt sleeve. Cartridges rest next to the console before pickup.
+- Models in `~/Downloads` (`nintendo_64*.glb`, `japroom_14_otaku.glb`, `retro-crt-tv.zip`) are REFERENCE ONLY for proportion and style. TV, console, cartridge and room are rebuilt as original models in Blender. The console/cart must not copy a real console's shape or branding.
+- `hand_animation_test.glb` (SantosGabriel, CC-BY-4.0, Sketchfab) may be used with credit on the Credits screen.
+
+---
+
+## The brief (from Dylan, verbatim)
+
+### Who I am and how we work
+I'm a designer and communications expert, not a developer. You are the engineer.
+
+* Work in SHORT PASSES. One pass = one feature, a few minutes of work, and the site still runs with `npm run dev` and zero console errors at the end.
+* End every pass with: (1) what changed, in plain English, (2) exactly what I should click/test in the browser, (3) a one-line git commit message. Then STOP and wait for me.
+* Never silently delete or rewrite a working feature. If a change touches more than 3 files, show me the plan first.
+* If something fails or you're unsure, say so. Don't hide errors or fake a fix.
+* Vanilla Three.js only (no React / R3F) unless I ask. Keep dependencies minimal and free.
+* All words, links and project data live in `src/content/` JSON files. Never hard-code project text in scene code.
+* NEVER write final user-facing copy. Use `[COPY: what this text should say]` placeholders; I write the words.
+* Explain new concepts in one or two lines so I learn as we go.
+
+### Concept
+A single-page 3D portfolio set in a dim late-90s bedroom at night. A boxy CRT TV sits on a low stand; in front of it is an ORIGINAL, unbranded retro console inspired by late-90s 64-bit consoles (chunky dark-grey body, top-loading cartridge slot, power LED, power and reset switches). The TV shows a loading screen with my name and a short introduction based on my website www.dylanprasodjo.com. Each "game" is one of my projects, each with its own cartridge and label. When a "game" or project is loaded a short animation plays where the hand is loading the game by picking up the cartridge and loading it in, keep this short but smooth.
+No real console brand names, logos, startup animations, sounds or fonts. If a sourced model carries a logo, flag it and remove it.
+
+### Experience flow (build as an explicit state machine in `src/state.js`)
+BOOT -> INTRO -> MENU -> INSERTING -> PROJECT -> back to MENU. FALLBACK_2D reachable from any state.
+
+1. BOOT (loading screen): full-screen HTML over a black canvas. Real load progress from THREE.LoadingManager shown as a chunky retro progress bar. My name animates in letter by letter (GSAP SplitText), then my one-line intro and 2-3 short lines about me. Prompt: "Press Start" (Enter / Space / click / tap / gamepad Start). Always-visible link: "Skip to projects" (opens FALLBACK_2D). Sound OFF by default with a toggle.
+2. INTRO: CRT power-on effect (thin bright line expands to full screen, flash, settle), then a GSAP camera move from a wide room shot to a framed view of the TV and console. Under 2.5 s, skippable with any key.
+3. MENU (on the TV screen): draw the UI on an offscreen 2D canvas, use it as a CanvasTexture on the curved CRT screen mesh, run it through the CRT shader. Show a list of projects as games: title, year, genre tag. A preview panel shows the selected project's thumbnail and one-line summary. Blinking cursor on the selected row.
+   Input: arrow keys / WASD, Enter to select, Esc to go back, Gamepad API (d-pad + A/B + Start), mouse hover and click (raycast onto screen UV), touch swipe and tap, mouse wheel / trackpad (stepped, see Motion).
+   Include menu items for About, Contact and Credits.
+4. INSERTING: on select, camera eases down to the console; the project's cartridge (its colour and label from JSON) slides into the slot; LED blinks; TV shows static for ~0.4 s. Total under 1.5 s. *(Updated: up to ~2 s approved, see decisions log.)*
+5. PROJECT: open the case study as an accessible HTML overlay (not inside WebGL). Sections: hero image or video, the problem, my role, process, outcome, links. Esc / back button / gamepad B returns to MENU with the cartridge ejecting. Every project has a deep link: `/#/project/<slug>`. Opening a deep link skips BOOT and INTRO.
+6. FALLBACK_2D: a clean, fast HTML page listing the same projects from the same JSON. Auto-offered when WebGL is missing, the device is low-power, or prefers-reduced-motion is on.
+
+### Look and feel
+* Before building any visuals, study every image in `references/` and propose THREE distinct directions (display font + text font, 4-5 colours, motion personality). After I choose, lock them in `src/styles/tokens.css`. From then on use ONLY tokens: no stray hex values, fonts or durations.
+* Lighting: warm desk-lamp key light plus the cool glow of the CRT. Dark, cosy, restrained. Add a colour-grade pass so the scene never looks like default Three.js.
+* CRT shader on screen content: scanlines, slight barrel curvature, subtle chromatic aberration, vignette, phosphor glow (bloom), rare rolling bar. Expose an intensity uniform. Under prefers-reduced-motion: no flicker or roll.
+* Fonts: a free OFL pixel font for TV UI (e.g. Press Start 2P or VT323 from Google Fonts) unless the chosen direction says otherwise; self-host all fonts.
+* Sound: original sounds only, synthesised with the Web Audio API or supplied by me in `public/audio/`. No sampled console sounds.
+
+### Motion and smoothness
+* ONE CLOCK: GSAP's ticker drives the Three.js render, camera easing and Lenis (`lenis.raf` inside `gsap.ticker`, `gsap.ticker.lagSmoothing(0)`). No other requestAnimationFrame loops.
+* Signature eases live in `src/motion/eases.js` (GSAP CustomEase), e.g. `crtSnap` (fast in, tiny overshoot, settle) and `slowDolly`. Every animation uses a named ease and a token duration. No default `power1`/0.3 s fades.
+* Camera and menu cursor use frame-rate-independent damping (delta-time based), so motion feels identical at 60, 120 and 144 Hz.
+* Menu wheel/trackpad input is STEPPED: accumulate delta, move exactly one row per threshold, short cooldown. Never let one trackpad flick skip several projects.
+* Lenis only inside the case-study overlay, synced with ScrollTrigger; `data-lenis-prevent` on nested scroll areas; native touch scrolling; disabled under prefers-reduced-motion.
+* During BOOT, precompile all shaders and upload all textures (e.g. renderer.compileAsync) so the first INTRO and INSERTING play without a hitch.
+* In HTML, animate only transform and opacity. No object allocation inside the render loop.
+
+### Originality rules (banned defaults)
+Do not use: Inter or system-font-only typography; purple/blue gradients; glassmorphism; centred "Hi, I'm…" heroes; emoji or stock icon sets as decoration; uniform rounded cards or bento grids; identical fade-up-on-scroll animations; filler copy; default grey MeshStandardMaterial looks with stock bloom.
+After every visual pass, run a taste review: compare the result against `references/` and this list, name anything that looks generic, and propose a fix before I commit.
+
+### Stack
+* Vite, vanilla JavaScript, Three.js, GSAP (all plugins are free now, including SplitText and CustomEase), Lenis.
+* Post-processing: Three.js EffectComposer with a custom CRT ShaderPass, UnrealBloomPass and a colour-grade pass.
+* Models: GLTFLoader with Meshopt/Draco decoders. Files in `public/models/`: `tv.glb`, `console.glb`, `cartridge.glb`, optional `room.glb`.
+* BUILD WITH PLACEHOLDER PRIMITIVES FIRST (rounded boxes for TV, console, cartridge). Real models must be drop-in replacements: same file names, scene code finds parts by mesh name (`Screen`, `Slot`, `LED`, `Label`).
+* `scripts/optimize-models.mjs`: a Node script using @gltf-transform/cli to compress models (Meshopt, textures to WebP or KTX2, max 2048 px).
+* Blender is connected through MCP for Blender. For model work: ask me to save the .blend first, make the change, show me several angles, then export glTF binary to `public/models/` and run the optimise script. Never use the AI model generators.
+
+### Folder structure
+* `src/main.js` renderer, loop, resize
+* `src/state.js` state machine
+* `src/scene/` room, tv, console, cartridge, lights, camera rig
+* `src/screen/` menu canvas UI, CRT shader
+* `src/ui/` loader, project overlay, 2D fallback
+* `src/input/` keyboard, gamepad, pointer/touch, wheel
+* `src/audio/` Web Audio synth
+* `src/motion/eases.js` named eases and durations
+* `src/styles/tokens.css` locked design tokens
+* `src/content/site.json` name, tagline, intro lines, socials, contact
+* `src/content/projects.json` the projects
+* `public/models/`, `public/textures/`, `public/audio/`, `public/projects/<slug>/`
+* `references/` my moodboard images
+* `blender/` source .blend files
+
+### projects.json schema
+Each project: slug, title, year, role, genre (short tag), summary (max 120 chars), cartridgeColor (hex), labelImage, thumbnail, hero (image or video), sections [{heading, body, media}], links [{label, url}], featured (bool).
+Generate placeholder label art and thumbnails (simple coloured cards with the title) so the menu looks complete from day one.
+
+### Budgets (check and report these at the end of each pass that affects them)
+* 60 fps on a mid-range laptop, 30+ fps on a mid-range phone. Cap devicePixelRatio at 2 (1.5 on mobile).
+* No frame over 16 ms during INTRO, menu navigation or INSERTING on desktop.
+* Loading screen visible in under 1.5 s. Initial download under 5 MB total; each model under 1.5 MB after compression.
+* Lazy-load case-study media. Pause the render loop when the tab is hidden or the overlay fully covers the canvas.
+* Dispose geometries, materials and textures when no longer needed.
+
+### Accessibility, SEO, sharing
+* Everything works by keyboard. Visible focus states. An ARIA live region announces the selected project.
+* Case-study overlay uses real headings and meets WCAG AA contrast.
+* index.html includes title, meta description, Open Graph image and a noscript/2D list of projects so recruiters and search engines see content without WebGL.
+
+### Deploy
+Static site. GitHub repo, deployed to Cloudflare Workers static assets (wrangler config with `assets.directory: ./dist`), auto-deploying on push to main. No server code.
+
+### Definition of done
+* Boot -> intro -> menu -> project -> back works with keyboard, mouse, trackpad, touch and a gamepad.
+* Deep links work. 2D fallback works with JavaScript disabled for the project list.
+* Budgets met on desktop, a 120 Hz screen and a real phone. No console errors.
+* Swapping a model, texture or project entry needs zero code changes.
+* Passes the taste review: nothing on the banned list, everything traceable to tokens and references.
+* Lighthouse: Accessibility 90+, Best Practices 90+.
