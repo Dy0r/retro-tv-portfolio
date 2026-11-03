@@ -3,59 +3,141 @@
   "slug": "holocare",
   "title": "Holocare",
   "year": 2024,
-  "role": "[COPY: your role]",
+  "role": "Product Designer, UX Researcher",
   "genre": "Design",
   "summary": "[COPY: one-line summary, max 120 characters]",
   "cartridgeColor": "#3d7c8c",
   "labelImage": "/projects/holocare/label.svg",
-  "thumbnail": "/projects/holocare/thumbnail.svg",
+  "thumbnail": "/projects/holocare/hero.jpg",
   "hero": {
     "type": "image",
-    "src": "/projects/holocare/hero.svg",
+    "src": "/projects/holocare/hero.jpg",
     "alt": "[COPY: describe the hero image for people who can't see it]"
   },
   "sections": [
     {
-      "heading": "[COPY: heading for \"the problem\"]",
+      "heading": "Crafting Unique Solutions for Every Challenge",
       "body": [
-        "[COPY: paragraph]",
-        "[COPY: paragraph]"
+        "Project Name: HoloCare, Speculative AI-Powered Injury Assessment App",
+        "Role: Product Designer, UX Researcher",
+        "Duration: 4 Weeks (10 July - 31 July 2024)",
+        "Tools Used: Figma, Premiere Pro"
       ],
       "media": null
     },
     {
-      "heading": "[COPY: heading for \"my role\"]",
-      "body": [
-        "[COPY: paragraph]"
-      ],
-      "media": null
-    },
-    {
-      "heading": "[COPY: heading for \"process\"]",
-      "body": [
-        "[COPY: paragraph]",
-        "[COPY: paragraph]"
-      ],
+      "heading": "Product Showcase Video",
+      "body": [],
       "media": {
-        "type": "image",
-        "src": "/projects/holocare/process-1.svg",
-        "alt": "[COPY: describe this image]",
-        "caption": "[COPY: optional caption, or delete this line]"
+        "type": "youtube",
+        "id": "iF4n8xeYnpc",
+        "alt": "Product Showcase Video"
       }
     },
     {
-      "heading": "[COPY: heading for \"outcome\"]",
+      "heading": "Introduction",
       "body": [
-        "[COPY: paragraph]"
+        "In today’s fast-paced world, access to immediate and reliable healthcare information is crucial. Recognizing this need, my team and I embarked on a project to design an app that leverages artificial intelligence to scan and help treat minor injuries. The app’s primary goal is to provide users with a simple, user-friendly platform that guides them through injury assessment and treatment, ensuring they receive accurate advice quickly and efficiently.",
+        "This project was showcased at UNSW's prestigious Design After Dark event, where it was well-received for its innovative approach and thoughtful design."
+      ],
+      "media": null
+    },
+    {
+      "heading": "Problem Statement",
+      "body": [
+        "Minor injuries, while not life-threatening, often cause unnecessary stress due to uncertainty about their severity. Traditional methods of seeking advice can be time-consuming, requiring visits to healthcare professionals or extensive online searches. There was a clear need for a solution that could provide immediate, accurate, and user-friendly assessments.",
+        "Through a primary research conducted by our group, we also found that most people tend to forget or not retain information from the medical professional. 33% also lack the proper medical knowledge to treat injuries. This is is what inspired us to create this app and to also gamify the app."
+      ],
+      "media": {
+        "type": "image",
+        "src": "/projects/holocare/01.jpg",
+        "alt": "[COPY: describe this image]"
+      }
+    },
+    {
+      "heading": "Objective and Target User",
+      "body": [
+        "The objective was to design a mobile application that utilises AI to scan and assess minor injuries, offering users personalised treatment advice. The app needed to be intuitive, accessible, and reliable, ensuring users could confidently manage minor injuries from the comfort of their homes.",
+        "Our target audience will be 18 year olds and above, specifically those with little to no knowledge of proper medical treatment and aftercare. This will also highly benefit those in remote locations or lack of access to medical assistance."
+      ],
+      "media": null
+    },
+    {
+      "heading": "1. Ideation",
+      "body": [
+        "We started with brainstorming sessions, sketching out possible features and user flows. The focus was on creating a streamlined process that would allow users to quickly scan an injury and receive treatment advice. We then ended up on our initial prototype sketch and also a storyboard for the showcase video."
+      ],
+      "media": {
+        "type": "image",
+        "src": "/projects/holocare/02.jpg",
+        "alt": "[COPY: describe this image]"
+      }
+    },
+    {
+      "heading": "2. Wireframing",
+      "body": [
+        "Using Figma, we developed low-fidelity wireframes to map out the user journey. Key screens included the injury scan interface, assessment results, and treatment recommendations. We emphasized simplicity and clarity, ensuring that users of all ages could navigate the app with ease. We performed an accessibility audit based on WCAG 2.0 guidelines to ensure our design was inclusive. This included considerations for color contrast, text scalability, keyboard navigation, and screen reader compatibility."
+      ],
+      "media": {
+        "type": "image",
+        "src": "/projects/holocare/03.jpg",
+        "alt": "[COPY: describe this image]"
+      }
+    },
+    {
+      "heading": "3. Prototyping",
+      "body": [
+        "We created a high-fidelity prototype using Figma, incorporating feedback from initial usability tests. The prototype featured a clean, modern interface with intuitive navigation and clear instructions. This was brought to attention through user testing within a medium-fidelity prototype, where we had users complete 2 tasks."
+      ],
+      "media": {
+        "type": "image",
+        "src": "/projects/holocare/04.jpg",
+        "alt": "[COPY: describe this image]"
+      }
+    },
+    {
+      "heading": "4. Second Iteration",
+      "body": [
+        "This is where we realised that the app was lacking visually appealing interfaces as well as the gamification of the system. We started to incorporate different features such as a personalised avatar so users can feel more connected to the app. We also had a new feature where users can check the medicine needed for specific injuries. We also had more user testing done, ensuring that users are satisfied with changes. We also added a new task to ensure that the new feature is actually useful."
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "/projects/holocare/05.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/holocare/06.jpg",
+          "alt": "[COPY: describe this image]"
+        }
+      ]
+    },
+    {
+      "heading": "5. Final Product",
+      "body": [
+        "The final design is a user-friendly, accessible app that empowers users to assess and treat minor injuries with confidence. Key features include:",
+        "- AI-Powered Injury Scan: Users can take a photo of their injury, and the app’s AI provides an immediate assessment.",
+        "- Personalised Treatment Advice: Based on the scan, the app offers tailored advice, including treatment steps and when to seek professional help.",
+        "- Accessible Design: The app meets WCAG 2.0 guidelines, ensuring it is usable by a wide range of people, including those with disabilities. Features like high-contrast mode, scalable text, and screen reader support make the app inclusive.",
+        "- User-Friendly Interface: A clean, intuitive design ensures users can easily navigate the app and find the information they need.",
+        "- Injury History: Users can save their assessments for future reference or to share with healthcare professionals."
+      ],
+      "media": {
+        "type": "image",
+        "src": "/projects/holocare/07.jpg",
+        "alt": "[COPY: describe this image]"
+      }
+    },
+    {
+      "heading": "Impact and Reception",
+      "body": [
+        "Our app was featured at UNSW's Design After Dark event, where it received positive feedback from both industry professionals and peers. The project was praised for its innovative use of AI in healthcare, as well as its thoughtful, user-centered, and accessible design.",
+        "The app not only addresses a common pain point but also demonstrates the potential of AI to enhance everyday healthcare. It represents a step forward in making healthcare more accessible and efficient for everyone, regardless of their abilities."
       ],
       "media": null
     }
   ],
-  "links": [
-    {
-      "label": "[COPY: link label]",
-      "url": "https://www.dylanprasodjo.com/work/holocare"
-    }
-  ],
+  "links": [],
   "featured": true
 }

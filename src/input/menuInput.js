@@ -59,6 +59,8 @@ export function createMenuInput({ canvas, camera, menu, getScreen, getCartridgeR
   }
 
   function onKey(e) {
+    // Keys pressed inside a pop-up (reader, resume) belong to that pop-up.
+    if (e.target.closest?.('dialog')) return;
     const k = e.key.toLowerCase();
     if (k === 'escape') {
       e.preventDefault();
@@ -80,6 +82,7 @@ export function createMenuInput({ canvas, camera, menu, getScreen, getCartridgeR
   }
 
   function onWheel(e) {
+    if (e.target.closest?.('dialog')) return; // scrolling inside a pop-up
     const now = e.timeStamp;
     if (now < wheelLockedUntil) return;
     if (now - lastWheel > 200) wheelTotal = 0;

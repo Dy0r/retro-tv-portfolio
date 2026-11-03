@@ -317,8 +317,9 @@ function onProjectPointerUp(e) {
 
 function playSelected() {
   const item = menu.current;
-  if (getState() !== STATES.MENU || item.kind !== 'project') return;
-  transition(STATES.INSERTING, { slug: item.slug });
+  if (getState() !== STATES.MENU) return;
+  if (item.kind === 'page') openPage(item.slug);
+  else transition(STATES.INSERTING, { slug: item.slug });
 }
 
 function startInsert(slug) {
@@ -352,8 +353,21 @@ const caseStudy = createCaseStudy({
     caseCovering = false;
     updatePaused();
   },
-  onClosed: () => ejectCartridge(),
+  // Closing a project ejects its cartridge; closing a page just returns to the menu.
+  onClosed: () => {
+    if (readingPage) readingPage = false;
+    else ejectCartridge();
+  },
 });
+
+// About / Contact / Credits open in the same reader, straight from the menu (no cartridge).
+let readingPage = false;
+function openPage(id) {
+  const page = site.menuPages.find((p) => p.id === id);
+  if (!page) return;
+  readingPage = true;
+  caseStudy.openPage(page);
+}
 
 function openCaseStudy(slug) {
   const index = projects.findIndex((p) => p.slug === slug);

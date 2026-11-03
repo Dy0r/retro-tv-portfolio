@@ -49,11 +49,24 @@ Put files in `public/projects/<slug>/`, then point to them from the root, e.g. `
 }
 ```
 
-- For a video use `"type": "video"` and an `.mp4` file.
+- For a video file use `"type": "video"` and an `.mp4` file.
+- For a YouTube video use `{ "type": "youtube", "id": "iF4n8xeYnpc", "alt": "What the video shows" }`, where `id` is the code after `youtu.be/` or `v=` in its link.
 - A section with no image: `"media": null`.
 - Several images in one section: use a list, `"media": [ {…}, {…} ]`.
 - Every image can be clicked to enlarge on the site.
 - Keep images under ~2000px wide, as JPG or WebP, so the site stays fast.
+
+## Links inside a section
+
+A section can also have its own buttons, shown under its text:
+
+```json
+"links": [
+  { "label": "View the entire process booklet here", "url": "https://..." }
+]
+```
+
+The project-level `links` (at the bottom of the file) appear in a final section at the end.
 
 ## Adding or removing a project
 

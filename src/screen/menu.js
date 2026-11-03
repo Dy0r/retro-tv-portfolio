@@ -67,6 +67,7 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
       summary: page.summary,
       spoken: page.title,
       image: null,
+      thumbnail: page.thumbnail,
     })),
   ];
   items.forEach((item, i) => (item.counter = `${pad2(i + 1)} / ${pad2(items.length)}`));
@@ -99,6 +100,14 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
       const cx = x + nudge + dir * (i * step - s / 2);
       ctx.fillRect(Math.round(cx - step / 2), Math.round(ARROW.y - h / 2), Math.ceil(step), Math.round(h));
     }
+  }
+
+  // Fills the box with the image, cropping the edges instead of stretching it.
+  function drawCover(img, x, y, w, h) {
+    const scale = Math.max(w / img.width, h / img.height);
+    const sw = w / scale;
+    const sh = h / scale;
+    ctx.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, x, y, w, h);
   }
 
   function wrapSummary(text, x, y, maxWidth, lineHeight) {
@@ -140,7 +149,7 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
     ctx.strokeStyle = playing ? colors.accent : colors.dim;
     ctx.lineWidth = 4;
     if (item.image) {
-      ctx.drawImage(item.image, pic.x, pic.y, pic.w, pic.h);
+      drawCover(item.image, pic.x, pic.y, pic.w, pic.h);
     } else {
       ctx.fillStyle = colors.accent;
       ctx.globalAlpha *= 0.12;

@@ -8,53 +8,107 @@
   "summary": "[COPY: one-line summary, max 120 characters]",
   "cartridgeColor": "#d9a441",
   "labelImage": "/projects/violetta-rebrand/label.svg",
-  "thumbnail": "/projects/violetta-rebrand/thumbnail.svg",
+  "thumbnail": "/projects/violetta-rebrand/hero.jpg",
   "hero": {
     "type": "image",
-    "src": "/projects/violetta-rebrand/hero.svg",
+    "src": "/projects/violetta-rebrand/hero.jpg",
     "alt": "[COPY: describe the hero image for people who can't see it]"
   },
   "sections": [
     {
-      "heading": "[COPY: heading for \"the problem\"]",
+      "heading": "Client Overview",
       "body": [
-        "[COPY: paragraph]",
-        "[COPY: paragraph]"
+        "Violetta is a longstanding interior design business with deep roots in family tradition. The brand has been passed down through generations, evolving while maintaining its core values of refinement and luxury. However, as the market modernised, Violetta needed a refreshed identity that balanced contemporary aesthetics with its rich heritage."
       ],
       "media": null
     },
     {
-      "heading": "[COPY: heading for \"my role\"]",
+      "heading": "The Challenge",
       "body": [
-        "[COPY: paragraph]"
+        "The primary challenge was to redesign Violetta’s logo and visual identity to appeal to a modern audience while preserving key elements from the original logo that reflected its family legacy. Additionally, the rebrand needed to incorporate symbolic elements (such as floral motifs) in a way that reinforced the brand’s story of perseverance and elegance."
       ],
       "media": null
     },
     {
-      "heading": "[COPY: heading for \"process\"]",
+      "heading": "1. Logo Redesign – Balancing Tradition and Modernity",
       "body": [
-        "[COPY: paragraph]",
-        "[COPY: paragraph]"
-      ],
-      "media": {
-        "type": "image",
-        "src": "/projects/violetta-rebrand/process-1.svg",
-        "alt": "[COPY: describe this image]",
-        "caption": "[COPY: optional caption, or delete this line]"
-      }
-    },
-    {
-      "heading": "[COPY: heading for \"outcome\"]",
-      "body": [
-        "[COPY: paragraph]"
+        "The original logo featured a rose inside a \"V,\" symbolising the brand’s name and its floral-inspired identity. To modernise it while retaining its essence, I:",
+        "Simplified the lines of the rose and \"V\" for a cleaner, more contemporary look.",
+        "Maintained the serif font (Reckless Neue) as a nod to the original, reinforcing maturity and timelessness.",
+        "Embedded symbolism:",
+        "The \"V\" acts as both a vase (nurturing growth) and a shield (protection and resilience).",
+        "The rose growing out of the \"V\" represents renewal and evolution, mirroring the brand’s journey."
       ],
       "media": null
+    },
+    {
+      "heading": "2. Colour Palette – Luxury with a Vintage Touch",
+      "body": [
+        "To convey refinement and warmth, we selected a gold-dominated palette (#DAAC00, #FFE687) inspired by the original logo. Supporting colours, such as a light blue (#6B82FF), were introduced sparingly for contrast, ensuring a balance between vintage charm and modern sophistication."
+      ],
+      "media": null
+    },
+    {
+      "heading": "3. Typography – Classic Meets Contemporary",
+      "body": [
+        "Headings: Reckless Neue (a modern serif) was chosen to honour the original logo’s typography while feeling fresh.",
+        "Body Text: DM Sans (a clean sans-serif) ensured readability and versatility, making the brand accessible across digital and print media."
+      ],
+      "media": null
+    },
+    {
+      "heading": "4. Graphic Devices – Reinforcing Brand Storytelling",
+      "body": [
+        "Floral Motifs: The rose was adapted into patterns and standalone graphics, reinforcing brand recognition.",
+        "Fluid Shapes: Organic, handcrafted-inspired shapes were used to symbolise adaptability and bespoke service."
+      ],
+      "media": null
+    },
+    {
+      "heading": "Implementation & Applications",
+      "body": [
+        "The new identity was applied across multiple touch points:",
+        "Debossed Business Cards: Elevated tactile feel, emphasising luxury.",
+        "Social Media (Instagram): A curated feed blending high-end interiors with storytelling captions.",
+        "Posters & Print Collateral: Showcasing the brand’s refined aesthetic through minimalist yet impactful designs."
+      ],
+      "media": null
+    },
+    {
+      "heading": "Results & Impact",
+      "body": [
+        "Stronger Brand Recognition: The modernised logo retained familiarity for long-time clients while attracting new audiences.",
+        "Cohesive Visual Language: The strategic use of colour, typography, and symbolism created a unified brand experience.",
+        "Emotional Connection: The embedded meanings (rose, shield, vase) deepened customer engagement by tying the brand to its heritage."
+      ],
+      "media": null
+    },
+    {
+      "heading": "[COPY: heading for the image gallery]",
+      "body": [],
+      "media": [
+        {
+          "type": "image",
+          "src": "/projects/violetta-rebrand/01.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/violetta-rebrand/02.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/violetta-rebrand/03.jpg",
+          "alt": "[COPY: describe this image]"
+        }
+      ]
     }
   ],
   "links": [
     {
-      "label": "[COPY: link label]",
-      "url": "https://www.dylanprasodjo.com/work/violetta"
+      "label": "[COPY: label for this link]",
+      "url": "https://drive.google.com/file/d/1f8burZ7Ydzuz4HtcX_xdSaj6xaKCDR1n/view?usp=sharing"
     }
   ],
   "featured": true

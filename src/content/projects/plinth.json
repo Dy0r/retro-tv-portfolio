@@ -8,54 +8,187 @@
   "summary": "[COPY: one-line summary, max 120 characters]",
   "cartridgeColor": "#c8553d",
   "labelImage": "/projects/plinth/label.svg",
-  "thumbnail": "/projects/plinth/thumbnail.svg",
+  "thumbnail": "/projects/plinth/hero.jpg",
   "hero": {
     "type": "image",
-    "src": "/projects/plinth/hero.svg",
+    "src": "/projects/plinth/hero.jpg",
     "alt": "[COPY: describe the hero image for people who can't see it]"
   },
   "sections": [
     {
-      "heading": "[COPY: heading for \"the problem\"]",
+      "heading": "Overview",
       "body": [
-        "[COPY: paragraph]",
-        "[COPY: paragraph]"
+        "Plinth is a fully transparent ticketing platform designed to empower emerging artists, support local music venues, and connect fans with authentic live music experiences. Built as a response to the monopolistic practices and hidden fees of traditional ticketing services, Plinth returns 95% of ticket and merchandise revenue directly to artists while offering listeners fair pricing and seamless discovery."
+      ],
+      "media": null,
+      "links": [
+        {
+          "label": "View the entire process booklet here",
+          "url": "https://drive.google.com/file/d/1FD414cXy8bxxXPCYOhO2EwEtg3lxTcJr/view?usp=sharing"
+        },
+        {
+          "label": "Final website walkthrough here",
+          "url": "https://youtu.be/IwEA0-FwvAk"
+        }
+      ]
+    },
+    {
+      "heading": "My Role",
+      "body": [
+        "As the sole creator of this concept, I was responsible for end-to-end development. From initial research and brand strategy to interaction design, visual identity, and high-fidelity prototyping. The project was guided by Prarthana Johnson (former Head of Design at Atlassian), whose mentorship in product design and usability deeply shaped the iterative process."
       ],
       "media": null
     },
     {
-      "heading": "[COPY: heading for \"my role\"]",
+      "heading": "Concept & Research",
       "body": [
-        "[COPY: paragraph]"
+        "Identified systemic pain points in the Australian music industry through surveys and data analysis, revealing that high platform fees and poor UX discourage both artists and fans."
       ],
       "media": null
     },
     {
-      "heading": "[COPY: heading for \"process\"]",
+      "heading": "Brand Identity",
       "body": [
-        "[COPY: paragraph]",
-        "[COPY: paragraph]"
-      ],
-      "media": {
-        "type": "image",
-        "src": "/projects/plinth/process-1.svg",
-        "alt": "[COPY: describe this image]",
-        "caption": "[COPY: optional caption, or delete this line]"
-      }
-    },
-    {
-      "heading": "[COPY: heading for \"outcome\"]",
-      "body": [
-        "[COPY: paragraph]"
+        "Developed the name, logo, and full brand system for Plinth. The logo represents the three pillars of the music ecosystem, the artists, venues, and listeners. The visual language uses grain textures and warm tones to evoke the authenticity of vinyl records."
       ],
       "media": null
+    },
+    {
+      "heading": "User-Centered Design",
+      "body": [
+        "Created distinct user journeys for listeners, artists, and venues. Conducted multiple rounds of user testing, card sorting, and A/B testing to refine flows, resulting in a 70% improvement in task completion time for merchandise purchases."
+      ],
+      "media": null
+    },
+    {
+      "heading": "Website Prototype",
+      "body": [
+        "Designed and iterated on a fully interactive web platform featuring:",
+        "– Transparent pricing with fee breakdowns",
+        "– Integrated Spotify discovery",
+        "– Dashboards for artist promotion and venue management",
+        "– Streamlined checkout and merch integration"
+      ],
+      "media": null
+    },
+    {
+      "heading": "Usability Validation",
+      "body": [
+        "Implemented Single Ease Questions (SEQs) based on mentor guidance, achieving an average score of 4.6/5 for usability and intent to reuse."
+      ],
+      "media": null
+    },
+    {
+      "heading": "Outcome",
+      "body": [
+        "Plinth presents a viable, human-centered alternative to incumbent ticketing platforms, proving that ethical design and transparent business models can foster a more sustainable and connected music community."
+      ],
+      "media": null
+    },
+    {
+      "heading": "Tools & Methods",
+      "body": [
+        "Figma, Illustrator, User Surveys, Personas, User Flows, Prototyping, A/B Testing, SEQ Analysis"
+      ],
+      "media": null
+    },
+    {
+      "heading": "[COPY: heading for the image gallery]",
+      "body": [],
+      "media": [
+        {
+          "type": "image",
+          "src": "/projects/plinth/01.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/02.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/03.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/04.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/05.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/06.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/07.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/08.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/09.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/10.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/11.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/12.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/13.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/14.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/15.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/16.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/17.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/18.jpg",
+          "alt": "[COPY: describe this image]"
+        }
+      ]
     }
   ],
-  "links": [
-    {
-      "label": "[COPY: link label]",
-      "url": "https://www.dylanprasodjo.com/work/plinth"
-    }
-  ],
+  "links": [],
   "featured": true
 }

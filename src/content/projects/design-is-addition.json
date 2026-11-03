@@ -8,54 +8,42 @@
   "summary": "[COPY: one-line summary, max 120 characters]",
   "cartridgeColor": "#5b6b3a",
   "labelImage": "/projects/design-is-addition/label.svg",
-  "thumbnail": "/projects/design-is-addition/thumbnail.svg",
+  "thumbnail": "/projects/design-is-addition/hero.jpg",
   "hero": {
     "type": "image",
-    "src": "/projects/design-is-addition/hero.svg",
+    "src": "/projects/design-is-addition/hero.jpg",
     "alt": "[COPY: describe the hero image for people who can't see it]"
   },
   "sections": [
     {
-      "heading": "[COPY: heading for \"the problem\"]",
+      "heading": "Design is Addition Branding",
       "body": [
-        "[COPY: paragraph]",
-        "[COPY: paragraph]"
+        "Design is Addition is a coursework where AGDA is the client and I was tasked to create branding based on the prompt of Design is... the word I chose was addition. Design is Addition reflects upon the idea of coming together and adding our thoughts out to the world. The plus symbol is a direct representation of addition whilst also represents two rectangles merging together to form the icon. The logo itself consists of 2 brackets coming together and forming a plus symbol through the white space. The brackets represent our individual minds and the ideas that lie within those set of brackets. We then bring these ideas to life and visualize it digitally or through traditional methods."
       ],
-      "media": null
-    },
-    {
-      "heading": "[COPY: heading for \"my role\"]",
-      "body": [
-        "[COPY: paragraph]"
-      ],
-      "media": null
-    },
-    {
-      "heading": "[COPY: heading for \"process\"]",
-      "body": [
-        "[COPY: paragraph]",
-        "[COPY: paragraph]"
-      ],
-      "media": {
-        "type": "image",
-        "src": "/projects/design-is-addition/process-1.svg",
-        "alt": "[COPY: describe this image]",
-        "caption": "[COPY: optional caption, or delete this line]"
-      }
-    },
-    {
-      "heading": "[COPY: heading for \"outcome\"]",
-      "body": [
-        "[COPY: paragraph]"
-      ],
-      "media": null
+      "media": [
+        {
+          "type": "image",
+          "src": "/projects/design-is-addition/01.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/design-is-addition/02.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/design-is-addition/03.jpg",
+          "alt": "[COPY: describe this image]"
+        },
+        {
+          "type": "image",
+          "src": "/projects/design-is-addition/04.png",
+          "alt": "[COPY: describe this image]"
+        }
+      ]
     }
   ],
-  "links": [
-    {
-      "label": "[COPY: link label]",
-      "url": "https://www.dylanprasodjo.com/work/design-is-addition"
-    }
-  ],
+  "links": [],
   "featured": true
 }

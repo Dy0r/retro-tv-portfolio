@@ -6,7 +6,8 @@ import { EASES, DURATIONS } from '../motion/eases.js';
 import { createFramedDialog } from './framedDialog.js';
 import { createLightbox } from './lightbox.js';
 
-// The case study for the inserted cartridge, in the shared framed pop-up.
+// The reader: the case study for the inserted cartridge, and the About / Contact /
+// Credits pages from the menu, in the shared framed pop-up.
 //  - Header: counter, title (a real heading), year · genre · role.
 //  - Reading area: hero, then each section from the project's file (real headings,
 //    paragraphs, images), then its links. Scrolls smoothly with Lenis (native
@@ -121,8 +122,36 @@ export function createCaseStudy({ onOpened, onClosing, onClosed }) {
     heading.focus({ preventScroll: true }); // screen readers continue from here
   }
 
+  function linkList(links) {
+    const list = el('ul', 'case__links');
+    for (const link of links) {
+      const a = el('a', null, link.label);
+      a.href = link.url;
+      if (/^https?:/.test(link.url)) {
+        a.target = '_blank';
+        a.rel = 'noopener';
+      }
+      const li = el('li');
+      li.append(a);
+      list.append(li);
+    }
+    return list;
+  }
+
   function mediaFigure(media) {
     const figure = el('figure');
+    if (media.type === 'youtube') {
+      // Privacy-friendly YouTube player; only loads when scrolled near.
+      const frameEl = el('iframe', 'case__embed');
+      frameEl.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(media.id)}?rel=0`;
+      frameEl.title = media.alt ?? 'Video';
+      frameEl.loading = 'lazy';
+      frameEl.allow = 'accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+      frameEl.allowFullscreen = true;
+      figure.append(frameEl);
+      if (media.caption) figure.append(el('figcaption', null, media.caption));
+      return figure;
+    }
     const src = assetUrl(media.src);
     if (media.type === 'video') {
       const video = el('video');
@@ -151,7 +180,7 @@ export function createCaseStudy({ onOpened, onClosing, onClosed }) {
     return figure;
   }
 
-  function addSection(id, headingText, body, media, extra) {
+  function addSection(id, headingText, body, media, links) {
     const section = el('section');
     section.id = id;
     const heading = el('h3', null, headingText);
@@ -161,7 +190,7 @@ export function createCaseStudy({ onOpened, onClosing, onClosed }) {
     for (const text of paragraphs) section.append(el('p', null, text));
     const mediaList = Array.isArray(media) ? media : media ? [media] : [];
     for (const m of mediaList) section.append(mediaFigure(m));
-    if (extra) section.append(extra);
+    if (links?.length) section.append(linkList(links));
     content.append(section);
 
     const item = el('li');
@@ -173,43 +202,47 @@ export function createCaseStudy({ onOpened, onClosing, onClosed }) {
     sections.push({ node: section, button });
   }
 
-  function render(project, index, total) {
-    counter.textContent = `${pad2(index + 1)} / ${pad2(total)}`;
-    title.textContent = project.title;
-    meta.textContent = [project.year, project.genre, project.role].filter(Boolean).join('  ·  ');
+  // entry: a project or a menu page (title, hero?, sections, links?).
+  function render(entry, { counterText = '', metaText = '' }) {
+    counter.textContent = counterText;
+    counter.hidden = !counterText;
+    title.textContent = entry.title;
+    meta.textContent = metaText;
+    meta.hidden = !metaText;
     content.replaceChildren();
     navList.replaceChildren();
     sections = [];
     current = -1;
 
-    if (project.hero?.src) content.append(mediaFigure(project.hero));
-    (project.sections ?? []).forEach((s, i) => addSection(`case-section-${i}`, s.heading, s.body, s.media));
-    if (project.links?.length) {
-      const list = el('ul', 'case__links');
-      for (const link of project.links) {
-        const a = el('a', null, link.label);
-        a.href = link.url;
-        a.target = '_blank';
-        a.rel = 'noopener';
-        const li = el('li');
-        li.append(a);
-        list.append(li);
-      }
-      addSection('case-links', labels.linksHeading, null, null, list);
-    }
+    if (entry.hero?.src || entry.hero?.id) content.append(mediaFigure(entry.hero));
+    (entry.sections ?? []).forEach((s, i) => addSection(`case-section-${i}`, s.heading, s.body, s.media, s.links));
+    if (entry.links?.length) addSection('case-links', labels.linksHeading, null, null, entry.links);
+  }
+
+  function show() {
+    frame.open();
+    scrollEl.scrollTop = 0;
+    lenis?.scrollTo(0, { immediate: true });
+    lenis?.start();
+    updateIndicators();
   }
 
   return {
     get isOpen() {
       return frame.isOpen;
     },
+    // A project's case study, with "02 / 05" and year · genre · role in the header.
     open(project, index, total) {
-      render(project, index, total);
-      frame.open();
-      scrollEl.scrollTop = 0;
-      lenis?.scrollTo(0, { immediate: true });
-      lenis?.start();
-      updateIndicators();
+      render(project, {
+        counterText: `${pad2(index + 1)} / ${pad2(total)}`,
+        metaText: [project.year, project.genre, project.role].filter(Boolean).join('  ·  '),
+      });
+      show();
+    },
+    // An About / Contact / Credits page: just its title in the header.
+    openPage(page) {
+      render(page, {});
+      show();
     },
     close: frame.close,
     // For the gamepad d-pad: scroll the reading area by some pixels.

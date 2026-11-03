@@ -5,7 +5,7 @@
   "siteUrl": "https://dy0r.github.io/retro-tv-portfolio/",
   "shareImage": "og-image.jpg",
   "shareImageAlt": "[COPY: describe the share image, e.g. what the room shot shows]",
-  "tagline": "[COPY: one-line intro shown under your name on the loading screen]",
+  "tagline": "I solve complex problems by creating unique digital experiences that goes beyond aesthetics.",
   "introLines": [
     "[COPY: short line about you #1]",
     "[COPY: short line about you #2]",
@@ -42,16 +42,92 @@
     "linksHeading": "[COPY: heading above the project links]"
   },
   "menuPages": [
-    { "id": "about", "title": "About", "summary": "[COPY: one line that invites people to read about you]" },
-    { "id": "contact", "title": "Contact", "summary": "[COPY: one line that invites people to get in touch]" },
-    { "id": "credits", "title": "Credits", "summary": "[COPY: one line introducing the credits]" }
+    {
+      "id": "about",
+      "title": "About",
+      "summary": "[COPY: one line that invites people to read about you]",
+      "thumbnail": "/about/portrait.jpg",
+      "hero": {
+        "type": "image",
+        "src": "/about/portrait.jpg",
+        "alt": "Dylan"
+      },
+      "sections": [
+        {
+          "heading": "About Me",
+          "body": [
+            "Dylan Prasodjo is penultimate year student at UNSW studying design and media. He is a dedicated designer who loves to solve problems with design. Specialising in UX Design, and Graphic Design.",
+            "He values collaboration with peers to come up with solutions that properly address problems. Firmly believing that design is more than the aesthetics and has the power to impact peoples lives."
+          ],
+          "media": null
+        },
+        {
+          "heading": "Exprience",
+          "body": [
+            "Freelancer  ·  Jan 2025 - Present",
+            "UI/UX Intern @ OpenOnion  ·  Sep 2024 - Feb 2025",
+            "PR & Advertising Intern @ AHRC  ·  Apr 2024 - Jun 2024",
+            "Graphics & Comms. @ ScreenApp  ·  Feb 2024 - Apr 2024",
+            "Graphic Designer Intern @ Paideia  ·  Sep 2022 - Oct 2022",
+            "Graphic Designer Intern @ Notre.id  ·  Dec 2019 - Jan 2020"
+          ],
+          "media": null
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "title": "Contact",
+      "summary": "[COPY: one line that invites people to get in touch]",
+      "sections": [
+        {
+          "heading": "Let's Talk",
+          "body": [],
+          "media": null,
+          "links": [
+            {
+              "label": "dylanprasodjo@gmail.com",
+              "url": "mailto:dylanprasodjo@gmail.com"
+            },
+            {
+              "label": "LinkedIn",
+              "url": "https://www.linkedin.com/in/dylanprasodjo/"
+            },
+            {
+              "label": "Instagram",
+              "url": "https://www.instagram.com/dylanprasodjo"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "credits",
+      "title": "Credits",
+      "summary": "[COPY: one line introducing the credits]",
+      "sections": [
+        {
+          "heading": "[COPY: credits heading]",
+          "body": [
+            "[COPY: credits, e.g. fonts, libraries and anyone who helped]"
+          ],
+          "media": null
+        }
+      ]
+    }
   ],
   "skipLink": "[COPY: label for the 'skip to projects' link]",
   "contact": {
     "email": "dylanprasodjo@gmail.com"
   },
   "socials": [
-    { "label": "LinkedIn", "url": "https://www.linkedin.com/in/dylanprasodjo/" },
-    { "label": "Instagram", "url": "https://www.instagram.com/dylanprasodjo" }
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/dylanprasodjo/"
+    },
+    {
+      "label": "Instagram",
+      "url": "https://www.instagram.com/dylanprasodjo"
+    }
   ]
 }
