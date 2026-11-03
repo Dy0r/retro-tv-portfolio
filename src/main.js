@@ -18,7 +18,7 @@ import { buildWindow } from './scene/window.js';
 import { buildLeds } from './scene/leds.js';
 import { buildProps } from './scene/props.js';
 import { buildNeonSigns } from './scene/neonSigns.js';
-import { createCameraRig } from './scene/camera.js';
+import { createCameraRig, fovForAspect } from './scene/camera.js';
 import { createPostFx } from './scene/postfx.js';
 import { createAttract } from './scene/attract.js';
 import { playIntro, playOutro, LED_ON, LED_STANDBY, GLOW_ON } from './scene/intro.js';
@@ -62,7 +62,7 @@ renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.setClearColor(0x000000, 1);
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.05, 30);
+const camera = new THREE.PerspectiveCamera(fovForAspect(window.innerWidth / window.innerHeight), window.innerWidth / window.innerHeight, 0.05, 30);
 
 function onResize() {
   const w = window.innerWidth;
@@ -71,7 +71,9 @@ function onResize() {
   renderer.setSize(w, h, false);
   postFx.setSize(w, h, renderer.getPixelRatio());
   camera.aspect = w / h;
+  camera.fov = fovForAspect(camera.aspect);
   camera.updateProjectionMatrix();
+  rig.refit();
 }
 window.addEventListener('resize', onResize);
 
@@ -92,10 +94,12 @@ const consoleBack = new THREE.Vector3(0.08, standTop + 0.04, consolePosition.z -
 // Camera framings. "menu" keeps the TV large but shows the cartridge row too, so
 // the selected cartridge lifting is visible next to the screen.
 // ("resume" is added once the poster is in the scene: see the boot sequence.)
+// `width`: metres that must stay in view on a phone held upright; `narrowShift`
+// re-centres the menu on the TV there (see scene/camera.js).
 const poses = {
-  wide: { position: new THREE.Vector3(1.9, 1.5, 2.7), lookAt: new THREE.Vector3(-0.35, 1.05, -0.8) },
-  menu: { position: new THREE.Vector3(0.15, 0.78, 0.44), lookAt: new THREE.Vector3(0.13, 0.65, -0.65) },
-  console: { position: new THREE.Vector3(0.12, 0.86, -0.06), lookAt: new THREE.Vector3(0.06, standTop + 0.03, -0.52) },
+  wide: { position: new THREE.Vector3(1.9, 1.5, 2.7), lookAt: new THREE.Vector3(-0.35, 1.05, -0.8), width: 2.0 },
+  menu: { position: new THREE.Vector3(0.15, 0.78, 0.44), lookAt: new THREE.Vector3(0.13, 0.65, -0.65), width: 0.68, narrowShift: new THREE.Vector3(-0.13, -0.02, 0) },
+  console: { position: new THREE.Vector3(0.12, 0.86, -0.06), lookAt: new THREE.Vector3(0.06, standTop + 0.03, -0.52), width: 0.55 },
 };
 const rig = createCameraRig(camera, poses);
 rig.setPose('wide', { instant: true });
@@ -588,7 +592,7 @@ Promise.all([buildScene(), menu.ready])
     resumePoster = scene.getObjectByName('ResumePoster');
     if (resumePoster) {
       const center = resumePoster.getWorldPosition(new THREE.Vector3());
-      poses.resume = { position: center.clone().add(new THREE.Vector3(0, 0.02, 0.9)), lookAt: center };
+      poses.resume = { position: center.clone().add(new THREE.Vector3(0, 0.02, 0.9)), lookAt: center, width: 0.5 };
     }
     setLed(LED_STANDBY);
     return renderer.compileAsync(scene, camera).then(() => postFx.render(0)); // warm up the post passes too

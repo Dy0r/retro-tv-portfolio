@@ -35,6 +35,7 @@
 - About / Contact / Credits open in the same reader as the case studies (no cartridge); closing returns to the menu without ejecting.
 - Sound effects: original, synthesised live (src/audio/sfx.js), on by default with no toggle. They start after the first click/tap/key (browser rule), so entering by scroll alone is silent until then.
 - Music: player bottom-left (src/audio/musicPlayer.js) around Spotify's official embed, playlist in site.json `music.playlistUrl`, tracks cached in src/content/playlist.json (refresh: `node scripts/sync-playlist.mjs`). Nothing loads or plays until the visitor clicks it; a small "Click to play music" hint sits above it until then. Random song on start, shuffle button, auto-advance. Visitors not logged into Spotify hear 30-second previews.
+- Phones: on tall screens the lens widens and each camera shot keeps a set width in view (pose `width`, menu re-centred on the TV with `narrowShift`); desktop framing is unchanged. The enter hint and Insert button stack above the music player (`--music-height`); key caps (ESC/ENTER) are hidden on touch screens; on short screens (phone sideways) the Spotify card folds away once playing. Known limit: TV menu text is ~10-16px on a phone.
 - City life in the window: a plane with blinking lights, an elevated train every 8-14 s, office lights switching on and off. Placed where the opening shot sees them (lower half of the window). Off under reduced motion.
 
 ---

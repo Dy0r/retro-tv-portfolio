@@ -603,8 +603,14 @@ dialog.framed.is-open .framed__glow {
     padding-left: 20px;
     padding-right: 20px;
   }
+  /* A full-width bar on phones, so it never sits halfway across a line of text. */
   .case__hint {
-    left: 20px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 14px 20px;
+    border-top: 1px solid var(--screen-line);
+    text-align: center;
   }
 }
 
@@ -857,5 +863,35 @@ dialog.framed.is-open .framed__glow {
   .music__hint {
     transition: none;
     animation: none;
+  }
+}
+
+/* Phones: the music player takes the bottom edge, so the enter hint (and, once the
+   player is open, the Insert button) sit just above it. --music-height comes from
+   src/audio/musicPlayer.js. */
+@media (max-width: 600px) {
+  .enter-hint {
+    bottom: calc(var(--music-height, 0px) + var(--space-above-music));
+  }
+  .music.is-started {
+    width: calc(100vw - 32px);
+  }
+  body:has(.music.is-started) .zoom-out--insert {
+    bottom: calc(var(--music-height, 0px) + var(--space-above-music));
+  }
+}
+
+/* Touch screens have no Esc or Enter key, so the key caps would only confuse. */
+@media (pointer: coarse) {
+  .zoom-out__key {
+    display: none;
+  }
+}
+
+/* Phones held sideways: the player bar stays on the left half, clear of the
+   centred enter hint (the Spotify card folds away there, see musicPlayer.js). */
+@media (max-height: 500px) and (min-width: 601px) {
+  .music.is-started {
+    width: var(--music-width-short);
   }
 }

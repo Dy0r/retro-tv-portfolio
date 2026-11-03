@@ -14,6 +14,9 @@ import playlist from '../content/playlist.json';
 const API_SRC = 'https://open.spotify.com/embed/iframe-api/v1';
 const EMBED_HEIGHT = 80;
 const END_MARGIN_MS = 400; // treat a song as finished this close to its end
+// On short screens (a phone held sideways) the Spotify card would cover the TV,
+// so it folds away once the song has started; the arrow button brings it back.
+const shortScreen = window.matchMedia('(max-height: 500px)');
 
 function icon(rows) {
   const rects = [];
@@ -74,12 +77,22 @@ export function createMusicPlayer() {
   const foldButton = $('.music__fold');
   const embed = $('.music__embed');
 
-  hint.querySelector('span').textContent = labels.hint;
+  const isTouch = window.matchMedia('(pointer: coarse)').matches;
+  hint.querySelector('span').textContent = isTouch ? labels.hintTouch : labels.hint;
   label.textContent = labels.buttonLabel;
   playButton.setAttribute('aria-label', labels.playLabel);
   nextButton.setAttribute('aria-label', labels.nextLabel);
   foldButton.setAttribute('aria-label', labels.closeLabel);
   document.body.appendChild(root);
+  // Shares the player's height (with its "play music" label, which floats above it)
+  // as --music-height, so on phones the enter hint and the Insert button can sit
+  // just above it (see base.css).
+  const shareHeight = () => {
+    const label = hint.hidden ? 0 : -hint.offsetTop;
+    document.documentElement.style.setProperty('--music-height', `${root.offsetHeight + label}px`);
+  };
+  new ResizeObserver(shareHeight).observe(root);
+  shareHeight();
 
   let controller = null;
   let starting = false;
@@ -121,6 +134,7 @@ export function createMusicPlayer() {
     embed.hidden = false;
     nextButton.hidden = false;
     foldButton.hidden = false;
+    shareHeight();
     const i = randomTrack();
     showTrack(i);
     const api = await loadSpotifyApi();
@@ -130,7 +144,10 @@ export function createMusicPlayer() {
       (ctrl) => {
         controller = ctrl;
         starting = false;
-        ctrl.addListener('ready', () => ctrl.play());
+        ctrl.addListener('ready', () => {
+          ctrl.play();
+          if (shortScreen.matches) setFolded(true);
+        });
         ctrl.addListener('playback_update', (e) => {
           const { isPaused, position, duration } = e.data;
           setPaused(isPaused);
@@ -157,12 +174,13 @@ export function createMusicPlayer() {
   });
 
   // Fold the Spotify embed away (the music keeps playing) or bring it back.
-  foldButton.addEventListener('click', () => {
-    const open = embed.hidden;
-    embed.hidden = !open;
-    foldButton.setAttribute('aria-expanded', String(open));
-    foldButton.innerHTML = open ? ICONS.down : ICONS.up;
-  });
+  function setFolded(folded) {
+    embed.hidden = folded;
+    foldButton.setAttribute('aria-expanded', String(!folded));
+    foldButton.innerHTML = folded ? ICONS.up : ICONS.down;
+    shareHeight();
+  }
+  foldButton.addEventListener('click', () => setFolded(!embed.hidden));
 
   setPaused(true);
   iconSlot.innerHTML = ICONS.note;
@@ -172,6 +190,7 @@ export function createMusicPlayer() {
     setVisible(on) {
       root.classList.toggle('is-visible', on);
       root.inert = !on;
+      shareHeight();
     },
   };
 }
