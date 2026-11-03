@@ -5,10 +5,9 @@
 - Seed projects use titles/years from dylanprasodjo.com: Plinth (2025), Holocare (2024), Violetta Rebrand (2025), Design is Addition (2023), plus This Portfolio. All other text is `[COPY: …]`.
 - Contact email is `dylanprasodjo@gmail.com` (the old site's mailto pointed at a wrong address — never reuse it).
 - Domain: this site replaces dylanprasodjo.com.
-- INSERTING may take up to ~2 s (approved) because it includes a hand animation.
-- Hand: first-person hand with a plain black shirt sleeve. Cartridges rest next to the console before pickup.
+- INSERTING may take up to ~2 s (approved). Cartridges rest next to the console before pickup.
+- No hand: a first-person hand version was built and compared (Nov 2026); Dylan preferred the cartridge moving by itself, so the hand was removed. (It's in git history at b6af09b if ever needed.)
 - Models in `~/Downloads` (`nintendo_64*.glb`, `japroom_14_otaku.glb`, `retro-crt-tv.zip`) are REFERENCE ONLY for proportion and style. TV, console, cartridge and room are rebuilt as original models in Blender. The console/cart must not copy a real console's shape or branding.
-- `hand_animation_test.glb` (SantosGabriel, CC-BY-4.0, Sketchfab) may be used with credit on the Credits screen.
 - Room look: lived-in bedroom with cyberpunk accents. Neon pair is red (outside: skyline signs, city light through the window) + teal (inside: LED strips). Avoid magenta/cyan and purple/blue gradients.
 - Opening moment (end of BOOT, after loading): wide room shot, TV flickering to draw the eye, and an enter hint ("scroll to enter" signifier). Scroll / Enter / Space / click / tap enters → INTRO → MENU. Hint text lives in site.json (`pressStart`, `pressStartTouch`): "Scroll to switch on" / "Tap to switch on" (approved by Dylan).
 - Loading screen follows `References/Loading screen.mp4`: dot-matrix olive-yellow shape on black with pixel dust, "Loading" + stepping dots. Morph plays ONCE (rounded square -> four-point star) and stays short. Progress shown as pixel blocks.
@@ -20,7 +19,7 @@
 - Resume: the poster (`ResumePoster` mesh) is clickable from the opening shot and the menu. Camera zooms to it, then a modal overlay shows the PDF in a stepped-corner teal frame with a pixel X; X / Esc / click outside closes. This is the RESUME state (returns to where it came from). PDF lives at `public/resume/dylan-prasodjo-resume.pdf` (path in site.json). Dylan is fine with it being public. Labels "Close resume" / "Open PDF" approved.
 - Zoom out: from the menu, a top-left button ("Zoom out" + ESC key cap), Esc or gamepad B returns to the opening shot (MENU -> BOOT). The TV powers off (picture -> line -> dot) while the camera glides back; then the flicker and hint return. With the resume open, the first Esc closes the resume, the second zooms out.
 - TV picture: faint moving grain while on, plus a rare ~0.2 s glitch (on/off flicker + small sideways tear) every 15-30 s. None under reduced motion.
-- Cartridge insert (INSERTING): Enter / click the screen / click the selected cartridge / gamepad A. Two versions kept side by side for comparison: original (cartridge moves by itself, default) and hand test (`?insert=hand`, first-person hand in a black sleeve, `public/models/hand.glb`). Dylan will choose one.
+- Cartridge insert (INSERTING): Enter / click the screen / click the selected cartridge / gamepad A. The cartridge moves by itself (no hand).
 - Selection cues: in the menu an "Insert" button (bottom-right, ENTER key cap) shows while a project is selected, and a bobbing teal pixel arrow points down at the selected cartridge. Once inserted, stacked up-arrows bob above the cartridge; clicking them or the cartridge ejects (Esc and the Eject button still work).
 - Until the case-study overlay exists (Dylan will provide it later), PROJECT shows the project's title screen on the TV; the top-left button becomes "Eject" (also Esc / gamepad B) and the cartridge returns to the row.
 - Hosting: GitHub Pages from a public repo `retro-tv-portfolio`, auto-deployed by `.github/workflows/deploy.yml`. The site lives in a sub-folder there, so all file paths go through `src/assetUrl.js`; set BASE_PATH to "/" once dylanprasodjo.com points at it.

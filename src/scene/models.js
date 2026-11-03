@@ -9,8 +9,8 @@ export const loadingManager = new THREE.LoadingManager();
 
 const gltfLoader = new GLTFLoader(loadingManager).setMeshoptDecoder(MeshoptDecoder);
 
-// The full glTF (scene + animations) for models that have no placeholder, e.g. the
-// hand. Returns null if the file isn't there.
+// The full glTF (scene + animations) for models that have no placeholder.
+// Returns null if the file isn't there.
 export async function loadGltf(name) {
   if (!availableModels.includes(`${name}.glb`)) return null;
   return gltfLoader.loadAsync(assetUrl(`/models/${name}.glb`));

@@ -19,8 +19,7 @@ import { buildNeonSigns } from './scene/neonSigns.js';
 import { createCameraRig } from './scene/camera.js';
 import { createAttract } from './scene/attract.js';
 import { playIntro, playOutro, LED_ON, LED_STANDBY, GLOW_ON } from './scene/intro.js';
-import { playInsert, playEject, playHandInsert, playHandEject } from './scene/insert.js';
-import { createHand } from './scene/hand.js';
+import { playInsert, playEject } from './scene/insert.js';
 import { createTvScreen } from './screen/tvScreen.js';
 import { createMenu } from './screen/menu.js';
 import { createLoader } from './ui/loader.js';
@@ -34,11 +33,6 @@ import { createGamepadInput } from './input/gamepad.js';
 import { createPosterInput } from './input/posterInput.js';
 import { createResumeOverlay, createResumeButton } from './ui/resumeOverlay.js';
 import { EASES, DURATIONS } from './motion/eases.js';
-
-// Two versions of the cartridge insert, to compare: the original (the cartridge
-// moves by itself) and a test with a first-person hand. Open the site with
-// ?insert=hand to see the hand version.
-const INSERT_VARIANT = new URLSearchParams(window.location.search).get('insert') === 'hand' ? 'hand' : 'original';
 
 // --- Loading screen ---------------------------------------------------------------
 // Starts straight away; real progress comes from the shared LoadingManager.
@@ -104,7 +98,6 @@ const announcer = createAnnouncer();
 let cartridges = null;
 let cartridgeRow = null;
 let led = null;
-let hand = null; // only loaded for the hand version
 
 async function buildScene() {
   scene.add(buildRoom());
@@ -114,13 +107,11 @@ async function buildScene() {
   scene.add(buildLeds({ tvBack, tvWidth: TV_SIZE.width }));
   scene.add(buildLights({ screenCenter, lampTarget: new THREE.Vector3(0.18, standTop, -0.5) }));
 
-  const [tv, consoleModel, carts, loadedHand] = await Promise.all([
+  const [tv, consoleModel, carts] = await Promise.all([
     loadModel('tv', buildTV),
     loadModel('console', buildConsole),
     buildCartridges(projects, cartridgeRowOrigin),
-    INSERT_VARIANT === 'hand' ? createHand(scene) : null,
   ]);
-  hand = loadedHand;
   tv.position.copy(tvPosition);
   consoleModel.position.copy(consolePosition);
   scene.add(tv, consoleModel, carts.row);
@@ -323,10 +314,8 @@ function startInsert(slug) {
   inserted = { slug, cart };
   cartridges.hold(slug);
   cartridges.setSelected(null);
-  const play = INSERT_VARIANT === 'hand' ? playHandInsert : playInsert;
-  const tl = play({
+  const tl = playInsert({
     scene,
-    hand,
     cart,
     slot,
     led,
@@ -343,10 +332,7 @@ function eject() {
   ejecting = true;
   zoomOutButton.hide();
   cartMarker.hide();
-  const play = INSERT_VARIANT === 'hand' ? playHandEject : playEject;
-  play({
-    scene,
-    hand,
+  playEject({
     cart: inserted.cart,
     tvScreen,
     onStatic: () => menu.setPlaying(false),
@@ -512,5 +498,5 @@ gsap.ticker.add(tick);
 if (import.meta.env.DEV) {
   import('./ui/debug.js').then(({ initDebug }) => initDebug());
   rig.enableDevOrbit(canvas);
-  window.__dev = { scene, tvScreen, menu, renderer, getHand: () => hand };
+  window.__dev = { scene, tvScreen, menu, renderer };
 }
