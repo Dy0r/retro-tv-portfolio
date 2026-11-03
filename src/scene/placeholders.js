@@ -160,7 +160,8 @@ export function buildCartridge() {
   group.name = 'Cartridge';
 
   // Colour is set per project in cartridges.js.
-  const body = mesh('Body', new RoundedBoxGeometry(width, height, depth, 3, 0.004), new THREE.MeshStandardMaterial({ roughness: 0.5 }));
+  // Matte plastic (rough), so it never catches a hot highlight under the lamp.
+  const body = mesh('Body', new RoundedBoxGeometry(width, height, depth, 3, 0.004), new THREE.MeshStandardMaterial({ roughness: 0.8 }));
   body.position.y = height / 2;
   group.add(body);
 

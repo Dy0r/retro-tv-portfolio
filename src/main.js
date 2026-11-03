@@ -88,7 +88,7 @@ const consoleBack = new THREE.Vector3(0.08, standTop + 0.04, consolePosition.z -
 // ("resume" is added once the poster is in the scene: see the boot sequence.)
 const poses = {
   wide: { position: new THREE.Vector3(1.9, 1.5, 2.7), lookAt: new THREE.Vector3(-0.35, 1.05, -0.8) },
-  menu: { position: new THREE.Vector3(0.12, 0.8, 0.62), lookAt: new THREE.Vector3(0.07, 0.66, -0.65) },
+  menu: { position: new THREE.Vector3(0.15, 0.78, 0.44), lookAt: new THREE.Vector3(0.13, 0.65, -0.65) },
   console: { position: new THREE.Vector3(0.12, 0.86, -0.06), lookAt: new THREE.Vector3(0.06, standTop + 0.03, -0.52) },
 };
 const rig = createCameraRig(camera, poses);

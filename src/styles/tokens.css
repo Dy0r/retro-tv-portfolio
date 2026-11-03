@@ -26,7 +26,7 @@
   /* TV screen UI, drawn on a canvas (provisional) */
   --screen-bg: #060b0b;
   --screen-ink: #d9efe6;
-  --screen-dim: #6f8a82;
+  --screen-dim: #a3bcb4;
   --screen-accent: #22d6bd;
   --screen-off: #050707;
 
@@ -42,7 +42,7 @@
   /* Enter hint and focus rings (provisional) */
   --color-hint: #dfeee9;
   --color-focus: #22d6bd;
-  --size-hint: 13px;
+  --size-hint: 14px;
   --space-hint-bottom: 40px;
   --dur-hint-in: 700ms;
   --dur-hint-out: 350ms;

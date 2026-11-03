@@ -16,7 +16,7 @@ import { tokenColor } from '../styles/tokens.js';
 //     more contrast, and a soft vignette, so it never looks like default 3D.
 // Bloom runs at half resolution to keep it cheap.
 
-const BLOOM = { strength: 0.45, radius: 0.5, threshold: 0.95, resolution: 0.5 };
+const BLOOM = { strength: 0.45, radius: 0.5, threshold: 1.05, resolution: 0.5 }; // above pure white, so screen text and art never glow
 const GRADE = { shadowTint: 0.07, highlightTint: 0.05, contrast: 1.08, saturation: 1.04, vignette: 0.32 };
 
 const GradeShader = {

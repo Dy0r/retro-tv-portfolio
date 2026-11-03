@@ -11,7 +11,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const SIZE = 0.045; // metres on screen-facing side
 const GAP_ABOVE = 0.008; // metres between the cartridge's top and the arrows
 const BOB = { height: 0.008, speed: 4 }; // metres, radians per second
-const BRIGHTNESS = 1.8;
+const BRIGHTNESS = 1; // plain token colour: crisp, below the bloom threshold, so no neon glow
 
 // Rows of a 9x9 grid, '#' = lit. One chevron, or three stacked.
 const DOWN = ['', '', '#########', ' ####### ', '  #####  ', '   ###   ', '    #    ', '', ''];

@@ -6,16 +6,18 @@ import { DURATIONS } from '../motion/eases.js';
 // or tv.glb; the real model's Screen mesh needs UVs) with a small shader that can:
 //  - glow faintly on standby (the opening flicker drives this),
 //  - power on: a dot becomes a bright line, the line opens to fill the screen, flash,
-//  - show the menu canvas, with light scanlines and bursts of static,
-//  - stay alive while on: very faint moving grain, and a rare glitch (a quick on/off
-//    flicker with a small sideways tear) every 15-30 s, short enough not to get in
-//    the way of reading. No grain or glitches under prefers-reduced-motion.
-// The full CRT look (curvature, chromatic aberration, bloom, rolling bar) is a later pass.
+//  - show the menu canvas, kept deliberately clean so text stays readable: no
+//    scanlines (they shimmer over small text), the picture stays below the bloom
+//    threshold so text edges stay sharp, and only a barely-there moving grain,
+//  - a rare, gentle glitch (a quick dip with a tiny sideways slip) every 15-30 s,
+//    short enough not to get in the way of reading,
+//  - bursts of static (switching projects, inserting a cartridge).
+// No grain or glitches under prefers-reduced-motion.
 
 export const SCREEN_CANVAS = { width: 1024, height: 768 };
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-const GRAIN = 0.035; // strength of the always-on static
+const GRAIN = 0.012; // strength of the always-on static: barely there
 const GLITCH_EVERY = { min: 15, max: 30 }; // seconds between glitches
 
 const vertexShader = /* glsl */ `
@@ -61,17 +63,16 @@ const fragmentShader = /* glsl */ `
     float row = floor(vUv.y * 28.0);
     float tick = floor(uTime * 45.0);
     float slip = step(0.6, hash(vec2(row, tick))) * (hash(vec2(tick, row)) - 0.5);
-    puv.x += slip * 0.05 * uGlitch;
+    puv.x += slip * 0.015 * uGlitch;
 
-    vec3 picture = texture2D(uMap, puv).rgb * 1.2 * uContent;
-    picture *= 0.9 + 0.1 * sin(vUv.y * 900.0);            // light scanlines
-    picture *= mix(0.65, 1.0, vignette);
+    vec3 picture = texture2D(uMap, puv).rgb * uContent;
+    picture *= mix(0.88, 1.0, vignette); // only a hint of darkening at the corners
     float noise = hash(floor(vUv * vec2(320.0, 240.0)) + fract(uTime) * 91.0);
     picture = mix(picture, vec3(noise), uStatic);
     float grain = hash(floor(vUv * vec2(512.0, 384.0)) + fract(uTime * 7.0) * 113.0) - 0.5;
     picture += grain * uGrain;
     // Glitch flicker: the picture drops out on some frames, on/off.
-    picture *= 1.0 - 0.75 * uGlitch * step(0.45, hash(vec2(tick, 7.0)));
+    picture *= 1.0 - 0.3 * uGlitch * step(0.45, hash(vec2(tick, 7.0)));
     picture += vec3(uFlash);
 
     color = mix(color, picture, inside);

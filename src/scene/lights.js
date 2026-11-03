@@ -12,7 +12,7 @@ export function buildLights({ screenCenter, lampTarget }) {
   const bulb = LAMP_POSITION.clone().add(LAMP_BULB_OFFSET);
 
   // A narrower cone aimed at the console and cartridges, so it doesn't wash out the screen.
-  const lamp = new THREE.SpotLight(tokenColor('--light-lamp'), 6, 4, 0.62, 0.65, 2);
+  const lamp = new THREE.SpotLight(tokenColor('--light-lamp'), 4.5, 4, 0.62, 0.65, 2);
   lamp.position.copy(bulb);
   lamp.target.position.copy(lampTarget);
   lamp.castShadow = true;
@@ -25,9 +25,11 @@ export function buildLights({ screenCenter, lampTarget }) {
   const lampSpill = new THREE.PointLight(tokenColor('--light-lamp'), 0.5, 1.6, 2);
   lampSpill.position.copy(bulb).add(new THREE.Vector3(-0.05, 0.05, -0.15));
 
-  const crt = new THREE.PointLight(tokenColor('--light-crt'), 0.8, 3, 2);
+  // Out in the room, in front of the screen: lights the room the way a TV's glow
+  // does, without blasting the console and cartridge sitting right below it.
+  const crt = new THREE.PointLight(tokenColor('--light-crt'), 1.6, 3.5, 2);
   crt.name = 'CRTGlow';
-  crt.position.copy(screenCenter).add(new THREE.Vector3(0, 0, 0.25));
+  crt.position.copy(screenCenter).add(new THREE.Vector3(0, 0.08, 0.7));
 
   const fill = new THREE.HemisphereLight(tokenColor('--light-fill'), tokenColor('--scene-floor'), 0.3);
 

@@ -6,12 +6,11 @@ import { assetUrl } from '../assetUrl.js';
 
 // One cartridge per project, standing in a fanned row next to the console.
 // Colour and label art come from projects.json, never from code.
-// The cartridge for the project selected on the TV lifts slightly and glows.
+// The cartridge for the project selected on the TV lifts slightly (no glow).
 
 const textureLoader = new THREE.TextureLoader(loadingManager);
 const SPACING = 0.085;
 const LIFT = 0.028; // metres the selected cartridge rises
-const GLOW = 0.28; // emissive strength of the selected cartridge's shell (kept low so it glows, not blows out)
 
 export async function buildCartridges(projects, origin) {
   const template = await loadModel('cartridge', buildCartridge);
@@ -23,7 +22,6 @@ export async function buildCartridges(projects, origin) {
     const cart = template.clone(true);
     cart.name = `Cartridge:${project.slug}`;
     cart.userData.slug = project.slug;
-    cart.userData.shells = [];
     cart.userData.amount = 0; // 0 = resting, 1 = fully selected
 
     cart.traverse((obj) => {
@@ -38,9 +36,6 @@ export async function buildCartridges(projects, origin) {
         obj.material.color.set(0xffffff);
       } else {
         obj.material.color.set(project.cartridgeColor);
-        obj.material.emissive.set(project.cartridgeColor);
-        obj.material.emissiveIntensity = 0;
-        cart.userData.shells.push(obj.material);
       }
     });
 
@@ -77,8 +72,6 @@ export async function buildCartridges(projects, origin) {
         const a = cart.userData.amount + (goal - cart.userData.amount) * t;
         cart.userData.amount = a;
         cart.position.y = a * LIFT;
-        const shells = cart.userData.shells;
-        for (let j = 0; j < shells.length; j++) shells[j].emissiveIntensity = a * GLOW;
       }
     },
   };

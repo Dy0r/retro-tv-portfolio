@@ -8,18 +8,28 @@ import { assetUrl } from '../assetUrl.js';
 
 // The menu drawn on the TV: one item at a time with chunky pixel arrows on the
 // sides. Once a cartridge is in, the same item shows as a "title screen": bigger
-// picture, no arrows or counter, until it's ejected. Items are the projects (each has a cartridge) followed by the extra pages
-// from site.json (About, Contact, Credits). The canvas is only redrawn when
-// something changes: a new item, a hover, the slide between items, or the cursor
-// blink.
+// picture, no arrows or counter, until it's ejected. Items are the projects (each
+// has a cartridge) followed by the extra pages from site.json (About, Contact,
+// Credits). The canvas is only redrawn when something changes: a new item, a
+// hover, the slide between items, or the cursor blink.
+//
+// Readability: the canvas shows on screen at roughly half size (about 0.6x with
+// the menu framing at 1440x900), so the smallest text is 34px here to land at
+// ~16px or more on screen. All text colours pass WCAG AAA (7:1) on --screen-bg.
 
 const { width: W, height: H } = SCREEN_CANVAS;
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-// Layout, in canvas pixels.
-const THUMB = { x: 272, y: 96, w: 480, h: 360 };
-const THUMB_PLAYING = { x: 232, y: 70, w: 560, h: 420 };
-const ARROW = { size: 46, y: H / 2 - 40, leftX: 78, rightX: W - 78 };
+// Layout and type sizes, in canvas pixels.
+const TYPE = { counter: 32, title: 76, meta: 34, summary: 34, summaryLine: 44, summaryLines: 3 };
+const THUMB = { x: 320, y: 78, w: 384, h: 288 };
+const THUMB_PLAYING = { x: 288, y: 64, w: 448, h: 336 };
+const TEXT_Y = {
+  menu: { title: 452, meta: 504, summary: 560, summaryNoMeta: 512 },
+  playing: { title: 490, meta: 544 },
+};
+const SUMMARY_WIDTH = 820;
+const ARROW = { size: 46, y: THUMB.y + THUMB.h / 2, leftX: 78, rightX: W - 78 };
 const ARROW_HIT = { w: 170, h: 300 }; // generous click/tap area around each arrow
 const CURSOR_BLINK = 0.5; // seconds per blink phase
 
@@ -99,7 +109,7 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
       if (ctx.measureText(test).width > maxWidth && line) {
         ctx.fillText(line, x, y + lines * lineHeight);
         line = word;
-        if (++lines === 2) return;
+        if (++lines === TYPE.summaryLines) return;
       } else {
         line = test;
       }
@@ -118,11 +128,11 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
 
     // Top row: counter (menu only).
     if (!playing) {
-      ctx.font = `400 26px ${font}`;
+      ctx.font = `400 ${TYPE.counter}px ${font}`;
       ctx.textBaseline = 'top';
       ctx.fillStyle = colors.dim;
       ctx.textAlign = 'left';
-      ctx.fillText(item.counter, 60, 34);
+      ctx.fillText(item.counter, 56, 26);
     }
 
     // Picture: the project thumbnail, or a framed panel for pages.
@@ -142,25 +152,25 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
     // Title with a blinking block cursor.
     ctx.textAlign = 'center';
     ctx.textBaseline = 'alphabetic';
+    const y = playing ? TEXT_Y.playing : TEXT_Y.menu;
     ctx.fillStyle = colors.ink;
-    ctx.font = `700 64px ${font}`;
-    const titleY = 556;
-    ctx.fillText(item.title, W / 2, titleY);
+    ctx.font = `700 ${TYPE.title}px ${font}`;
+    ctx.fillText(item.title, W / 2, y.title);
     if (cursorOn) {
       const tw = ctx.measureText(item.title).width;
       ctx.fillStyle = colors.accent;
-      ctx.fillRect(W / 2 + tw / 2 + 14, titleY - 46, 26, 48);
+      ctx.fillRect(W / 2 + tw / 2 + 14, y.title - TYPE.title * 0.72, TYPE.title * 0.38, TYPE.title * 0.74);
     }
 
-    ctx.font = `400 28px ${font}`;
+    ctx.font = `400 ${TYPE.meta}px ${font}`;
     if (item.meta) {
       ctx.fillStyle = colors.accent;
-      ctx.fillText(item.meta, W / 2, 604);
+      ctx.fillText(item.meta, W / 2, y.meta);
     }
     if (!playing) {
       ctx.fillStyle = colors.dim;
-      ctx.font = `400 24px ${font}`;
-      wrapSummary(item.summary, W / 2, item.meta ? 652 : 616, 720, 32);
+      ctx.font = `400 ${TYPE.summary}px ${font}`;
+      wrapSummary(item.summary, W / 2, item.meta ? y.summary : y.summaryNoMeta, SUMMARY_WIDTH, TYPE.summaryLine);
     }
     ctx.restore();
 
@@ -208,7 +218,7 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
   }
 
   return {
-    ready: Promise.all([document.fonts.load(`700 64px ${font}`), document.fonts.load(`400 24px ${font}`), imagesReady]).then(draw),
+    ready: Promise.all([document.fonts.load(`700 ${TYPE.title}px ${font}`), document.fonts.load(`400 ${TYPE.summary}px ${font}`), imagesReady]).then(draw),
     get current() {
       return items[index];
     },
