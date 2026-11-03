@@ -97,11 +97,12 @@ const consoleBack = new THREE.Vector3(0.08, standTop + 0.04, consolePosition.z -
 // Camera framings. "menu" keeps the TV large but shows the cartridge row too, so
 // the selected cartridge lifting is visible next to the screen.
 // ("resume" is added once the poster is in the scene: see the boot sequence.)
-// `width`: metres that must stay in view on a phone held upright; `narrowShift`
-// re-centres the menu on the TV there (see scene/camera.js).
+// `width`: metres that must stay in view on a tall, narrow screen; `narrowShift`
+// re-centres the menu on the TV there; `small`: on phones the menu fills the
+// view with the TV screen (48 x 36 cm) so its text is big enough (see scene/camera.js).
 const poses = {
   wide: { position: new THREE.Vector3(1.9, 1.5, 2.7), lookAt: new THREE.Vector3(-0.35, 1.05, -0.8), width: 2.0 },
-  menu: { position: new THREE.Vector3(0.15, 0.78, 0.44), lookAt: new THREE.Vector3(0.13, 0.65, -0.65), width: 0.68, narrowShift: new THREE.Vector3(-0.13, -0.02, 0) },
+  menu: { position: new THREE.Vector3(0.15, 0.78, 0.44), lookAt: new THREE.Vector3(0.13, 0.65, -0.65), width: 0.68, narrowShift: new THREE.Vector3(-0.13, -0.02, 0), small: { lookAt: new THREE.Vector3(0, 0.7, -0.66), width: 0.54, height: 0.44 } },
   console: { position: new THREE.Vector3(0.12, 0.86, -0.06), lookAt: new THREE.Vector3(0.06, standTop + 0.03, -0.52), width: 0.55 },
 };
 const rig = createCameraRig(camera, poses);

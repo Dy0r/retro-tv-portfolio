@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 import { EASES, DURATIONS } from '../motion/eases.js';
-import { tokenValue } from '../styles/tokens.js';
+import { tokenValue, smallScreen } from '../styles/tokens.js';
 import { loadingManager } from '../scene/models.js';
 import { SCREEN_CANVAS } from './tvScreen.js';
 import { assetUrl } from '../assetUrl.js';
@@ -15,21 +15,43 @@ import { assetUrl } from '../assetUrl.js';
 //
 // Readability: the canvas shows on screen at roughly half size (about 0.6x with
 // the menu framing at 1440x900), so the smallest text is 34px here to land at
-// ~16px or more on screen. All text colours pass WCAG AAA (7:1) on --screen-bg.
+// ~16px or more on screen. On phones the screen shows at about a third of its
+// size even with the camera close, so a compact layout takes over: bigger type,
+// smaller picture, long titles shrink to fit (smallest text 46px, ~15px on a
+// phone). All text colours pass WCAG AAA (7:1) on --screen-bg.
 
 const { width: W, height: H } = SCREEN_CANVAS;
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 // Layout and type sizes, in canvas pixels.
-const TYPE = { counter: 32, title: 76, meta: 34, summary: 34, summaryLine: 44, summaryLines: 3 };
-const THUMB = { x: 320, y: 78, w: 384, h: 288 };
-const THUMB_PLAYING = { x: 288, y: 64, w: 448, h: 336 };
-const TEXT_Y = {
-  menu: { title: 452, meta: 504, summary: 560, summaryNoMeta: 512 },
-  playing: { title: 490, meta: 544 },
+const SUMMARY_LINES = 3;
+const LAYOUTS = {
+  regular: {
+    type: { counter: 32, title: 76, titleMin: 76, meta: 34, summary: 34, summaryLine: 44 },
+    thumb: { x: 320, y: 78, w: 384, h: 288 },
+    thumbPlaying: { x: 288, y: 64, w: 448, h: 336 },
+    textY: {
+      menu: { title: 452, meta: 504, summary: 560, summaryNoMeta: 512 },
+      playing: { title: 490, meta: 544 },
+    },
+    titleWidth: 820,
+    summaryWidth: 820,
+    arrow: { size: 46, y: 78 + 288 / 2 },
+  },
+  compact: {
+    type: { counter: 44, title: 100, titleMin: 64, meta: 48, summary: 46, summaryLine: 58 },
+    thumb: { x: 352, y: 92, w: 320, h: 240 },
+    thumbPlaying: { x: 312, y: 56, w: 400, h: 300 },
+    textY: {
+      menu: { title: 448, meta: 516, summary: 584, summaryNoMeta: 524 },
+      playing: { title: 490, meta: 562 },
+    },
+    titleWidth: 800,
+    summaryWidth: 900,
+    arrow: { size: 56, y: 92 + 240 / 2 },
+  },
 };
-const SUMMARY_WIDTH = 820;
-const ARROW = { size: 46, y: THUMB.y + THUMB.h / 2, leftX: 78, rightX: W - 78 };
+const ARROW_X = { left: 78, right: W - 78 };
 const ARROW_HIT = { w: 170, h: 300 }; // generous click/tap area around each arrow
 const CURSOR_BLINK = 0.5; // seconds per blink phase
 
@@ -88,9 +110,29 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
   let blinkClock = 0;
   const slide = { offset: 0 }; // -1..1, which way the content is sliding
   let dirty = true;
+  let layout = smallScreen.matches ? LAYOUTS.compact : LAYOUTS.regular;
+  smallScreen.addEventListener('change', () => {
+    layout = smallScreen.matches ? LAYOUTS.compact : LAYOUTS.regular;
+    dirty = true;
+  });
+
+  // Title size for this item in this layout: the layout's size, shrunk in steps
+  // until it fits the width (worked out once, then remembered).
+  function titleSize(item) {
+    const key = layout === LAYOUTS.compact ? 'compactTitle' : 'regularTitle';
+    if (item[key]) return item[key];
+    let size = layout.type.title;
+    ctx.font = `700 ${size}px ${font}`;
+    while (size > layout.type.titleMin && ctx.measureText(item.title).width > layout.titleWidth) {
+      size -= 4;
+      ctx.font = `700 ${size}px ${font}`;
+    }
+    item[key] = size;
+    return size;
+  }
 
   function drawArrow(x, dir, state) {
-    const s = ARROW.size;
+    const { size: s, y: arrowY } = layout.arrow;
     const nudge = state === 'pressed' ? dir * 6 : 0;
     ctx.fillStyle = state ? colors.accent : colors.dim;
     // A chunky stepped triangle, built from squares like a sprite.
@@ -98,7 +140,7 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
     for (let i = 0; i < 4; i++) {
       const h = s * 2 - i * step * 2;
       const cx = x + nudge + dir * (i * step - s / 2);
-      ctx.fillRect(Math.round(cx - step / 2), Math.round(ARROW.y - h / 2), Math.ceil(step), Math.round(h));
+      ctx.fillRect(Math.round(cx - step / 2), Math.round(arrowY - h / 2), Math.ceil(step), Math.round(h));
     }
   }
 
@@ -118,7 +160,7 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
       if (ctx.measureText(test).width > maxWidth && line) {
         ctx.fillText(line, x, y + lines * lineHeight);
         line = word;
-        if (++lines === TYPE.summaryLines) return;
+        if (++lines === SUMMARY_LINES) return;
       } else {
         line = test;
       }
@@ -128,6 +170,7 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
 
   function draw() {
     const item = items[index];
+    const { type } = layout;
     ctx.fillStyle = colors.bg;
     ctx.fillRect(0, 0, W, H);
 
@@ -137,7 +180,7 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
 
     // Top row: counter (menu only).
     if (!playing) {
-      ctx.font = `400 ${TYPE.counter}px ${font}`;
+      ctx.font = `400 ${type.counter}px ${font}`;
       ctx.textBaseline = 'top';
       ctx.fillStyle = colors.dim;
       ctx.textAlign = 'left';
@@ -145,7 +188,7 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
     }
 
     // Picture: the project thumbnail, or a framed panel for pages.
-    const pic = playing ? THUMB_PLAYING : THUMB;
+    const pic = playing ? layout.thumbPlaying : layout.thumb;
     ctx.strokeStyle = playing ? colors.accent : colors.dim;
     ctx.lineWidth = 4;
     if (item.image) {
@@ -161,32 +204,33 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
     // Title with a blinking block cursor.
     ctx.textAlign = 'center';
     ctx.textBaseline = 'alphabetic';
-    const y = playing ? TEXT_Y.playing : TEXT_Y.menu;
+    const y = playing ? layout.textY.playing : layout.textY.menu;
+    const size = titleSize(item);
     ctx.fillStyle = colors.ink;
-    ctx.font = `700 ${TYPE.title}px ${font}`;
+    ctx.font = `700 ${size}px ${font}`;
     ctx.fillText(item.title, W / 2, y.title);
     if (cursorOn) {
       const tw = ctx.measureText(item.title).width;
       ctx.fillStyle = colors.accent;
-      ctx.fillRect(W / 2 + tw / 2 + 14, y.title - TYPE.title * 0.72, TYPE.title * 0.38, TYPE.title * 0.74);
+      ctx.fillRect(W / 2 + tw / 2 + 14, y.title - size * 0.72, size * 0.38, size * 0.74);
     }
 
-    ctx.font = `400 ${TYPE.meta}px ${font}`;
+    ctx.font = `400 ${type.meta}px ${font}`;
     if (item.meta) {
       ctx.fillStyle = colors.accent;
       ctx.fillText(item.meta, W / 2, y.meta);
     }
     if (!playing) {
       ctx.fillStyle = colors.dim;
-      ctx.font = `400 ${TYPE.summary}px ${font}`;
-      wrapSummary(item.summary, W / 2, item.meta ? y.summary : y.summaryNoMeta, SUMMARY_WIDTH, TYPE.summaryLine);
+      ctx.font = `400 ${type.summary}px ${font}`;
+      wrapSummary(item.summary, W / 2, item.meta ? y.summary : y.summaryNoMeta, layout.summaryWidth, type.summaryLine);
     }
     ctx.restore();
 
     // Arrows stay put while the content slides between them.
     if (!playing) {
-      drawArrow(ARROW.leftX, -1, pressed === 'prev' ? 'pressed' : hover === 'prev' ? 'hover' : null);
-      drawArrow(ARROW.rightX, 1, pressed === 'next' ? 'pressed' : hover === 'next' ? 'hover' : null);
+      drawArrow(ARROW_X.left, -1, pressed === 'prev' ? 'pressed' : hover === 'prev' ? 'hover' : null);
+      drawArrow(ARROW_X.right, 1, pressed === 'next' ? 'pressed' : hover === 'next' ? 'hover' : null);
     }
 
     tvScreen.texture.needsUpdate = true;
@@ -227,7 +271,7 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
   }
 
   return {
-    ready: Promise.all([document.fonts.load(`700 ${TYPE.title}px ${font}`), document.fonts.load(`400 ${TYPE.summary}px ${font}`), imagesReady]).then(draw),
+    ready: Promise.all([document.fonts.load(`700 ${LAYOUTS.regular.type.title}px ${font}`), document.fonts.load(`400 ${LAYOUTS.regular.type.summary}px ${font}`), imagesReady]).then(draw),
     get current() {
       return items[index];
     },
@@ -260,9 +304,9 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
     hitTest(uv) {
       const x = uv.x * W;
       const y = (1 - uv.y) * H;
-      if (Math.abs(y - ARROW.y) > ARROW_HIT.h / 2) return null;
-      if (Math.abs(x - ARROW.leftX) < ARROW_HIT.w / 2) return 'prev';
-      if (Math.abs(x - ARROW.rightX) < ARROW_HIT.w / 2) return 'next';
+      if (Math.abs(y - layout.arrow.y) > ARROW_HIT.h / 2) return null;
+      if (Math.abs(x - ARROW_X.left) < ARROW_HIT.w / 2) return 'prev';
+      if (Math.abs(x - ARROW_X.right) < ARROW_HIT.w / 2) return 'next';
       return null;
     },
     setHover(target) {

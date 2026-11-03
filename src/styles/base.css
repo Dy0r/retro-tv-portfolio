@@ -888,10 +888,20 @@ dialog.framed.is-open .framed__glow {
   }
 }
 
-/* Phones held sideways: the player bar stays on the left half, clear of the
-   centred enter hint (the Spotify card folds away there, see musicPlayer.js). */
+/* Phones held sideways: the TV screen fills the height, so the open player shrinks
+   to its three buttons (the Spotify card folds away there, see musicPlayer.js).
+   The song name stays readable to screen readers, just not on screen. */
 @media (max-height: 500px) and (min-width: 601px) {
   .music.is-started {
-    width: var(--music-width-short);
+    width: auto;
+  }
+  .music__now {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
   }
 }

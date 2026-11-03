@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 import { DAMPING } from '../motion/eases.js';
+import { smallScreen } from '../styles/tokens.js';
 
 // Camera rig: named framings ("poses"). Two ways to get to one:
 //  - setPose: frame-rate-independent damping toward it, so it feels the same at
@@ -12,6 +13,9 @@ import { DAMPING } from '../motion/eases.js';
 // enough, the camera steps back along its line of sight until that width fits.
 // `narrowShift` (optional) slides the whole shot sideways/up on narrow screens, to
 // centre on what matters most there. Wide screens are untouched.
+// `small` (optional) takes over on phones (either way up): the camera looks at
+// small.lookAt from the same direction, exactly as close as it can while keeping
+// small.width x small.height in view. The menu uses it to fill a phone with the TV.
 
 const BASE_FOV = 35;
 const PORTRAIT_EXTRA_FOV = 30; // added in proportion to how tall the screen is
@@ -36,6 +40,16 @@ export function createCameraRig(camera, poses) {
 
   // Where the camera stands and looks for a pose on this screen (see above).
   function frame(pose, outPos, outLook) {
+    if (pose.small && smallScreen.matches) {
+      const { lookAt: look, width, height } = pose.small;
+      const halfV = (camera.fov * DEG) / 2;
+      const halfH = Math.atan(Math.tan(halfV) * camera.aspect);
+      const distance = Math.max(width / 2 / Math.tan(halfH), height / 2 / Math.tan(halfV));
+      offset.subVectors(pose.position, pose.lookAt).normalize();
+      outLook.copy(look);
+      outPos.copy(look).addScaledVector(offset, distance);
+      return;
+    }
     outPos.copy(pose.position);
     outLook.copy(pose.lookAt);
     if (camera.aspect < 1 && pose.narrowShift) {

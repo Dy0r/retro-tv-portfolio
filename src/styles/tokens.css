@@ -51,7 +51,6 @@
   --case-nav-width: 240px;
   --case-measure: 68ch;
   --music-width: 340px;
-  --music-width-short: calc(50vw - 128px); /* phones held sideways: stops short of the centred enter hint */
   --space-above-music: 28px; /* phones: screen edge + gap, for UI stacked above the music player */
   --ease-snap: cubic-bezier(0.2, 0.9, 0.25, 1.06);
 
