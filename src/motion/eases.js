@@ -30,6 +30,7 @@ export const DURATIONS = {
   resumeZoom: 0.9, // camera glides up to the resume poster
   powerOff: 0.32, // picture collapses to a line, then a dot
   outroDolly: 1.5, // camera glides from the TV back out to the room
+  screenGlitch: 0.2, // a rare on/off flicker on the TV picture
 };
 
 // Damping rates (per second) for things that chase a target every frame.
