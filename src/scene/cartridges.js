@@ -1,12 +1,16 @@
 import * as THREE from 'three';
 import { loadModel, loadingManager } from './models.js';
 import { buildCartridge, CARTRIDGE_SIZE } from './placeholders.js';
+import { DAMPING } from '../motion/eases.js';
 
 // One cartridge per project, standing in a fanned row next to the console.
 // Colour and label art come from projects.json, never from code.
+// The cartridge for the project selected on the TV lifts slightly and glows.
 
 const textureLoader = new THREE.TextureLoader(loadingManager);
 const SPACING = 0.085;
+const LIFT = 0.028; // metres the selected cartridge rises
+const GLOW = 0.45; // emissive strength of the selected cartridge's shell
 
 export async function buildCartridges(projects, origin) {
   const template = await loadModel('cartridge', buildCartridge);
@@ -18,9 +22,12 @@ export async function buildCartridges(projects, origin) {
     const cart = template.clone(true);
     cart.name = `Cartridge:${project.slug}`;
     cart.userData.slug = project.slug;
+    cart.userData.shells = [];
+    cart.userData.amount = 0; // 0 = resting, 1 = fully selected
 
     cart.traverse((obj) => {
       if (!obj.isMesh) return;
+      obj.userData.slug = project.slug;
       obj.material = obj.material.clone();
       if (obj.name === 'Label') {
         const map = textureLoader.load(project.labelImage);
@@ -30,6 +37,9 @@ export async function buildCartridges(projects, origin) {
         obj.material.color.set(0xffffff);
       } else {
         obj.material.color.set(project.cartridgeColor);
+        obj.material.emissive.set(project.cartridgeColor);
+        obj.material.emissiveIntensity = 0;
+        cart.userData.shells.push(obj.material);
       }
     });
 
@@ -41,5 +51,28 @@ export async function buildCartridges(projects, origin) {
   });
 
   row.position.copy(origin);
-  return { row, bySlug };
+
+  let selected = null;
+  const carts = [...bySlug.values()];
+
+  return {
+    row,
+    bySlug,
+    // Pass a project slug, or null to rest them all (e.g. on About/Contact pages).
+    setSelected(slug) {
+      selected = slug;
+    },
+    update(dt) {
+      const t = 1 - Math.exp(-DAMPING.cartridge * dt);
+      for (let i = 0; i < carts.length; i++) {
+        const cart = carts[i];
+        const goal = cart.userData.slug === selected ? 1 : 0;
+        const a = cart.userData.amount + (goal - cart.userData.amount) * t;
+        cart.userData.amount = a;
+        cart.position.y = a * LIFT;
+        const shells = cart.userData.shells;
+        for (let j = 0; j < shells.length; j++) shells[j].emissiveIntensity = a * GLOW;
+      }
+    },
+  };
 }

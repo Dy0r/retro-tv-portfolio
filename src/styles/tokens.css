@@ -10,9 +10,25 @@
   --color-debug-text: #7cff7c;
   --font-debug: ui-monospace, monospace;
 
-  /* UI (provisional until the direction and pixel font are chosen) */
-  --font-ui: ui-monospace, monospace;
+  /* UI (provisional until the direction is chosen) */
+  --font-pixel: 'Pixelify Sans', monospace;
+  --font-ui: var(--font-pixel);
   --font-poster: 'Helvetica Neue', Arial, sans-serif;
+
+  /* Loading screen, from the References/Loading screen.mp4 reference (provisional) */
+  --color-loader: #c8c34a;
+  --color-loader-dust: #262626;
+  --color-loader-cell-off: #2b2a14;
+  --size-loader-label: 22px;
+  --dur-loader-dots: 1200ms;
+  --dur-loader-fade: 500ms;
+
+  /* TV screen UI, drawn on a canvas (provisional) */
+  --screen-bg: #060b0b;
+  --screen-ink: #d9efe6;
+  --screen-dim: #6f8a82;
+  --screen-accent: #22d6bd;
+  --screen-off: #050707;
   --color-hint: #dfeee9;
   --color-focus: #22d6bd;
   --size-hint: 13px;

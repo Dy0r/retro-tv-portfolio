@@ -1,11 +1,12 @@
 import { defineConfig } from 'vite';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 
-// Builds the <noscript> project list from projects.json, so visitors and search
-// engines without WebGL/JavaScript still see the work. No project text lives in HTML.
-function noscriptProjects() {
+// Fills index.html from the content JSON: the <noscript> project list (so visitors
+// and search engines without WebGL/JavaScript still see the work) and the loading
+// screen label. No site text lives in the HTML itself.
+function htmlFromContent() {
   return {
-    name: 'noscript-projects',
+    name: 'html-from-content',
     transformIndexHtml(html) {
       const site = JSON.parse(readFileSync('src/content/site.json', 'utf8'));
       const projects = JSON.parse(readFileSync('src/content/projects.json', 'utf8'));
@@ -13,6 +14,7 @@ function noscriptProjects() {
         .map((p) => `<li><a href="/#/project/${p.slug}">${p.title}</a> (${p.year}) — ${p.summary}</li>`)
         .join('\n        ');
       return html
+        .replaceAll('<!--LOADING_LABEL-->', site.loadingLabel)
         .replace('<!--NOSCRIPT_NAME-->', site.name)
         .replace('<!--NOSCRIPT_PROJECTS-->', `<ul>\n        ${items}\n      </ul>`);
     },
@@ -51,5 +53,5 @@ function availableModels() {
 }
 
 export default defineConfig({
-  plugins: [noscriptProjects(), availableModels()],
+  plugins: [htmlFromContent(), availableModels()],
 });

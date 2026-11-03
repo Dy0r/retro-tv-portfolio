@@ -11,6 +11,11 @@
 - `hand_animation_test.glb` (SantosGabriel, CC-BY-4.0, Sketchfab) may be used with credit on the Credits screen.
 - Room look: lived-in bedroom with cyberpunk accents. Neon pair is red (outside: skyline signs, city light through the window) + teal (inside: LED strips). Avoid magenta/cyan and purple/blue gradients.
 - Opening moment (end of BOOT, after loading): wide room shot, TV flickering to draw the eye, and an enter hint ("scroll to enter" signifier). Scroll / Enter / Space / click / tap enters → INTRO → MENU. Hint text lives in site.json (`pressStart`, `pressStartTouch`): "Scroll to switch on" / "Tap to switch on" (approved by Dylan).
+- Loading screen follows `References/Loading screen.mp4`: dot-matrix olive-yellow shape on black with pixel dust, "Loading" + stepping dots. Morph plays ONCE (rounded square -> four-point star) and stays short. Progress shown as pixel blocks.
+- INTRO power-on: LED on, TV black, dot -> line -> open with white flash that lights the room, menu settles; camera dollies in at the same time (~2 s, any key skips).
+- MENU is a one-item-at-a-time carousel with pixel arrows on the sides (not a list). The selected project's cartridge lifts and glows in the row; clicking a cartridge selects it. About / Contact / Credits follow the projects as pages without cartridges.
+- Provisional pixel font: Pixelify Sans (OFL, self-hosted via @fontsource) until directions are locked.
+- Model requirement: the TV's `Screen` mesh must have UVs (the menu is drawn onto it) and sit in front of the TV body.
 
 ---
 

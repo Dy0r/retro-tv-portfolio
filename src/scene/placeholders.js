@@ -22,6 +22,10 @@ function mesh(name, geometry, material) {
 // --- CRT TV ---------------------------------------------------------------------
 export const TV_SIZE = { width: 0.62, height: 0.52, depth: 0.44 };
 const SCREEN = { width: 0.48, height: 0.36, curveRadius: 2 };
+const BEZEL_DEPTH = 0.06;
+// Where the centre of the glass sits relative to the TV's origin. The glass is
+// recessed slightly behind the bezel but always in front of the body.
+export const SCREEN_OFFSET = { y: TV_SIZE.height / 2, z: TV_SIZE.depth / 2 - 0.015 };
 
 // A plane bowed outward like CRT glass: flat at the centre, curving back at the edges.
 function curvedScreenGeometry() {
@@ -62,7 +66,7 @@ function bezelGeometry() {
   outer.holes.push(hole);
 
   return new THREE.ExtrudeGeometry(outer, {
-    depth: 0.03,
+    depth: BEZEL_DEPTH,
     bevelEnabled: true,
     bevelThickness: 0.008,
     bevelSize: 0.008,
@@ -79,7 +83,7 @@ export function buildTV() {
   const frontDepth = depth * 0.5;
 
   const front = mesh('Body', new RoundedBoxGeometry(width, height, frontDepth, 4, 0.025), bodyMat);
-  front.position.set(0, height / 2, depth / 2 - frontDepth / 2 - 0.03);
+  front.position.set(0, height / 2, depth / 2 - frontDepth / 2 - BEZEL_DEPTH);
   tv.add(front);
 
   // The tapered "tube" at the back of a CRT.
@@ -88,7 +92,7 @@ export function buildTV() {
   tv.add(rear);
 
   const bezel = mesh('Bezel', bezelGeometry(), standard('--scene-tv-bezel', { roughness: 0.6 }));
-  bezel.position.set(0, height / 2, depth / 2 - 0.03);
+  bezel.position.set(0, height / 2, depth / 2 - BEZEL_DEPTH);
   tv.add(bezel);
 
   const screen = mesh(
@@ -102,7 +106,7 @@ export function buildTV() {
     }),
   );
   screen.castShadow = false;
-  screen.position.set(0, height / 2 + 0.02, depth / 2 - 0.034);
+  screen.position.set(0, SCREEN_OFFSET.y, SCREEN_OFFSET.z);
   tv.add(screen);
 
   return tv;

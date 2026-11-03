@@ -12,6 +12,20 @@
   </head>
   <body>
     <canvas id="scene" aria-hidden="true"></canvas>
+
+    <!-- Loading screen: plain HTML so it shows before any JavaScript arrives. -->
+    <div id="loader" class="loader" role="status">
+      <canvas class="loader__dust" aria-hidden="true"></canvas>
+      <div class="loader__stage">
+        <canvas class="loader__shape" width="240" height="240" aria-hidden="true"></canvas>
+        <p class="loader__label">
+          <span><!--LOADING_LABEL--></span><span class="loader__dots" aria-hidden="true"><i>.</i><i>.</i><i>.</i></span>
+        </p>
+        <div class="loader__bar" role="progressbar" aria-label="<!--LOADING_LABEL-->" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+      </div>
+    </div>
     <noscript>
       <main>
         <h1><!--NOSCRIPT_NAME--></h1>
