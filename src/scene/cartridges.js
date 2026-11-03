@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { loadModel, loadingManager } from './models.js';
 import { buildCartridge, CARTRIDGE_SIZE } from './placeholders.js';
 import { DAMPING } from '../motion/eases.js';
+import { assetUrl } from '../assetUrl.js';
 
 // One cartridge per project, standing in a fanned row next to the console.
 // Colour and label art come from projects.json, never from code.
@@ -30,7 +31,7 @@ export async function buildCartridges(projects, origin) {
       obj.userData.slug = project.slug;
       obj.material = obj.material.clone();
       if (obj.name === 'Label') {
-        const map = textureLoader.load(project.labelImage);
+        const map = textureLoader.load(assetUrl(project.labelImage));
         map.colorSpace = THREE.SRGBColorSpace;
         map.anisotropy = 4;
         obj.material.map = map;

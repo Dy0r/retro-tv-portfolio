@@ -11,7 +11,7 @@ function htmlFromContent() {
       const site = JSON.parse(readFileSync('src/content/site.json', 'utf8'));
       const projects = JSON.parse(readFileSync('src/content/projects.json', 'utf8'));
       const items = projects
-        .map((p) => `<li><a href="/#/project/${p.slug}">${p.title}</a> (${p.year}) — ${p.summary}</li>`)
+        .map((p) => `<li><a href="#/project/${p.slug}">${p.title}</a> (${p.year}) — ${p.summary}</li>`)
         .join('\n        ');
       return html
         .replaceAll('<!--LOADING_LABEL-->', site.loadingLabel)
@@ -52,6 +52,9 @@ function availableModels() {
   };
 }
 
+// BASE_PATH lets the site live in a sub-folder, e.g. GitHub Pages serves it at
+// /retro-tv-portfolio/ (set in .github/workflows/deploy.yml). Defaults to the root.
 export default defineConfig({
+  base: process.env.BASE_PATH || '/',
   plugins: [htmlFromContent(), availableModels()],
 });

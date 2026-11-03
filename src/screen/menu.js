@@ -4,6 +4,7 @@ import { EASES, DURATIONS } from '../motion/eases.js';
 import { tokenValue } from '../styles/tokens.js';
 import { loadingManager } from '../scene/models.js';
 import { SCREEN_CANVAS } from './tvScreen.js';
+import { assetUrl } from '../assetUrl.js';
 
 // The menu drawn on the TV: one item at a time with chunky pixel arrows on the
 // sides. Once a cartridge is in, the same item shows as a "title screen": bigger
@@ -65,7 +66,7 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
   const imagesReady = Promise.all(
     items
       .filter((item) => item.thumbnail)
-      .map((item) => imageLoader.loadAsync(item.thumbnail).then((img) => (item.image = img))),
+      .map((item) => imageLoader.loadAsync(assetUrl(item.thumbnail)).then((img) => (item.image = img))),
   );
 
   let index = 0;

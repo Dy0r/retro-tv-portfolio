@@ -1,4 +1,5 @@
 import site from '../content/site.json';
+import { assetUrl } from '../assetUrl.js';
 
 // The resume overlay: a modal <dialog> with a chunky stepped-corner frame in the
 // menu's style, a pixel X to close, and the PDF shown in the browser's own viewer
@@ -43,7 +44,7 @@ export function createResumeOverlay({ onOpened, onClosing, onClose }) {
   const doc = dialog.querySelector('.resume__doc');
   doc.title = posterTitle;
   const link = dialog.querySelector('.resume__open');
-  link.href = file;
+  link.href = assetUrl(file);
   link.textContent = openLabel;
   const closeButton = dialog.querySelector('.resume__close');
   closeButton.setAttribute('aria-label', closeLabel);
@@ -88,7 +89,7 @@ export function createResumeOverlay({ onOpened, onClosing, onClose }) {
       const finish = () => {
         if (opened || !dialog.open || closing) return;
         opened = true;
-        if (!doc.src) doc.src = `${file}#view=FitH&navpanes=0`;
+        if (!doc.src) doc.src = `${assetUrl(file)}#view=FitH&navpanes=0`;
         onOpened?.();
       };
       if (reducedMotion.matches) return finish();
