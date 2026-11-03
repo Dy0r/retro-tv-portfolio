@@ -6,7 +6,8 @@ import { loadingManager } from '../scene/models.js';
 import { SCREEN_CANVAS } from './tvScreen.js';
 
 // The menu drawn on the TV: one item at a time with chunky pixel arrows on the
-// sides. Items are the projects (each has a cartridge) followed by the extra pages
+// sides. Once a cartridge is in, the same item shows as a "title screen": bigger
+// picture, no arrows or counter, until it's ejected. Items are the projects (each has a cartridge) followed by the extra pages
 // from site.json (About, Contact, Credits). The canvas is only redrawn when
 // something changes: a new item, a hover, the slide between items, or the cursor
 // blink.
@@ -16,6 +17,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 // Layout, in canvas pixels.
 const THUMB = { x: 272, y: 96, w: 480, h: 360 };
+const THUMB_PLAYING = { x: 232, y: 70, w: 560, h: 420 };
 const ARROW = { size: 46, y: H / 2 - 40, leftX: 78, rightX: W - 78 };
 const ARROW_HIT = { w: 170, h: 300 }; // generous click/tap area around each arrow
 const CURSOR_BLINK = 0.5; // seconds per blink phase
@@ -67,6 +69,7 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
   );
 
   let index = 0;
+  let playing = false; // title screen for the inserted cartridge
   let hover = null; // 'prev' | 'next' | null
   let pressed = null;
   let cursorOn = true;
@@ -112,25 +115,28 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
     ctx.globalAlpha = 1 - Math.abs(slide.offset);
     ctx.translate(slide.offset * 90, 0);
 
-    // Top row: counter and genre/page tag.
-    ctx.font = `400 26px ${font}`;
-    ctx.textBaseline = 'top';
-    ctx.fillStyle = colors.dim;
-    ctx.textAlign = 'left';
-    ctx.fillText(item.counter, 60, 34);
+    // Top row: counter (menu only).
+    if (!playing) {
+      ctx.font = `400 26px ${font}`;
+      ctx.textBaseline = 'top';
+      ctx.fillStyle = colors.dim;
+      ctx.textAlign = 'left';
+      ctx.fillText(item.counter, 60, 34);
+    }
 
     // Picture: the project thumbnail, or a framed panel for pages.
-    ctx.strokeStyle = colors.dim;
+    const pic = playing ? THUMB_PLAYING : THUMB;
+    ctx.strokeStyle = playing ? colors.accent : colors.dim;
     ctx.lineWidth = 4;
     if (item.image) {
-      ctx.drawImage(item.image, THUMB.x, THUMB.y, THUMB.w, THUMB.h);
+      ctx.drawImage(item.image, pic.x, pic.y, pic.w, pic.h);
     } else {
       ctx.fillStyle = colors.accent;
       ctx.globalAlpha *= 0.12;
-      ctx.fillRect(THUMB.x, THUMB.y, THUMB.w, THUMB.h);
+      ctx.fillRect(pic.x, pic.y, pic.w, pic.h);
       ctx.globalAlpha = 1 - Math.abs(slide.offset);
     }
-    ctx.strokeRect(THUMB.x - 8, THUMB.y - 8, THUMB.w + 16, THUMB.h + 16);
+    ctx.strokeRect(pic.x - 8, pic.y - 8, pic.w + 16, pic.h + 16);
 
     // Title with a blinking block cursor.
     ctx.textAlign = 'center';
@@ -150,14 +156,18 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
       ctx.fillStyle = colors.accent;
       ctx.fillText(item.meta, W / 2, 604);
     }
-    ctx.fillStyle = colors.dim;
-    ctx.font = `400 24px ${font}`;
-    wrapSummary(item.summary, W / 2, item.meta ? 652 : 616, 720, 32);
+    if (!playing) {
+      ctx.fillStyle = colors.dim;
+      ctx.font = `400 24px ${font}`;
+      wrapSummary(item.summary, W / 2, item.meta ? 652 : 616, 720, 32);
+    }
     ctx.restore();
 
     // Arrows stay put while the content slides between them.
-    drawArrow(ARROW.leftX, -1, pressed === 'prev' ? 'pressed' : hover === 'prev' ? 'hover' : null);
-    drawArrow(ARROW.rightX, 1, pressed === 'next' ? 'pressed' : hover === 'next' ? 'hover' : null);
+    if (!playing) {
+      drawArrow(ARROW.leftX, -1, pressed === 'prev' ? 'pressed' : hover === 'prev' ? 'hover' : null);
+      drawArrow(ARROW.rightX, 1, pressed === 'next' ? 'pressed' : hover === 'next' ? 'hover' : null);
+    }
 
     tvScreen.texture.needsUpdate = true;
     dirty = false;
@@ -203,6 +213,12 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
     },
     next: () => go(1),
     prev: () => go(-1),
+    // Switch between the menu and the inserted cartridge's title screen.
+    setPlaying(on) {
+      playing = on;
+      hover = null;
+      dirty = true;
+    },
     selectSlug(slug) {
       const i = items.findIndex((item) => item.slug === slug);
       if (i >= 0 && i !== index) go(i - index);

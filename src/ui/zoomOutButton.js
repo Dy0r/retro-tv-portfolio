@@ -1,37 +1,63 @@
 import site from '../content/site.json';
 
-// "Zoom out" button, top-left, shown while the menu is up. Takes you back to the
-// opening room shot (Esc and gamepad B do the same). Icon: four pixel corner
-// brackets pointing outward, plus an ESC key cap so the shortcut is discoverable.
+// The "back" button, top-left. In the menu it's "Zoom out" (back to the opening
+// room shot); once a cartridge is in, it's "Eject" (back to the menu). Esc and
+// gamepad B do the same. Each has its own pixel icon, plus an ESC key cap so the
+// shortcut is discoverable. Labels live in site.json.
 
-function pixelCorners() {
-  // 9x9 grid: an L-shaped bracket in each corner.
-  const cells = [];
-  const L = [
-    [0, 0], [1, 0], [2, 0], [0, 1], [0, 2],
-  ];
-  for (const [x, y] of L) {
-    cells.push([x, y], [8 - x, y], [x, 8 - y], [8 - x, 8 - y]);
-  }
+function pixelIcon(cells) {
   const rects = cells.map(([x, y]) => `<rect x="${x}" y="${y}" width="1" height="1"/>`).join('');
   return `<svg viewBox="0 0 9 9" width="18" height="18" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true">${rects}</svg>`;
 }
 
+// Four L-shaped brackets pointing outward.
+function cornersIcon() {
+  const cells = [];
+  for (const [x, y] of [[0, 0], [1, 0], [2, 0], [0, 1], [0, 2]]) {
+    cells.push([x, y], [8 - x, y], [x, 8 - y], [8 - x, 8 - y]);
+  }
+  return pixelIcon(cells);
+}
+
+// A triangle pointing up over a bar: the classic eject symbol, built from squares.
+function ejectIcon() {
+  const cells = [];
+  for (let row = 0; row < 4; row++) {
+    for (let x = 4 - row; x <= 4 + row; x++) cells.push([x, row + 1]);
+  }
+  for (let x = 0; x < 9; x++) cells.push([x, 7]);
+  return pixelIcon(cells);
+}
+
+const MODES = {
+  zoomOut: { icon: cornersIcon(), ...site.zoomOut },
+  eject: { icon: ejectIcon(), ...site.eject },
+};
+
 export function createZoomOutButton({ onActivate }) {
-  const { label, key } = site.zoomOut;
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'zoom-out';
   button.inert = true;
-  button.innerHTML = `${pixelCorners()}<kbd class="zoom-out__key"></kbd><span class="zoom-out__label"></span>`;
-  button.querySelector('.zoom-out__key').textContent = key;
-  button.querySelector('.zoom-out__label').textContent = label;
   button.setAttribute('aria-keyshortcuts', 'Escape');
   button.addEventListener('click', onActivate);
   document.body.appendChild(button);
 
+  let current = null;
+  function setMode(mode) {
+    if (mode === current) return;
+    current = mode;
+    const { icon, key, label } = MODES[mode];
+    button.innerHTML = `${icon}<kbd class="zoom-out__key"></kbd><span class="zoom-out__label"></span>`;
+    button.querySelector('.zoom-out__key').textContent = key;
+    button.querySelector('.zoom-out__label').textContent = label;
+  }
+  setMode('zoomOut');
+
   return {
-    show() {
+    // mode: 'zoomOut' (menu) or 'eject' (a cartridge is in).
+    show(mode = 'zoomOut') {
+      setMode(mode);
       button.inert = false;
       button.classList.add('is-visible');
     },

@@ -31,6 +31,14 @@ export const DURATIONS = {
   powerOff: 0.32, // picture collapses to a line, then a dot
   outroDolly: 1.5, // camera glides from the TV back out to the room
   screenGlitch: 0.2, // a rare on/off flicker on the TV picture
+  insertCamera: 0.8, // camera eases down to the console
+  insertLift: 0.28, // cartridge lifts out of the row
+  insertMove: 0.42, // cartridge arcs over to the slot
+  insertPress: 0.24, // cartridge slides down into the slot
+  insertStatic: 0.4, // static on the TV once it's in
+  ledBlink: 0.07, // one LED on/off step
+  ejectPop: 0.22, // cartridge pops up out of the slot
+  ejectReturn: 0.5, // cartridge glides back to its place in the row
 };
 
 // Damping rates (per second) for things that chase a target every frame.

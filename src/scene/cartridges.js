@@ -53,6 +53,7 @@ export async function buildCartridges(projects, origin) {
   row.position.copy(origin);
 
   let selected = null;
+  let held = null; // the cartridge being animated in/out of the console: left alone here
   const carts = [...bySlug.values()];
 
   return {
@@ -62,10 +63,15 @@ export async function buildCartridges(projects, origin) {
     setSelected(slug) {
       selected = slug;
     },
+    // Hand a cartridge over to an animation (insert/eject), or pass null to take it back.
+    hold(slug) {
+      held = slug;
+    },
     update(dt) {
       const t = 1 - Math.exp(-DAMPING.cartridge * dt);
       for (let i = 0; i < carts.length; i++) {
         const cart = carts[i];
+        if (cart.userData.slug === held) continue;
         const goal = cart.userData.slug === selected ? 1 : 0;
         const a = cart.userData.amount + (goal - cart.userData.amount) * t;
         cart.userData.amount = a;

@@ -1,8 +1,9 @@
 import * as THREE from 'three';
 
 // Menu controls, active only while the menu is up:
-//  - keyboard: ←/→ or A/D (↑/↓ or W/S also work), Esc to go back (zoom out)
-//  - mouse: hover and click the arrows on the TV screen, or click a cartridge
+//  - keyboard: ←/→ or A/D (↑/↓ or W/S also work), Enter/Space to play, Esc to go back
+//  - mouse: hover and click the arrows on the TV screen, or click a cartridge;
+//    clicking the middle of the screen or the selected cartridge plays it
 //  - trackpad / wheel: STEPPED, one item per gesture, then a short cooldown
 //  - touch: swipe left/right, or tap an arrow or a cartridge
 // Screen hits are found by raycasting onto the screen and reading its UV.
@@ -12,7 +13,7 @@ const WHEEL_COOLDOWN_MS = 380;
 const SWIPE_MIN_PX = 40;
 const TAP_MAX_PX = 10;
 
-export function createMenuInput({ canvas, camera, menu, getScreen, getCartridgeRow, onBack }) {
+export function createMenuInput({ canvas, camera, menu, getScreen, getCartridgeRow, onBack, onSelect }) {
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
   const hits = [];
@@ -30,7 +31,7 @@ export function createMenuInput({ canvas, camera, menu, getScreen, getCartridgeR
     raycaster.setFromCamera(pointer, camera);
   }
 
-  // What's under the pointer: { arrow } on the screen, or { slug } of a cartridge.
+  // What's under the pointer: { arrow } or { screen } on the TV, or { slug } of a cartridge.
   function pick(e) {
     castFrom(e);
     const screen = getScreen();
@@ -39,7 +40,7 @@ export function createMenuInput({ canvas, camera, menu, getScreen, getCartridgeR
       raycaster.intersectObject(screen, false, hits);
       if (hits.length && hits[0].uv) {
         const arrow = menu.hitTest(hits[0].uv);
-        if (arrow) return { arrow };
+        return arrow ? { arrow } : { screen: true };
       }
     }
     const row = getCartridgeRow();
@@ -56,6 +57,11 @@ export function createMenuInput({ canvas, camera, menu, getScreen, getCartridgeR
     if (k === 'escape') {
       e.preventDefault();
       onBack?.();
+      return;
+    }
+    if ((k === 'enter' || k === ' ') && !e.repeat) {
+      e.preventDefault();
+      onSelect?.();
       return;
     }
     if (k === 'arrowleft' || k === 'arrowup' || k === 'a' || k === 'w') {
@@ -105,6 +111,8 @@ export function createMenuInput({ canvas, camera, menu, getScreen, getCartridgeR
     const hit = pick(e);
     if (hit?.arrow === 'prev') menu.prev();
     else if (hit?.arrow === 'next') menu.next();
+    else if (hit?.screen) onSelect?.();
+    else if (hit?.slug === menu.current.slug) onSelect?.();
     else if (hit?.slug) menu.selectSlug(hit.slug);
   }
 

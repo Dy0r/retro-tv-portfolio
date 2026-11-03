@@ -19,6 +19,7 @@ import { buildNeonSigns } from './scene/neonSigns.js';
 import { createCameraRig } from './scene/camera.js';
 import { createAttract } from './scene/attract.js';
 import { playIntro, playOutro, LED_ON, LED_STANDBY, GLOW_ON } from './scene/intro.js';
+import { playInsert, playEject } from './scene/insert.js';
 import { createTvScreen } from './screen/tvScreen.js';
 import { createMenu } from './screen/menu.js';
 import { createLoader } from './ui/loader.js';
@@ -138,6 +139,7 @@ const menuInput = createMenuInput({
   getScreen: () => tvScreen.mesh,
   getCartridgeRow: () => cartridgeRow,
   onBack: zoomOut,
+  onSelect: playSelected,
 });
 
 // --- Opening moment ---------------------------------------------------------------
@@ -194,6 +196,8 @@ const gamepad = createGamepadInput((action) => {
   else if (state === STATES.MENU && action === 'prev') menu.prev();
   else if (state === STATES.MENU && action === 'next') menu.next();
   else if (state === STATES.MENU && action === 'back') zoomOut();
+  else if (state === STATES.MENU && action === 'confirm') playSelected();
+  else if (state === STATES.PROJECT && action === 'back') eject();
   else if (state === STATES.RESUME && action === 'back') resumeOverlay.close();
 });
 
@@ -260,15 +264,76 @@ function zoomOut() {
   if (getState() === STATES.MENU) transition(STATES.BOOT);
 }
 
-const zoomOutButton = createZoomOutButton({ onActivate: zoomOut });
+// --- Cartridge in / out ------------------------------------------------------------
+// Enter, a click on the screen (or on the selected cartridge), or gamepad A puts the
+// selected project's cartridge in. Until the case-study overlay exists, the TV then
+// shows that project's title screen; Eject (button, Esc, gamepad B) takes it out.
+let slot = null;
+let inserted = null; // { slug, cart } while a cartridge is in the console
+let ejecting = false;
+
+function playSelected() {
+  const item = menu.current;
+  if (getState() !== STATES.MENU || item.kind !== 'project') return;
+  transition(STATES.INSERTING, { slug: item.slug });
+}
+
+function startInsert(slug) {
+  const cart = cartridges.bySlug.get(slug);
+  inserted = { slug, cart };
+  cartridges.hold(slug);
+  cartridges.setSelected(null);
+  playInsert({
+    scene,
+    cart,
+    slot,
+    led,
+    rig,
+    tvScreen,
+    onStatic: () => menu.setPlaying(true),
+    onComplete: () => transition(STATES.PROJECT, { slug }),
+  });
+}
+
+function eject() {
+  if (getState() !== STATES.PROJECT || ejecting || !inserted) return;
+  ejecting = true;
+  zoomOutButton.hide();
+  playEject({
+    cart: inserted.cart,
+    tvScreen,
+    onStatic: () => menu.setPlaying(false),
+    onComplete: () => {
+      ejecting = false;
+      inserted = null;
+      cartridges.hold(null);
+      transition(STATES.MENU);
+    },
+  });
+}
+
+function onProjectKey(e) {
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    eject();
+  }
+}
+
+// One button, top-left: "Zoom out" in the menu, "Eject" once a cartridge is in.
+const zoomOutButton = createZoomOutButton({
+  onActivate: () => (getState() === STATES.PROJECT ? eject() : zoomOut()),
+});
 
 // --- State changes --------------------------------------------------------------------
-onStateChange(({ from, to }) => {
+onStateChange(({ from, to, data }) => {
   if (to !== STATES.INTRO) stopIntroListeners();
   if (to !== STATES.MENU) menuInput.disable();
 
-  if (to === STATES.MENU) zoomOutButton.show();
+  if (to === STATES.MENU) zoomOutButton.show('zoomOut');
+  else if (to === STATES.PROJECT) zoomOutButton.show('eject');
   else zoomOutButton.hide();
+  if (to === STATES.PROJECT) window.addEventListener('keydown', onProjectKey);
+  else window.removeEventListener('keydown', onProjectKey);
 
   if (to === STATES.BOOT) {
     intro?.kill();
@@ -318,7 +383,8 @@ onStateChange(({ from, to }) => {
     announcer.announce(menu.current.spoken);
   }
 
-  if (to === STATES.INSERTING) rig.setPose('console');
+  if (to === STATES.INSERTING) startInsert(data.slug);
+  if (to === STATES.PROJECT) announcer.announce(menu.current.spoken);
   if (to === STATES.RESUME) showResume();
   else {
     resumeOpenCall?.kill();
@@ -333,6 +399,7 @@ Promise.all([buildScene(), menu.ready])
   .then(() => {
     tvScreen.bind();
     led = scene.getObjectByName('LED');
+    slot = scene.getObjectByName('Slot');
     // Frame the resume poster straight on, close enough that it fills the view.
     resumePoster = scene.getObjectByName('ResumePoster');
     if (resumePoster) {
@@ -356,8 +423,9 @@ Promise.all([buildScene(), menu.ready])
 gsap.ticker.lagSmoothing(0);
 
 // Skip rendering while the tab is hidden or an HTML overlay fully covers the canvas.
-const COVERING_STATES = new Set([STATES.PROJECT, STATES.FALLBACK_2D]);
-const MENU_VISIBLE = new Set([STATES.INTRO, STATES.MENU, STATES.INSERTING]);
+// (PROJECT joins this once the case-study overlay exists; for now it shows the TV.)
+const COVERING_STATES = new Set([STATES.FALLBACK_2D]);
+const MENU_VISIBLE = new Set([STATES.INTRO, STATES.MENU, STATES.INSERTING, STATES.PROJECT]);
 let renderPaused = false;
 function updatePaused() {
   renderPaused = document.hidden || resumeCovering || COVERING_STATES.has(getState());
