@@ -16,6 +16,7 @@ export const LED_ON = 3;
 export const LED_STANDBY = 0.35;
 const GLOW_FLASH = 6; // CRT light multiplier during the flash
 export const GLOW_ON = 2.2; // CRT light multiplier while the TV is on
+const GLOW_STANDBY = 0.35; // CRT light while off, matching the opening flicker's resting level
 
 export function playIntro({ rig, tvScreen, led, onComplete }) {
   const u = tvScreen.uniforms;
@@ -60,5 +61,38 @@ export function playIntro({ rig, tvScreen, led, onComplete }) {
   tl.to(u.uFlash, { value: 0, duration: DURATIONS.powerSettle, ease: EASES.settle }, settleAt);
   tl.fromTo(u.uContent, { value: 0 }, { value: 1, duration: DURATIONS.powerSettle, ease: EASES.settle }, settleAt);
 
+  return tl;
+}
+
+// Zoom out: the reverse. The picture collapses to a bright line, the line shrinks
+// to a dot and goes dark, the LED drops to standby, and the camera glides back out
+// to the room shot. Under reduced motion: TV off and camera back, no animation.
+export function playOutro({ rig, tvScreen, led, onComplete }) {
+  const u = tvScreen.uniforms;
+  const glow = tvScreen.glow;
+  const base = tvScreen.baseGlow;
+  const tl = gsap.timeline({ onComplete });
+
+  if (reducedMotion.matches) {
+    rig.setPose('wide', { instant: true });
+    tl.call(() => {
+      tvScreen.reset();
+      if (led) led.material.emissiveIntensity = LED_STANDBY;
+    });
+    return tl;
+  }
+
+  const half = DURATIONS.powerOff / 2;
+  tl.to(u.uContent, { value: 0, duration: half, ease: EASES.settle }, 0);
+  tl.to(u.uFlash, { value: 1.6, duration: half, ease: EASES.crtSnap }, 0);
+  tl.to(u.uOpen, { value: 0, duration: half, ease: EASES.crtSnap }, 0);
+  tl.to(u.uLine, { value: 0, duration: half, ease: EASES.crtSnap }, half);
+  tl.to(u.uFlash, { value: 0, duration: half, ease: EASES.settle }, half);
+  if (glow) tl.to(glow, { intensity: base * GLOW_STANDBY, duration: DURATIONS.powerOff, ease: EASES.settle }, 0);
+  tl.call(() => {
+    if (led) led.material.emissiveIntensity = LED_STANDBY;
+  }, null, half);
+
+  tl.add(rig.tweenTo('wide', { duration: DURATIONS.outroDolly, ease: EASES.slowDolly }), 0.1);
   return tl;
 }

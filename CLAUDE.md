@@ -16,6 +16,9 @@
 - MENU is a one-item-at-a-time carousel with pixel arrows on the sides (not a list). The selected project's cartridge lifts and glows in the row; clicking a cartridge selects it. About / Contact / Credits follow the projects as pages without cartridges.
 - Provisional pixel font: Pixelify Sans (OFL, self-hosted via @fontsource) until directions are locked.
 - Model requirement: the TV's `Screen` mesh must have UVs (the menu is drawn onto it) and sit in front of the TV body.
+- Room neon: three abstract tube pieces (red ring-and-bar by the window, teal corner tube, teal wave above the shelf), each flickering rarely (every 8-20 s). No text or logos in neon.
+- Resume: the poster (`ResumePoster` mesh) is clickable from the opening shot and the menu. Camera zooms to it, then a modal overlay shows the PDF in a stepped-corner teal frame with a pixel X; X / Esc / click outside closes. This is the RESUME state (returns to where it came from). PDF lives at `public/resume/dylan-prasodjo-resume.pdf` (path in site.json). Dylan is fine with it being public. Labels "Close resume" / "Open PDF" approved.
+- Zoom out: from the menu, a top-left button ("Zoom out" + ESC key cap), Esc or gamepad B returns to the opening shot (MENU -> BOOT). The TV powers off (picture -> line -> dot) while the camera glides back; then the flicker and hint return. With the resume open, the first Esc closes the resume, the second zooms out.
 
 ---
 

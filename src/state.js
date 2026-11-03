@@ -8,16 +8,20 @@ export const STATES = Object.freeze({
   INSERTING: 'INSERTING',
   PROJECT: 'PROJECT',
   FALLBACK_2D: 'FALLBACK_2D',
+  RESUME: 'RESUME',
 });
 
-const { BOOT, INTRO, MENU, INSERTING, PROJECT, FALLBACK_2D } = STATES;
+const { BOOT, INTRO, MENU, INSERTING, PROJECT, FALLBACK_2D, RESUME } = STATES;
 
 // Allowed moves. FALLBACK_2D is reachable from anywhere (added below).
 // BOOT -> PROJECT is the deep-link path (/#/project/<slug> skips BOOT and INTRO).
+// RESUME is the resume overlay, opened from the room shot or the menu; it returns
+// to wherever it was opened from. MENU -> BOOT is "zoom out" back to the opening shot.
 const TRANSITIONS = {
-  [BOOT]: [INTRO, PROJECT],
+  [BOOT]: [INTRO, PROJECT, RESUME],
   [INTRO]: [MENU],
-  [MENU]: [INSERTING],
+  [MENU]: [INSERTING, RESUME, BOOT],
+  [RESUME]: [BOOT, MENU],
   [INSERTING]: [PROJECT],
   [PROJECT]: [MENU],
   [FALLBACK_2D]: [BOOT, MENU],

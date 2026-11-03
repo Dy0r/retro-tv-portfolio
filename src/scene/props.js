@@ -216,6 +216,10 @@ export function buildProps({ consoleBack, tvSide }) {
 
   const resumePoster = buildPoster(drawResumePoster, 0.42, 0.58);
   resumePoster.name = 'ResumePoster';
+  // Lights up on hover (see input/posterInput.js) so it reads as clickable.
+  resumePoster.material.emissive.setScalar(1);
+  resumePoster.material.emissiveMap = resumePoster.material.map;
+  resumePoster.material.emissiveIntensity = 0;
   resumePoster.position.set(0.78, 1.02, ROOM.backZ + 0.005);
 
   // Above the bed, on the side wall.

@@ -15,17 +15,22 @@ import { buildLights } from './scene/lights.js';
 import { buildWindow } from './scene/window.js';
 import { buildLeds } from './scene/leds.js';
 import { buildProps } from './scene/props.js';
+import { buildNeonSigns } from './scene/neonSigns.js';
 import { createCameraRig } from './scene/camera.js';
 import { createAttract } from './scene/attract.js';
-import { playIntro, LED_ON, LED_STANDBY, GLOW_ON } from './scene/intro.js';
+import { playIntro, playOutro, LED_ON, LED_STANDBY, GLOW_ON } from './scene/intro.js';
 import { createTvScreen } from './screen/tvScreen.js';
 import { createMenu } from './screen/menu.js';
 import { createLoader } from './ui/loader.js';
 import { createEnterHint } from './ui/enterHint.js';
 import { createAnnouncer } from './ui/announcer.js';
+import { createZoomOutButton } from './ui/zoomOutButton.js';
 import { listenForStart } from './input/start.js';
 import { createMenuInput } from './input/menuInput.js';
 import { createGamepadInput } from './input/gamepad.js';
+import { createPosterInput } from './input/posterInput.js';
+import { createResumeOverlay, createResumeButton } from './ui/resumeOverlay.js';
+import { EASES, DURATIONS } from './motion/eases.js';
 
 // --- Loading screen ---------------------------------------------------------------
 // Starts straight away; real progress comes from the shared LoadingManager.
@@ -73,14 +78,17 @@ const consoleBack = new THREE.Vector3(0.08, standTop + 0.04, consolePosition.z -
 
 // Camera framings. "menu" keeps the TV large but shows the cartridge row too, so
 // the selected cartridge lifting is visible next to the screen.
-const rig = createCameraRig(camera, {
+// ("resume" is added once the poster is in the scene: see the boot sequence.)
+const poses = {
   wide: { position: new THREE.Vector3(1.9, 1.5, 2.7), lookAt: new THREE.Vector3(-0.35, 1.05, -0.8) },
   menu: { position: new THREE.Vector3(0.12, 0.8, 0.62), lookAt: new THREE.Vector3(0.07, 0.66, -0.65) },
   console: { position: new THREE.Vector3(0.12, 0.86, -0.06), lookAt: new THREE.Vector3(0.06, standTop + 0.03, -0.52) },
-});
+};
+const rig = createCameraRig(camera, poses);
 rig.setPose('wide', { instant: true });
 
 const roomWindow = buildWindow();
+const neonSigns = buildNeonSigns();
 const tvScreen = createTvScreen(scene);
 const attract = createAttract(tvScreen);
 const announcer = createAnnouncer();
@@ -91,6 +99,7 @@ let led = null;
 async function buildScene() {
   scene.add(buildRoom());
   scene.add(roomWindow.group);
+  scene.add(neonSigns.group);
   scene.add(buildProps({ consoleBack, tvSide }));
   scene.add(buildLeds({ tvBack, tvWidth: TV_SIZE.width }));
   scene.add(buildLights({ screenCenter, lampTarget: new THREE.Vector3(0.18, standTop, -0.5) }));
@@ -128,6 +137,7 @@ const menuInput = createMenuInput({
   menu,
   getScreen: () => tvScreen.mesh,
   getCartridgeRow: () => cartridgeRow,
+  onBack: zoomOut,
 });
 
 // --- Opening moment ---------------------------------------------------------------
@@ -146,7 +156,7 @@ function showOpening() {
   attract.start();
   enterHint.show();
   stopListening?.();
-  stopListening = listenForStart(enter);
+  stopListening = listenForStart(enter, { ignore: posterInput.hitsPoster });
 }
 
 // --- INTRO: power-on + dolly (any key or click skips) ---------------------------------
@@ -183,22 +193,109 @@ const gamepad = createGamepadInput((action) => {
   else if (state === STATES.INTRO) intro?.progress(1);
   else if (state === STATES.MENU && action === 'prev') menu.prev();
   else if (state === STATES.MENU && action === 'next') menu.next();
+  else if (state === STATES.MENU && action === 'back') zoomOut();
+  else if (state === STATES.RESUME && action === 'back') resumeOverlay.close();
 });
 
+// --- Resume: click the poster (or Tab to the hidden button) ---------------------------
+// The camera glides up to the poster, then the resume opens in a framed overlay.
+// Closing returns to wherever it was opened from (room shot or menu).
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+let resumePoster = null;
+let resumeReturn = null;
+let resumeOpenCall = null;
+
+function canOpenResume() {
+  const state = getState();
+  return (state === STATES.BOOT && openingReady) || state === STATES.MENU;
+}
+
+function openResume() {
+  if (!canOpenResume()) return;
+  resumeReturn = getState();
+  transition(STATES.RESUME);
+}
+
+// While the resume is fully open the scene sits behind a dark backdrop, so the 3D
+// render pauses to save battery; it resumes as soon as the frame starts closing.
+let resumeCovering = false;
+const resumeOverlay = createResumeOverlay({
+  onOpened: () => {
+    resumeCovering = true;
+    updatePaused();
+  },
+  onClosing: () => {
+    resumeCovering = false;
+    updatePaused();
+  },
+  onClose: () => transition(resumeReturn),
+});
+createResumeButton({ onActivate: openResume });
+
+const posterInput = createPosterInput({
+  canvas,
+  camera,
+  getPoster: () => resumePoster,
+  canOpen: canOpenResume,
+  onOpen: openResume,
+});
+
+function showResume() {
+  if (reducedMotion.matches) {
+    rig.setPose('resume', { instant: true });
+    resumeOverlay.open();
+    return;
+  }
+  rig.tweenTo('resume', { duration: DURATIONS.resumeZoom, ease: EASES.slowDolly });
+  // Open the frame as the camera nears the poster.
+  resumeOpenCall = gsap.delayedCall(DURATIONS.resumeZoom * 0.6, () => resumeOverlay.open());
+}
+
+// --- Zoom out: back to the opening room shot (button top-left, Esc, gamepad B) --------
+// The TV switches off (picture collapses to a line, then a dot) while the camera
+// glides back out; then the opening flicker and "Scroll to switch on" return.
+let outro = null;
+
+function zoomOut() {
+  if (getState() === STATES.MENU) transition(STATES.BOOT);
+}
+
+const zoomOutButton = createZoomOutButton({ onActivate: zoomOut });
+
 // --- State changes --------------------------------------------------------------------
-onStateChange(({ to }) => {
+onStateChange(({ from, to }) => {
   if (to !== STATES.INTRO) stopIntroListeners();
   if (to !== STATES.MENU) menuInput.disable();
+
+  if (to === STATES.MENU) zoomOutButton.show();
+  else zoomOutButton.hide();
 
   if (to === STATES.BOOT) {
     intro?.kill();
     intro = null;
-    tvScreen.reset();
     cartridges?.setSelected(null);
-    rig.setPose('wide');
-    if (openingReady) showOpening();
+    if (from === STATES.MENU) {
+      outro = playOutro({
+        rig,
+        tvScreen,
+        led,
+        onComplete: () => {
+          outro = null;
+          tvScreen.reset();
+          if (getState() === STATES.BOOT && openingReady) showOpening();
+        },
+      });
+    } else {
+      tvScreen.reset();
+      rig.setPose('wide');
+      if (openingReady) showOpening();
+    }
     return;
   }
+
+  // Anything else interrupts a zoom-out still in progress.
+  outro?.kill();
+  outro = null;
 
   // Leaving the opening moment.
   enterHint.hide();
@@ -222,6 +319,11 @@ onStateChange(({ to }) => {
   }
 
   if (to === STATES.INSERTING) rig.setPose('console');
+  if (to === STATES.RESUME) showResume();
+  else {
+    resumeOpenCall?.kill();
+    resumeOpenCall = null;
+  }
 });
 
 // --- Boot sequence -----------------------------------------------------------------------
@@ -231,6 +333,12 @@ Promise.all([buildScene(), menu.ready])
   .then(() => {
     tvScreen.bind();
     led = scene.getObjectByName('LED');
+    // Frame the resume poster straight on, close enough that it fills the view.
+    resumePoster = scene.getObjectByName('ResumePoster');
+    if (resumePoster) {
+      const center = resumePoster.getWorldPosition(new THREE.Vector3());
+      poses.resume = { position: center.clone().add(new THREE.Vector3(0, 0.02, 0.9)), lookAt: center };
+    }
     setLed(LED_STANDBY);
     return renderer.compileAsync(scene, camera);
   })
@@ -252,7 +360,7 @@ const COVERING_STATES = new Set([STATES.PROJECT, STATES.FALLBACK_2D]);
 const MENU_VISIBLE = new Set([STATES.INTRO, STATES.MENU, STATES.INSERTING]);
 let renderPaused = false;
 function updatePaused() {
-  renderPaused = document.hidden || COVERING_STATES.has(getState());
+  renderPaused = document.hidden || resumeCovering || COVERING_STATES.has(getState());
 }
 document.addEventListener('visibilitychange', updatePaused);
 onStateChange(updatePaused);
@@ -265,7 +373,9 @@ function tick(_time, deltaMs) {
   if (MENU_VISIBLE.has(getState())) menu.update(dt);
   tvScreen.update(dt);
   cartridges?.update(dt);
+  posterInput.update(dt);
   roomWindow.update(dt);
+  neonSigns.update(dt);
   attract.update(dt);
   renderer.render(scene, camera);
 }

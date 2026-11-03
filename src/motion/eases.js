@@ -27,6 +27,9 @@ export const DURATIONS = {
   powerSettle: 0.45, // flash fades, picture settles
   menuSlide: 0.28, // one project to the next
   menuStatic: 0.12, // burst of static between projects
+  resumeZoom: 0.9, // camera glides up to the resume poster
+  powerOff: 0.32, // picture collapses to a line, then a dot
+  outroDolly: 1.5, // camera glides from the TV back out to the room
 };
 
 // Damping rates (per second) for things that chase a target every frame.

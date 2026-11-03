@@ -29,6 +29,17 @@
   --screen-dim: #6f8a82;
   --screen-accent: #22d6bd;
   --screen-off: #050707;
+
+  /* Resume overlay (provisional) */
+  --resume-backdrop: rgba(2, 6, 6, 0.72);
+  --resume-border: 6px;
+  --resume-step: 10px;
+  --resume-max-width: 880px;
+  --dur-resume-in: 420ms;
+  --dur-resume-out: 260ms;
+  --ease-snap: cubic-bezier(0.2, 0.9, 0.25, 1.06);
+
+  /* Enter hint and focus rings (provisional) */
   --color-hint: #dfeee9;
   --color-focus: #22d6bd;
   --size-hint: 13px;

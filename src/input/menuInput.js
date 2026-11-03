@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 // Menu controls, active only while the menu is up:
-//  - keyboard: ←/→ or A/D (↑/↓ or W/S also work)
+//  - keyboard: ←/→ or A/D (↑/↓ or W/S also work), Esc to go back (zoom out)
 //  - mouse: hover and click the arrows on the TV screen, or click a cartridge
 //  - trackpad / wheel: STEPPED, one item per gesture, then a short cooldown
 //  - touch: swipe left/right, or tap an arrow or a cartridge
@@ -12,7 +12,7 @@ const WHEEL_COOLDOWN_MS = 380;
 const SWIPE_MIN_PX = 40;
 const TAP_MAX_PX = 10;
 
-export function createMenuInput({ canvas, camera, menu, getScreen, getCartridgeRow }) {
+export function createMenuInput({ canvas, camera, menu, getScreen, getCartridgeRow, onBack }) {
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
   const hits = [];
@@ -53,6 +53,11 @@ export function createMenuInput({ canvas, camera, menu, getScreen, getCartridgeR
 
   function onKey(e) {
     const k = e.key.toLowerCase();
+    if (k === 'escape') {
+      e.preventDefault();
+      onBack?.();
+      return;
+    }
     if (k === 'arrowleft' || k === 'arrowup' || k === 'a' || k === 'w') {
       e.preventDefault();
       menu.prev();

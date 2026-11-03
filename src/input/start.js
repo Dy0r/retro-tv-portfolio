@@ -6,7 +6,8 @@
 const WHEEL_THRESHOLD = 80;
 const WHEEL_RESET_MS = 250;
 
-export function listenForStart(onStart, target = window) {
+// `ignore(e)` can veto a click/tap, e.g. when it lands on the resume poster.
+export function listenForStart(onStart, { target = window, ignore } = {}) {
   let wheelTotal = 0;
   let lastWheel = 0;
 
@@ -30,7 +31,8 @@ export function listenForStart(onStart, target = window) {
 
   // pointerup covers mouse clicks, taps and the end of a swipe.
   function onPointerUp(e) {
-    if (e.target.closest?.('button, a')) return;
+    if (e.target.closest?.('button, a, dialog')) return;
+    if (ignore?.(e)) return;
     fire();
   }
 
