@@ -8,6 +8,13 @@ export const loadingManager = new THREE.LoadingManager();
 
 const gltfLoader = new GLTFLoader(loadingManager).setMeshoptDecoder(MeshoptDecoder);
 
+// The full glTF (scene + animations) for models that have no placeholder, e.g. the
+// hand. Returns null if the file isn't there.
+export async function loadGltf(name) {
+  if (!availableModels.includes(`${name}.glb`)) return null;
+  return gltfLoader.loadAsync(`/models/${name}.glb`);
+}
+
 // Uses public/models/<name>.glb when that file exists, otherwise the placeholder.
 // `availableModels` is the list of .glb files the dev server/build found on disk,
 // so a missing model never triggers a failed request.

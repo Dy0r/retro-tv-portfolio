@@ -30,6 +30,14 @@
     { "id": "contact", "title": "Contact", "summary": "[COPY: one line that invites people to get in touch]" },
     { "id": "credits", "title": "Credits", "summary": "[COPY: one line introducing the credits]" }
   ],
+  "credits": [
+    {
+      "work": "Hand animation test (3D model)",
+      "author": "SantosGabriel",
+      "license": "CC BY 4.0",
+      "url": "https://sketchfab.com/3d-models/hand-animation-test-b29e45290a8a4b4abad7c3405a371f67"
+    }
+  ],
   "skipLink": "[COPY: label for the 'skip to projects' link]",
   "contact": {
     "email": "dylanprasodjo@gmail.com"

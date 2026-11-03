@@ -39,6 +39,10 @@ export const DURATIONS = {
   ledBlink: 0.07, // one LED on/off step
   ejectPop: 0.22, // cartridge pops up out of the slot
   ejectReturn: 0.5, // cartridge glides back to its place in the row
+  handReach: 0.5, // hand reaches in to the cartridge
+  handGrip: 0.16, // fingers close / open
+  handCarry: 0.5, // hand carries the cartridge over the slot
+  handLeave: 0.42, // hand pulls back out of view
 };
 
 // Damping rates (per second) for things that chase a target every frame.
