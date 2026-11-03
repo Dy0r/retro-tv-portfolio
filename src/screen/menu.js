@@ -230,6 +230,18 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
       hover = null;
       dirty = true;
     },
+    // Jump straight to an item with no slide or static (opening a project link).
+    jumpTo(slug) {
+      const i = items.findIndex((item) => item.slug === slug);
+      if (i < 0) return;
+      index = i;
+      slide.offset = 0;
+      pressed = null;
+      cursorOn = true;
+      blinkClock = 0;
+      dirty = true;
+      onChange?.(items[index]);
+    },
     selectSlug(slug) {
       const i = items.findIndex((item) => item.slug === slug);
       if (i >= 0 && i !== index) go(i - index);

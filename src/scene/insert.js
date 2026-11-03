@@ -89,6 +89,14 @@ export function playInsert({ scene, cart, slot, led, rig, tvScreen, onStatic, on
   return tl;
 }
 
+// Puts a cartridge straight into the slot with no animation (opening a project link).
+export function placeInSlot({ scene, cart, slot }) {
+  detach(scene, cart);
+  slot.getWorldPosition(slotWorld);
+  cart.position.set(slotWorld.x, slotWorld.y - SINK, slotWorld.z);
+  cart.rotation.set(0, 0, 0);
+}
+
 export function playEject({ cart, tvScreen, onStatic, onComplete }) {
   const home = cart.userData.home;
   homeWorld.copy(home.position);

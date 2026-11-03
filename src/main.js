@@ -22,7 +22,7 @@ import { createCameraRig } from './scene/camera.js';
 import { createPostFx } from './scene/postfx.js';
 import { createAttract } from './scene/attract.js';
 import { playIntro, playOutro, LED_ON, LED_STANDBY, GLOW_ON } from './scene/intro.js';
-import { playInsert, playEject } from './scene/insert.js';
+import { playInsert, playEject, placeInSlot } from './scene/insert.js';
 import { createTvScreen } from './screen/tvScreen.js';
 import { createMenu } from './screen/menu.js';
 import { createLoader } from './ui/loader.js';
@@ -401,6 +401,58 @@ function onProjectKey(e) {
   }
 }
 
+// --- Deep links: /#/project/<slug> --------------------------------------------------
+// Opening a project's link skips the opening shot and the intro: it lands straight
+// in that project with its cartridge already in. Opening a project updates the
+// address bar, and the browser's Back button closes it (ejecting the cartridge).
+const PROJECT_HASH = /^#\/project\/([\w-]+)$/;
+let projectEntryPushed = false; // did we add the project's address to the history?
+
+function slugFromHash() {
+  const match = window.location.hash.match(PROJECT_HASH);
+  return match && projects.some((p) => p.slug === match[1]) ? match[1] : null;
+}
+
+function setProjectHash(slug) {
+  if (window.location.hash === `#/project/${slug}`) return;
+  history.pushState(null, '', `#/project/${slug}`);
+  projectEntryPushed = true;
+}
+
+function clearProjectHash() {
+  if (!slugFromHash()) return;
+  if (projectEntryPushed) history.back();
+  else history.replaceState(null, '', window.location.pathname + window.location.search);
+  projectEntryPushed = false;
+}
+
+window.addEventListener('hashchange', () => {
+  const slug = slugFromHash();
+  const state = getState();
+  if (state === STATES.PROJECT && slug !== inserted?.slug) {
+    projectEntryPushed = false; // the browser already left the project's address
+    eject();
+  } else if (state === STATES.MENU && slug) {
+    menu.jumpTo(slug);
+    playSelected();
+  }
+});
+
+function enterProjectDirectly(slug) {
+  openingReady = true; // so zooming out later shows the opening shot as normal
+  tvScreen.powerOnInstant(GLOW_ON);
+  setLed(LED_ON);
+  rig.setPose('menu', { instant: true });
+  menu.jumpTo(slug);
+  menu.setPlaying(true);
+  const cart = cartridges.bySlug.get(slug);
+  inserted = { slug, cart };
+  cartridges.hold(slug);
+  cartridges.setSelected(null);
+  placeInSlot({ scene, cart, slot });
+  transition(STATES.PROJECT, { slug });
+}
+
 // One button, top-left: "Zoom out" in the menu, "Eject" once a cartridge is in.
 const zoomOutButton = createZoomOutButton({
   onActivate: () => (getState() === STATES.PROJECT ? eject() : zoomOut()),
@@ -422,8 +474,10 @@ onStateChange(({ from, to, data }) => {
     window.removeEventListener('keydown', onProjectKey);
     canvas.removeEventListener('pointerup', onProjectPointerUp);
   }
-  if (to === STATES.MENU) showSelectionCues();
-  else {
+  if (to === STATES.MENU) {
+    showSelectionCues();
+    if (from === STATES.PROJECT) clearProjectHash();
+  } else {
     insertButton.setVisible(false);
     if (to !== STATES.PROJECT) cartMarker.hide();
   }
@@ -479,6 +533,7 @@ onStateChange(({ from, to, data }) => {
   if (to === STATES.INSERTING) startInsert(data.slug);
   if (to === STATES.PROJECT) {
     announcer.announce(menu.current.spoken);
+    setProjectHash(data.slug);
     openCaseStudy(data.slug);
   }
   if (to === STATES.RESUME) showResume();
@@ -510,7 +565,10 @@ Promise.all([buildScene(), menu.ready])
     return loader.finish();
   })
   .then(() => {
-    if (getState() === STATES.BOOT) showOpening();
+    if (getState() !== STATES.BOOT) return;
+    const deepLink = slugFromHash();
+    if (deepLink) enterProjectDirectly(deepLink);
+    else showOpening();
   });
 
 // --- One clock ----------------------------------------------------------------
