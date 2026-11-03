@@ -13,7 +13,7 @@ const WHEEL_COOLDOWN_MS = 380;
 const SWIPE_MIN_PX = 40;
 const TAP_MAX_PX = 10;
 
-export function createMenuInput({ canvas, camera, menu, getScreen, getCartridgeRow, onBack, onSelect }) {
+export function createMenuInput({ canvas, camera, menu, getScreen, getCartridgeRow, getMarker, onBack, onSelect }) {
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
   const hits = [];
@@ -34,6 +34,12 @@ export function createMenuInput({ canvas, camera, menu, getScreen, getCartridgeR
   // What's under the pointer: { arrow } or { screen } on the TV, or { slug } of a cartridge.
   function pick(e) {
     castFrom(e);
+    const marker = getMarker?.();
+    if (marker?.visible) {
+      hits.length = 0;
+      raycaster.intersectObject(marker, false, hits);
+      if (hits.length) return { marker: true };
+    }
     const screen = getScreen();
     if (screen) {
       hits.length = 0;
@@ -111,7 +117,7 @@ export function createMenuInput({ canvas, camera, menu, getScreen, getCartridgeR
     const hit = pick(e);
     if (hit?.arrow === 'prev') menu.prev();
     else if (hit?.arrow === 'next') menu.next();
-    else if (hit?.screen) onSelect?.();
+    else if (hit?.screen || hit?.marker) onSelect?.();
     else if (hit?.slug === menu.current.slug) onSelect?.();
     else if (hit?.slug) menu.selectSlug(hit.slug);
   }

@@ -25,6 +25,10 @@
     "label": "Eject",
     "key": "Esc"
   },
+  "insert": {
+    "label": "Insert",
+    "key": "Enter"
+  },
   "menuPages": [
     { "id": "about", "title": "About", "summary": "[COPY: one line that invites people to read about you]" },
     { "id": "contact", "title": "Contact", "summary": "[COPY: one line that invites people to get in touch]" },

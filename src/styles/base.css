@@ -419,7 +419,16 @@ dialog.resume.is-open .resume__glow {
   outline-offset: 4px;
 }
 
-/* A little key cap for the Esc shortcut. */
+/* Same button in the bottom-right corner, for Insert. */
+.zoom-out--insert {
+  top: auto;
+  left: auto;
+  right: 16px;
+  bottom: 16px;
+  transform: translateY(6px);
+}
+
+/* A little key cap for the keyboard shortcut. */
 .zoom-out__key {
   padding: 3px 5px;
   border: 1px solid currentColor;

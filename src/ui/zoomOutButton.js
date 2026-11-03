@@ -3,7 +3,8 @@ import site from '../content/site.json';
 // The "back" button, top-left. In the menu it's "Zoom out" (back to the opening
 // room shot); once a cartridge is in, it's "Eject" (back to the menu). Esc and
 // gamepad B do the same. Each has its own pixel icon, plus an ESC key cap so the
-// shortcut is discoverable. Labels live in site.json.
+// shortcut is discoverable. Labels live in site.json. The Insert button (bottom-
+// right) at the end of this file shares the same look.
 
 function pixelIcon(cells) {
   const rects = cells.map(([x, y]) => `<rect x="${x}" y="${y}" width="1" height="1"/>`).join('');
@@ -24,6 +25,16 @@ function ejectIcon() {
   const cells = [];
   for (let row = 0; row < 4; row++) {
     for (let x = 4 - row; x <= 4 + row; x++) cells.push([x, row + 1]);
+  }
+  for (let x = 0; x < 9; x++) cells.push([x, 7]);
+  return pixelIcon(cells);
+}
+
+// A triangle pointing down onto a bar: "put it in".
+function insertIcon() {
+  const cells = [];
+  for (let row = 0; row < 4; row++) {
+    for (let x = row + 1; x <= 7 - row; x++) cells.push([x, row + 1]);
   }
   for (let x = 0; x < 9; x++) cells.push([x, 7]);
   return pixelIcon(cells);
@@ -64,6 +75,29 @@ export function createZoomOutButton({ onActivate }) {
     hide() {
       button.inert = true;
       button.classList.remove('is-visible');
+    },
+  };
+}
+
+// "Insert" button, bottom-right, shown in the menu while a project is selected.
+// Same look as the back button; Enter does the same thing.
+export function createInsertButton({ onActivate }) {
+  const { label, key } = site.insert;
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'zoom-out zoom-out--insert';
+  button.inert = true;
+  button.setAttribute('aria-keyshortcuts', 'Enter');
+  button.innerHTML = `${insertIcon()}<kbd class="zoom-out__key"></kbd><span class="zoom-out__label"></span>`;
+  button.querySelector('.zoom-out__key').textContent = key;
+  button.querySelector('.zoom-out__label').textContent = label;
+  button.addEventListener('click', onActivate);
+  document.body.appendChild(button);
+
+  return {
+    setVisible(on) {
+      button.inert = !on;
+      button.classList.toggle('is-visible', on);
     },
   };
 }

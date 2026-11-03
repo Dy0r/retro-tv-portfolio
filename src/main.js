@@ -26,7 +26,8 @@ import { createMenu } from './screen/menu.js';
 import { createLoader } from './ui/loader.js';
 import { createEnterHint } from './ui/enterHint.js';
 import { createAnnouncer } from './ui/announcer.js';
-import { createZoomOutButton } from './ui/zoomOutButton.js';
+import { createZoomOutButton, createInsertButton } from './ui/zoomOutButton.js';
+import { createCartMarker } from './scene/cartMarker.js';
 import { listenForStart } from './input/start.js';
 import { createMenuInput } from './input/menuInput.js';
 import { createGamepadInput } from './input/gamepad.js';
@@ -95,6 +96,7 @@ const rig = createCameraRig(camera, poses);
 rig.setPose('wide', { instant: true });
 
 const roomWindow = buildWindow();
+const cartMarker = createCartMarker(scene);
 const neonSigns = buildNeonSigns();
 const tvScreen = createTvScreen(scene);
 const attract = createAttract(tvScreen);
@@ -138,6 +140,7 @@ const menu = createMenu({
   onChange(item) {
     cartridges?.setSelected(item.kind === 'project' ? item.slug : null);
     announcer.announce(item.spoken);
+    showSelectionCues();
   },
 });
 
@@ -147,6 +150,7 @@ const menuInput = createMenuInput({
   menu,
   getScreen: () => tvScreen.mesh,
   getCartridgeRow: () => cartridgeRow,
+  getMarker: () => cartMarker.sprite,
   onBack: zoomOut,
   onSelect: playSelected,
 });
@@ -281,6 +285,33 @@ let slot = null;
 let inserted = null; // { slug, cart } while a cartridge is in the console
 let ejecting = false;
 
+// Make the selection obvious in the menu: the Insert button (bottom-right) and a
+// pixel arrow over the selected cartridge, both only while a project is selected.
+const insertButton = createInsertButton({ onActivate: playSelected });
+
+function showSelectionCues() {
+  if (getState() !== STATES.MENU) return;
+  const item = menu.current;
+  const isProject = item.kind === 'project';
+  insertButton.setVisible(isProject);
+  if (isProject) cartMarker.pointDown(cartridges?.bySlug.get(item.slug));
+  else cartMarker.hide();
+}
+
+// Once a cartridge is in: clicking it, or the arrows above it, ejects it.
+const ejectRay = new THREE.Raycaster();
+const ejectPointer = new THREE.Vector2();
+const ejectHits = [];
+function onProjectPointerUp(e) {
+  if (!inserted) return;
+  const rect = canvas.getBoundingClientRect();
+  ejectPointer.set(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
+  ejectRay.setFromCamera(ejectPointer, camera);
+  ejectHits.length = 0;
+  ejectRay.intersectObjects([cartMarker.sprite, inserted.cart], true, ejectHits);
+  if (ejectHits.length) eject();
+}
+
 function playSelected() {
   const item = menu.current;
   if (getState() !== STATES.MENU || item.kind !== 'project') return;
@@ -311,6 +342,7 @@ function eject() {
   if (getState() !== STATES.PROJECT || ejecting || !inserted) return;
   ejecting = true;
   zoomOutButton.hide();
+  cartMarker.hide();
   const play = INSERT_VARIANT === 'hand' ? playHandEject : playEject;
   play({
     scene,
@@ -347,8 +379,19 @@ onStateChange(({ from, to, data }) => {
   if (to === STATES.MENU) zoomOutButton.show('zoomOut');
   else if (to === STATES.PROJECT) zoomOutButton.show('eject');
   else zoomOutButton.hide();
-  if (to === STATES.PROJECT) window.addEventListener('keydown', onProjectKey);
-  else window.removeEventListener('keydown', onProjectKey);
+  if (to === STATES.PROJECT) {
+    window.addEventListener('keydown', onProjectKey);
+    canvas.addEventListener('pointerup', onProjectPointerUp);
+    cartMarker.pointUp(inserted?.cart);
+  } else {
+    window.removeEventListener('keydown', onProjectKey);
+    canvas.removeEventListener('pointerup', onProjectPointerUp);
+  }
+  if (to === STATES.MENU) showSelectionCues();
+  else {
+    insertButton.setVisible(false);
+    if (to !== STATES.PROJECT) cartMarker.hide();
+  }
 
   if (to === STATES.BOOT) {
     intro?.kill();
@@ -456,6 +499,7 @@ function tick(_time, deltaMs) {
   if (MENU_VISIBLE.has(getState())) menu.update(dt);
   tvScreen.update(dt);
   cartridges?.update(dt);
+  cartMarker.update(dt);
   posterInput.update(dt);
   roomWindow.update(dt);
   neonSigns.update(dt);
