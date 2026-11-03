@@ -5,6 +5,9 @@ import { ROOM, WINDOW } from './room.js';
 // The window on the back wall: frame, half-open blinds, and a generated night
 // skyline behind it in layers at different depths (so it shifts as the camera moves).
 // One neon sign flickers now and then; it stays steady under prefers-reduced-motion.
+// The city also moves: a plane with blinking lights drifts across, an elevated
+// train passes every so often, and office windows switch on and off. Under reduced
+// motion the plane and train stay away and the windows stay as they are.
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const PX_PER_METRE = 420;
@@ -247,6 +250,139 @@ function buildBlinds() {
   return blinds;
 }
 
+function glowQuad(token, w, h, opacity = 1) {
+  const mesh = new THREE.Mesh(
+    new THREE.PlaneGeometry(w, h),
+    new THREE.MeshBasicMaterial({ color: tokenColor(token), transparent: true, opacity, blending: THREE.AdditiveBlending, depthWrite: false }),
+  );
+  return mesh;
+}
+
+// Is there a building (an opaque pixel) at this point of a skyline layer?
+// Used so switching office lights always sit on a building, never in the sky.
+function onBuilding(layer, px, py) {
+  const canvas = layer.material.map.image;
+  const { width, height } = layer.geometry.parameters;
+  const u = (px - (layer.position.x - width / 2)) / width;
+  const v = (layer.position.y + height / 2 - py) / height;
+  if (u < 0 || u > 1 || v < 0 || v > 1) return false;
+  const pixel = canvas.getContext('2d').getImageData(Math.floor(u * canvas.width), Math.floor(v * canvas.height), 1, 1).data;
+  return pixel[3] > 250 && pixel[0] + pixel[1] + pixel[2] < 120; // solid wall, not already lit
+}
+
+// The moving parts of the skyline, placed where the opening shot sees them
+// through the lower half of the window (the blinds cover the top half).
+function buildCityLife(x, z, layers) {
+  const group = new THREE.Group();
+  group.name = 'CityLife';
+  const rand = seededRandom(5);
+
+  // Plane: a red beacon and a white strobe, climbing slowly across.
+  const plane = new THREE.Group();
+  const beacon = glowQuad('--neon-red', 0.012, 0.012);
+  const strobe = glowQuad('--skyline-window-cool', 0.009, 0.009);
+  strobe.position.x = 0.025;
+  plane.add(beacon, strobe);
+  const PLANE = { from: x - 1.0, to: x + 0.3, y: 1.33, climb: 0.06, speed: 0.05 };
+  plane.position.set(PLANE.from, PLANE.y, z - 0.4);
+
+  // Elevated train in front of the buildings: a dark body, lit windows, red tail light.
+  const train = new THREE.Group();
+  const CARS = 3;
+  const CAR_LENGTH = 0.3;
+  for (let c = 0; c < CARS; c++) {
+    const body = new THREE.Mesh(new THREE.PlaneGeometry(CAR_LENGTH - 0.012, 0.03), new THREE.MeshBasicMaterial({ color: tokenColor('--skyline-near') }));
+    body.position.x = c * CAR_LENGTH;
+    train.add(body);
+    for (let i = 0; i < 8; i++) {
+      const win = glowQuad(rand() > 0.2 ? '--skyline-window-warm' : '--skyline-window-cool', 0.022, 0.01, 0.9);
+      win.position.set(c * CAR_LENGTH - CAR_LENGTH / 2 + 0.028 + i * 0.034, 0.002, 0.001);
+      train.add(win);
+    }
+  }
+  const tail = glowQuad('--neon-red', 0.008, 0.008);
+  tail.position.set(-CAR_LENGTH / 2, 0, 0.001);
+  train.add(tail);
+  train.position.set(x - 1.9, 1.06, z - 0.55);
+  const TRAIN = { from: x - 1.9, to: x + 0.7 + CARS * CAR_LENGTH, speed: 0.5 };
+
+  // Office windows that switch on and off, only on buildings in view.
+  const offices = [];
+  const AREAS = [
+    { layer: layers.far, x0: x - 2.15, x1: x - 0.96, y0: 0.8, y1: 1.42, count: 10, size: 0.02 },
+    { layer: layers.near, x0: x - 1.1, x1: x - 0.16, y0: 0.94, y1: 1.44, count: 8, size: 0.016 },
+  ];
+  for (const area of AREAS) {
+    let placed = 0;
+    for (let tries = 0; placed < area.count && tries < 400; tries++) {
+      const px = area.x0 + rand() * (area.x1 - area.x0);
+      const py = area.y0 + rand() * (area.y1 - area.y0);
+      if (!onBuilding(area.layer, px, py)) continue;
+      const win = glowQuad(rand() > 0.3 ? '--skyline-window-warm' : '--skyline-window-cool', area.size, area.size * 1.3, 0.85);
+      win.position.set(px, py, area.layer.position.z + 0.01);
+      win.visible = rand() > 0.5;
+      win.userData.next = 2 + rand() * 8;
+      offices.push(win);
+      placed++;
+    }
+  }
+
+  group.add(plane, train, ...offices);
+
+  let planeWait = 2;
+  let trainWait = 4;
+  let clock = 0;
+
+  function update(dt) {
+    if (reducedMotion.matches) {
+      plane.visible = false;
+      train.visible = false;
+      return;
+    }
+    clock += dt;
+
+    // Plane crosses, waits a while, crosses again.
+    if (planeWait > 0) {
+      planeWait -= dt;
+      plane.visible = false;
+    } else {
+      plane.visible = true;
+      plane.position.x += PLANE.speed * dt;
+      plane.position.y = PLANE.y + ((plane.position.x - PLANE.from) / (PLANE.to - PLANE.from)) * PLANE.climb;
+      beacon.visible = clock % 1.2 < 0.15;
+      strobe.visible = (clock + 0.6) % 1.2 < 0.08;
+      if (plane.position.x > PLANE.to) {
+        plane.position.x = PLANE.from;
+        planeWait = 10 + Math.random() * 12;
+      }
+    }
+
+    // Train passes every 8-14 s.
+    if (trainWait > 0) {
+      trainWait -= dt;
+      train.visible = false;
+    } else {
+      train.visible = true;
+      train.position.x += TRAIN.speed * dt;
+      if (train.position.x > TRAIN.to) {
+        train.position.x = TRAIN.from;
+        trainWait = 8 + Math.random() * 6;
+      }
+    }
+
+    for (let i = 0; i < offices.length; i++) {
+      const win = offices[i];
+      win.userData.next -= dt;
+      if (win.userData.next <= 0) {
+        win.visible = !win.visible;
+        win.userData.next = 3 + Math.random() * 9;
+      }
+    }
+  }
+
+  return { group, update };
+}
+
 export function buildWindow() {
   const group = new THREE.Group();
   group.name = 'Window';
@@ -288,7 +424,8 @@ export function buildWindow() {
   cityLight.shadow.camera.near = 0.2;
   cityLight.shadow.camera.far = 7;
 
-  group.add(sky, far, near, sign.group, glass, buildFrame(), buildBlinds(), cityLight, cityLight.target);
+  const life = buildCityLife(x, z, { far, near });
+  group.add(sky, far, near, sign.group, life.group, glass, buildFrame(), buildBlinds(), cityLight, cityLight.target);
 
   // Flicker: mostly on; every few seconds a short stutter of off/on.
   let clock = 0;
@@ -297,6 +434,7 @@ export function buildWindow() {
     for (const m of sign.materials) m.opacity = opacity;
   }
   function update(dt) {
+    life.update(dt);
     if (reducedMotion.matches) {
       setSign(1);
       return;

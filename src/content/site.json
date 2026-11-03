@@ -129,5 +129,15 @@
       "label": "Instagram",
       "url": "https://www.instagram.com/dylanprasodjo"
     }
-  ]
+  ],
+  "music": {
+    "playlistUrl": "https://open.spotify.com/playlist/2EpISbRR3INFTXK3srdzEB",
+    "buttonLabel": "Music",
+    "hint": "Click to play music",
+    "playLabel": "Play",
+    "pauseLabel": "Pause",
+    "nextLabel": "Shuffle to another song",
+    "closeLabel": "Hide player",
+    "regionLabel": "Music player"
+  }
 }

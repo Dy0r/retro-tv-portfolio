@@ -29,6 +29,13 @@
 - Desk lamp aims at the console, not the cartridge row (bright cartridge colours read as glowing otherwise).
 - Hosting: GitHub Pages from a public repo `retro-tv-portfolio`, auto-deployed by `.github/workflows/deploy.yml`. The site lives in a sub-folder there, so all file paths go through `src/assetUrl.js`; set BASE_PATH to "/" once dylanprasodjo.com points at it.
 - `References/*.mp4` stays out of git (not Dylan's work).
+- Deep links: `#/project/<slug>` opens a project directly (cartridge already in); the address follows the open project; browser Back ejects.
+- Link preview: title, description and tagline come verbatim from dylanprasodjo.com (site.json); share image `public/og-image.jpg` (1200x630 room shot, regenerate with `__dev.saveShareImage()` in dev); pixel-star favicon. Stay on the GitHub Pages address until Dylan says to switch to dylanprasodjo.com.
+- Content from dylanprasodjo.com is used verbatim (text, hero and gallery images, YouTube/Drive links). Anything that would need rewording stays `[COPY: …]`. The Framer template device mockups on the old home page are not Dylan's work and are not used.
+- About / Contact / Credits open in the same reader as the case studies (no cartridge); closing returns to the menu without ejecting.
+- Sound effects: original, synthesised live (src/audio/sfx.js), on by default with no toggle. They start after the first click/tap/key (browser rule), so entering by scroll alone is silent until then.
+- Music: player bottom-left (src/audio/musicPlayer.js) around Spotify's official embed, playlist in site.json `music.playlistUrl`, tracks cached in src/content/playlist.json (refresh: `node scripts/sync-playlist.mjs`). Nothing loads or plays until the visitor clicks it; a small "Click to play music" hint sits above it until then. Random song on start, shuffle button, auto-advance. Visitors not logged into Spotify hear 30-second previews.
+- City life in the window: a plane with blinking lights, an elevated train every 8-14 s, office lights switching on and off. Placed where the opening shot sees them (lower half of the window). Off under reduced motion.
 
 ---
 

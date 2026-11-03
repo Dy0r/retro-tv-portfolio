@@ -41,7 +41,8 @@ function reattach(cart) {
   cart.rotation.set(0, home.rotationY, 0);
 }
 
-export function playInsert({ scene, cart, slot, led, rig, tvScreen, onStatic, onComplete }) {
+// onSeat: the moment the cartridge clicks into the slot.
+export function playInsert({ scene, cart, slot, led, rig, tvScreen, onSeat, onStatic, onComplete }) {
   detach(scene, cart);
   slot.getWorldPosition(slotWorld);
   const finalY = slotWorld.y - SINK;
@@ -54,6 +55,7 @@ export function playInsert({ scene, cart, slot, led, rig, tvScreen, onStatic, on
     cart.rotation.set(0, 0, 0);
     tl.call(() => {
       setLed(led, LED_ON);
+      onSeat?.();
       onStatic?.();
     });
     return tl;
@@ -77,6 +79,7 @@ export function playInsert({ scene, cart, slot, led, rig, tvScreen, onStatic, on
 
   // LED blinks, TV fills with static, then the camera rises back to the TV.
   const inAt = pressAt + DURATIONS.insertPress;
+  tl.call(() => onSeat?.(), null, inAt);
   for (let i = 0; i < 3; i++) {
     tl.call(() => setLed(led, 0.2), null, inAt + i * DURATIONS.ledBlink * 2);
     tl.call(() => setLed(led, LED_ON), null, inAt + i * DURATIONS.ledBlink * 2 + DURATIONS.ledBlink);

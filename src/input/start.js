@@ -25,13 +25,15 @@ export function listenForStart(onStart, { target = window, ignore } = {}) {
 
   function onKey(e) {
     if (e.key !== 'Enter' && e.key !== ' ') return;
+    if (e.target.closest?.('button, a, dialog')) return; // a focused button does its own thing
     e.preventDefault();
     fire();
   }
 
   // pointerup covers mouse clicks, taps and the end of a swipe.
   function onPointerUp(e) {
-    if (e.target.closest?.('button, a, dialog')) return;
+    // Clicks on buttons, links, pop-ups and on-page panels ([data-ui]) aren't "enter".
+    if (e.target.closest?.('button, a, dialog, [data-ui]')) return;
     if (ignore?.(e)) return;
     fire();
   }

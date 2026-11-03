@@ -50,6 +50,7 @@
   --case-max-width: 1120px;
   --case-nav-width: 240px;
   --case-measure: 68ch;
+  --music-width: 340px;
   --ease-snap: cubic-bezier(0.2, 0.9, 0.25, 1.06);
 
   /* Enter hint and focus rings (provisional) */

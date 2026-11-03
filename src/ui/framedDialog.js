@@ -6,6 +6,8 @@
 // back to whatever opened it when it closes.
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+// Fires 'open' and 'close' whenever any framed pop-up opens or closes (for sounds).
+export const dialogEvents = new EventTarget();
 const FALLBACK_MS = 600; // in case a transition can't run (e.g. hidden tab)
 
 // A 7x7 pixel X, drawn as squares so it matches the pixel UI.
@@ -57,6 +59,7 @@ export function createFramedDialog({ className, labelledBy, closeLabel, focusClo
   function close() {
     if (!dialog.open || closing) return;
     closing = true;
+    dialogEvents.dispatchEvent(new Event('close'));
     onClosing?.();
     dialog.classList.remove('is-open');
     afterFade(dialog, () => {
@@ -87,6 +90,7 @@ export function createFramedDialog({ className, labelledBy, closeLabel, focusClo
     open() {
       if (dialog.open) return;
       dialog.showModal();
+      dialogEvents.dispatchEvent(new Event('open'));
       void dialog.offsetWidth; // let the closed styles apply before animating in
       dialog.classList.add('is-open');
       afterFade(dialog, () => {

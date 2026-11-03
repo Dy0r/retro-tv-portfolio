@@ -36,6 +36,9 @@ import { createGamepadInput } from './input/gamepad.js';
 import { createPosterInput } from './input/posterInput.js';
 import { createResumeOverlay, createResumeButton } from './ui/resumeOverlay.js';
 import { createCaseStudy } from './ui/caseStudy.js';
+import { createSfx } from './audio/sfx.js';
+import { createMusicPlayer } from './audio/musicPlayer.js';
+import { dialogEvents } from './ui/framedDialog.js';
 import { EASES, DURATIONS } from './motion/eases.js';
 
 // --- Loading screen ---------------------------------------------------------------
@@ -133,12 +136,24 @@ function setLed(level) {
   if (led) led.material.emissiveIntensity = level;
 }
 
+// --- Sound -------------------------------------------------------------------------
+// Sound effects are on by default (they start after the first click, tap or key,
+// as browsers require). Music only plays when someone presses play on the player.
+const sfx = createSfx();
+const music = createMusicPlayer();
+dialogEvents.addEventListener('open', () => sfx.open());
+dialogEvents.addEventListener('close', () => sfx.close());
+
 // --- Menu ---------------------------------------------------------------------------
 const menu = createMenu({
   projects,
   pages: site.menuPages,
   tvScreen,
-  onChange(item) {
+  onChange(item, delta) {
+    if (delta) {
+      sfx.blip(delta);
+      sfx.static(DURATIONS.menuStatic);
+    }
     cartridges?.setSelected(item.kind === 'project' ? item.slug : null);
     announcer.announce(item.spoken);
     showSelectionCues();
@@ -186,6 +201,7 @@ function skipIntro(e) {
 function startIntro() {
   window.addEventListener('keydown', skipIntro);
   canvas.addEventListener('pointerdown', skipIntro);
+  sfx.powerOn();
   intro = playIntro({
     rig,
     tvScreen,
@@ -334,6 +350,7 @@ function startInsert(slug) {
     led,
     rig,
     tvScreen,
+    onSeat: () => sfx.insert(),
     onStatic: () => menu.setPlaying(true),
     onComplete: () => transition(STATES.PROJECT, { slug }),
   });
@@ -392,6 +409,7 @@ function ejectCartridge() {
   ejecting = true;
   zoomOutButton.hide();
   cartMarker.hide();
+  sfx.eject();
   playEject({
     cart: inserted.cart,
     tvScreen,
@@ -501,6 +519,7 @@ onStateChange(({ from, to, data }) => {
     intro = null;
     cartridges?.setSelected(null);
     if (from === STATES.MENU) {
+      sfx.powerOff();
       outro = playOutro({
         rig,
         tvScreen,
@@ -579,6 +598,7 @@ Promise.all([buildScene(), menu.ready])
     return loader.finish();
   })
   .then(() => {
+    music.setVisible(true);
     if (getState() !== STATES.BOOT) return;
     const deepLink = slugFromHash();
     if (deepLink) enterProjectDirectly(deepLink);
@@ -624,6 +644,7 @@ if (import.meta.env.DEV) {
   rig.enableDevOrbit(canvas);
   window.__dev = {
     scene,
+    camera,
     tvScreen,
     menu,
     renderer,

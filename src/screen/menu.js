@@ -199,7 +199,7 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
     pressed = delta < 0 ? 'prev' : 'next';
     cursorOn = true;
     blinkClock = 0;
-    onChange?.(items[index]);
+    onChange?.(items[index], delta);
 
     if (reducedMotion.matches) {
       slide.offset = 0;

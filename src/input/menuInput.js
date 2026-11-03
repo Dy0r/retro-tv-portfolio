@@ -68,6 +68,8 @@ export function createMenuInput({ canvas, camera, menu, getScreen, getCartridgeR
       return;
     }
     if ((k === 'enter' || k === ' ') && !e.repeat) {
+      // A focused button or link (Zoom out, music player…) does its own thing.
+      if (e.target.closest?.('button, a')) return;
       e.preventDefault();
       onSelect?.();
       return;
