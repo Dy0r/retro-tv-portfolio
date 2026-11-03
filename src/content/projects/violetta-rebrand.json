@@ -1,0 +1,61 @@
+{
+  "order": 3,
+  "slug": "violetta-rebrand",
+  "title": "Violetta Rebrand",
+  "year": 2025,
+  "role": "[COPY: your role]",
+  "genre": "Branding",
+  "summary": "[COPY: one-line summary, max 120 characters]",
+  "cartridgeColor": "#d9a441",
+  "labelImage": "/projects/violetta-rebrand/label.svg",
+  "thumbnail": "/projects/violetta-rebrand/thumbnail.svg",
+  "hero": {
+    "type": "image",
+    "src": "/projects/violetta-rebrand/hero.svg",
+    "alt": "[COPY: describe the hero image for people who can't see it]"
+  },
+  "sections": [
+    {
+      "heading": "[COPY: heading for \"the problem\"]",
+      "body": [
+        "[COPY: paragraph]",
+        "[COPY: paragraph]"
+      ],
+      "media": null
+    },
+    {
+      "heading": "[COPY: heading for \"my role\"]",
+      "body": [
+        "[COPY: paragraph]"
+      ],
+      "media": null
+    },
+    {
+      "heading": "[COPY: heading for \"process\"]",
+      "body": [
+        "[COPY: paragraph]",
+        "[COPY: paragraph]"
+      ],
+      "media": {
+        "type": "image",
+        "src": "/projects/violetta-rebrand/process-1.svg",
+        "alt": "[COPY: describe this image]",
+        "caption": "[COPY: optional caption, or delete this line]"
+      }
+    },
+    {
+      "heading": "[COPY: heading for \"outcome\"]",
+      "body": [
+        "[COPY: paragraph]"
+      ],
+      "media": null
+    }
+  ],
+  "links": [
+    {
+      "label": "[COPY: link label]",
+      "url": "https://www.dylanprasodjo.com/work/violetta"
+    }
+  ],
+  "featured": true
+}

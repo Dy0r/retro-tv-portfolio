@@ -30,13 +30,26 @@
   --screen-accent: #22d6bd;
   --screen-off: #050707;
 
-  /* Resume overlay (provisional) */
-  --resume-backdrop: rgba(2, 6, 6, 0.72);
-  --resume-border: 6px;
-  --resume-step: 10px;
+  /* Framed pop-ups: resume, case study, image enlarger (provisional) */
+  --frame-backdrop: rgba(2, 6, 6, 0.78);
+  --frame-border: 6px;
+  --frame-step: 10px;
+  --dur-frame-in: 420ms;
+  --dur-frame-out: 260ms;
   --resume-max-width: 880px;
-  --dur-resume-in: 420ms;
-  --dur-resume-out: 260ms;
+  --screen-line: #1c2a28;
+
+  /* Case study reading (provisional). Body text: Atkinson Hyperlegible, made for legibility. */
+  --font-text: 'Atkinson Hyperlegible', sans-serif;
+  --size-body: 19px;
+  --line-body: 1.65;
+  --size-case-title: 34px;
+  --size-case-heading: 22px;
+  --size-case-nav: 16px;
+  --size-case-small: 14px;
+  --case-max-width: 1120px;
+  --case-nav-width: 240px;
+  --case-measure: 68ch;
   --ease-snap: cubic-bezier(0.2, 0.9, 0.25, 1.06);
 
   /* Enter hint and focus rings (provisional) */

@@ -222,8 +222,8 @@ body {
   cursor: pointer !important;
 }
 
-/* --- Resume overlay ------------------------------------------------------------- */
-dialog.resume {
+/* --- Framed pop-up (resume, case study, image enlarger) --------------------------- */
+dialog.framed {
   width: 100%;
   height: 100%;
   max-width: none;
@@ -232,68 +232,102 @@ dialog.resume {
   padding: 16px;
   box-sizing: border-box;
   border: 0;
-  background: var(--resume-backdrop);
+  background: var(--frame-backdrop);
   opacity: 0;
-  transition: opacity var(--dur-resume-out) var(--ease-hint);
+  transition: opacity var(--dur-frame-out) var(--ease-hint);
 }
 
-dialog.resume[open] {
+dialog.framed[open] {
   display: grid;
   place-items: center;
 }
 
-dialog.resume::backdrop {
+dialog.framed::backdrop {
   background: transparent;
 }
 
-dialog.resume.is-open {
+dialog.framed.is-open {
   opacity: 1;
-  transition-duration: var(--dur-resume-in);
+  transition-duration: var(--dur-frame-in);
 }
 
 /* Unclipped wrapper: carries the glow and the close button. */
-.resume__glow {
+.framed__glow {
   position: relative;
-  width: min(var(--resume-max-width), 100%);
-  height: min(92vh, 1140px);
+  max-width: 100%;
+  max-height: 100%;
   filter: drop-shadow(0 0 10px var(--screen-accent)) drop-shadow(0 0 28px var(--screen-accent));
   transform: scale(0.94);
-  transition: transform var(--dur-resume-out) var(--ease-snap);
+  transition: transform var(--dur-frame-out) var(--ease-snap);
   will-change: transform;
 }
 
-dialog.resume.is-open .resume__glow {
+dialog.framed.is-open .framed__glow {
   transform: scale(1);
-  transition-duration: var(--dur-resume-in);
+  transition-duration: var(--dur-frame-in);
 }
 
 /* Stepped (pixel) corners: the teal frame is the background showing around the inner panel. */
-.resume__frame,
-.resume__inner {
+.framed__frame,
+.framed__inner {
   clip-path: polygon(
-    var(--resume-step) 0, calc(100% - var(--resume-step)) 0,
-    calc(100% - var(--resume-step)) var(--resume-step), 100% var(--resume-step),
-    100% calc(100% - var(--resume-step)), calc(100% - var(--resume-step)) calc(100% - var(--resume-step)),
-    calc(100% - var(--resume-step)) 100%, var(--resume-step) 100%,
-    var(--resume-step) calc(100% - var(--resume-step)), 0 calc(100% - var(--resume-step)),
-    0 var(--resume-step), var(--resume-step) var(--resume-step)
+    var(--frame-step) 0, calc(100% - var(--frame-step)) 0,
+    calc(100% - var(--frame-step)) var(--frame-step), 100% var(--frame-step),
+    100% calc(100% - var(--frame-step)), calc(100% - var(--frame-step)) calc(100% - var(--frame-step)),
+    calc(100% - var(--frame-step)) 100%, var(--frame-step) 100%,
+    var(--frame-step) calc(100% - var(--frame-step)), 0 calc(100% - var(--frame-step)),
+    0 var(--frame-step), var(--frame-step) var(--frame-step)
   );
 }
 
-.resume__frame {
+.framed__frame {
   height: 100%;
-  padding: var(--resume-border);
+  padding: var(--frame-border);
   box-sizing: border-box;
   background: var(--screen-accent);
 }
 
-.resume__inner {
+.framed__inner {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: calc(var(--resume-step) + 4px);
+  padding: calc(var(--frame-step) + 4px);
   box-sizing: border-box;
   background: var(--screen-bg);
+}
+
+/* Pixel X, sitting on the frame's top-right corner. */
+.framed__close {
+  position: absolute;
+  top: -18px;
+  right: -18px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: var(--frame-border) solid var(--screen-accent);
+  background: var(--screen-bg);
+  color: var(--screen-accent);
+  cursor: pointer;
+}
+
+.framed__close:hover {
+  background: var(--screen-accent);
+  color: var(--screen-bg);
+}
+
+.framed :focus-visible,
+.resume-launch:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 4px;
+}
+
+/* --- Resume ----------------------------------------------------------------------- */
+.resume .framed__glow {
+  width: min(var(--resume-max-width), 100%);
+  height: min(92vh, 1140px);
 }
 
 .resume__doc {
@@ -315,32 +349,271 @@ dialog.resume.is-open .resume__glow {
   color: var(--screen-accent);
 }
 
-.resume__open:focus-visible,
-.resume__close:focus-visible,
-.resume-launch:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 4px;
+/* --- Case study ------------------------------------------------------------------------ */
+.case .framed__glow {
+  width: min(var(--case-max-width), 100%);
+  height: min(92vh, 1100px);
 }
 
-/* Pixel X, sitting on the frame's top-right corner. */
-.resume__close {
-  position: absolute;
-  top: -18px;
-  right: -18px;
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
+.case .framed__inner {
   padding: 0;
-  border: var(--resume-border) solid var(--screen-accent);
-  background: var(--screen-bg);
+  color: var(--screen-ink);
+}
+
+.case__header {
+  padding: 28px 40px 18px;
+  border-bottom: 2px solid var(--screen-line);
+}
+
+.case__counter,
+.case__meta {
+  margin: 0;
+  font: 400 var(--size-case-small) / 1.4 var(--font-pixel);
+  letter-spacing: 0.06em;
+}
+
+.case__counter {
+  color: var(--screen-dim);
+}
+
+.case__meta {
   color: var(--screen-accent);
+}
+
+.case__title {
+  margin: 6px 0 4px;
+  font: 700 var(--size-case-title) / 1.1 var(--font-pixel);
+  color: var(--screen-ink);
+}
+
+/* Reading progress: a thin bar that fills (scaleX) as you scroll. */
+.case__progress {
+  height: 4px;
+  background: var(--screen-line);
+}
+
+.case__progress i {
+  display: block;
+  height: 100%;
+  background: var(--screen-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.case__body {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--case-nav-width) 1fr;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Section list: where you are, and a way to jump. */
+.case__nav {
+  padding: 28px 0 28px 24px;
+  border-right: 2px solid var(--screen-line);
+  overflow: auto;
+}
+
+.case__nav-title {
+  margin: 0 0 12px;
+  font: 400 var(--size-case-small) / 1.4 var(--font-pixel);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--screen-dim);
+}
+
+.case__nav ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.case__nav button {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 16px 8px 0;
+  border: 0;
+  background: none;
+  color: var(--screen-dim);
+  font: 400 var(--size-case-nav) / 1.35 var(--font-text);
+  text-align: left;
   cursor: pointer;
 }
 
-.resume__close:hover {
+.case__nav button::before {
+  content: '';
+  flex: none;
+  width: 8px;
+  height: 8px;
+  background: currentColor;
+  opacity: 0.35;
+}
+
+.case__nav button:hover,
+.case__nav button[aria-current='true'] {
+  color: var(--screen-ink);
+}
+
+.case__nav button[aria-current='true']::before {
+  background: var(--screen-accent);
+  opacity: 1;
+}
+
+.case__scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.case__content {
+  max-width: var(--case-measure);
+  /* Room at the end, so every section (even the last, short one) can scroll up to
+     the reading line and show as current in the section list. */
+  padding: 32px 40px 60vh;
+  font: 400 var(--size-body) / var(--line-body) var(--font-text);
+  color: var(--screen-ink);
+}
+
+.case__content section {
+  margin-top: 48px;
+}
+
+.case__content h3 {
+  margin: 0 0 16px;
+  font: 700 var(--size-case-heading) / 1.25 var(--font-pixel);
+  color: var(--screen-ink);
+}
+
+.case__content p {
+  margin: 0 0 1em;
+}
+
+.case__content figure {
+  margin: 24px 0;
+}
+
+.case__content figcaption {
+  margin-top: 10px;
+  font-size: var(--size-case-small);
+  color: var(--screen-dim);
+}
+
+/* Images are buttons: click (or Enter) to enlarge. */
+.case__zoom {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 2px solid var(--screen-line);
+  background: none;
+  cursor: zoom-in;
+}
+
+.case__zoom img,
+.case__content video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.case__zoom-tag {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 6px 8px;
+  background: var(--screen-bg);
+  color: var(--screen-accent);
+  font: 400 var(--size-case-small) / 1 var(--font-pixel);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.case__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.case__links a {
+  display: inline-block;
+  padding: 12px 16px;
+  border: 2px solid var(--screen-accent);
+  color: var(--screen-accent);
+  font: 400 var(--size-case-small) / 1 var(--font-pixel);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.case__links a:hover {
   background: var(--screen-accent);
   color: var(--screen-bg);
+}
+
+/* "Scroll to read" cue at the bottom; fades once you start scrolling. */
+.case__hint {
+  position: absolute;
+  left: calc(var(--case-nav-width) + 40px);
+  bottom: 20px;
+  margin: 0;
+  padding: 8px 12px;
+  background: var(--screen-bg);
+  color: var(--screen-accent);
+  font: 400 var(--size-case-small) / 1 var(--font-pixel);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+  transition: opacity var(--dur-hint-out) var(--ease-hint);
+}
+
+.case__hint.is-hidden {
+  opacity: 0;
+}
+
+/* Narrow screens: no section list, just the progress bar. */
+@media (max-width: 760px) {
+  .case__body {
+    grid-template-columns: 1fr;
+  }
+  .case__nav {
+    display: none;
+  }
+  .case__header,
+  .case__content {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .case__hint {
+    left: 20px;
+  }
+}
+
+/* --- Image enlarger ---------------------------------------------------------------- */
+.lightbox .framed__glow {
+  width: auto;
+}
+
+.lightbox .framed__inner {
+  align-items: center;
+  gap: 10px;
+}
+
+.lightbox__img {
+  display: block;
+  max-width: min(1600px, calc(100vw - 96px));
+  max-height: calc(100vh - 140px);
+  object-fit: contain;
+}
+
+.lightbox__caption {
+  margin: 0;
+  font: 400 var(--size-case-small) / 1.4 var(--font-text);
+  color: var(--screen-dim);
 }
 
 /* Keyboard-only route to the resume: hidden until focused with Tab. */
@@ -371,8 +644,9 @@ dialog.resume.is-open .resume__glow {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  dialog.resume,
-  .resume__glow {
+  dialog.framed,
+  .framed__glow,
+  .case__hint {
     transition: none;
   }
 }

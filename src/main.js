@@ -2,9 +2,11 @@ import * as THREE from 'three';
 import { gsap } from 'gsap';
 import '@fontsource/pixelify-sans/latin-400.css';
 import '@fontsource/pixelify-sans/latin-700.css';
+import '@fontsource/atkinson-hyperlegible/latin-400.css';
+import '@fontsource/atkinson-hyperlegible/latin-700.css';
 import './styles/tokens.css';
 import './styles/base.css';
-import projects from './content/projects.json';
+import projects from './content/projects.js';
 import site from './content/site.json';
 import { STATES, getState, transition, onStateChange } from './state.js';
 import { loadModel, loadingManager } from './scene/models.js';
@@ -33,6 +35,7 @@ import { createMenuInput } from './input/menuInput.js';
 import { createGamepadInput } from './input/gamepad.js';
 import { createPosterInput } from './input/posterInput.js';
 import { createResumeOverlay, createResumeButton } from './ui/resumeOverlay.js';
+import { createCaseStudy } from './ui/caseStudy.js';
 import { EASES, DURATIONS } from './motion/eases.js';
 
 // --- Loading screen ---------------------------------------------------------------
@@ -110,7 +113,9 @@ async function buildScene() {
   scene.add(neonSigns.group);
   scene.add(buildProps({ consoleBack, tvSide }));
   scene.add(buildLeds({ tvBack, tvWidth: TV_SIZE.width }));
-  scene.add(buildLights({ screenCenter, lampTarget: new THREE.Vector3(0.18, standTop, -0.5) }));
+  // The lamp points at the console, so the cartridge row only gets its soft edge
+  // (bright cartridge colours like yellow otherwise read as glowing).
+  scene.add(buildLights({ screenCenter, lampTarget: new THREE.Vector3(-0.05, standTop, -0.55) }));
 
   const [tv, consoleModel, carts] = await Promise.all([
     loadModel('tv', buildTV),
@@ -207,6 +212,8 @@ const gamepad = createGamepadInput((action) => {
   else if (state === STATES.MENU && action === 'back') zoomOut();
   else if (state === STATES.MENU && action === 'confirm') playSelected();
   else if (state === STATES.PROJECT && action === 'back') eject();
+  else if (state === STATES.PROJECT && action === 'prev') caseStudy.scrollBy(-240);
+  else if (state === STATES.PROJECT && action === 'next') caseStudy.scrollBy(240);
   else if (state === STATES.RESUME && action === 'back') resumeOverlay.close();
 });
 
@@ -332,8 +339,42 @@ function startInsert(slug) {
   if (import.meta.env.DEV) window.__dev.timeline = tl;
 }
 
+// The case study opens a moment after the cartridge is in, over the title screen.
+// Closing it (X, Esc, click outside, gamepad B) ejects the cartridge.
+let caseCovering = false;
+let caseOpenCall = null;
+const caseStudy = createCaseStudy({
+  onOpened: () => {
+    caseCovering = true;
+    updatePaused();
+  },
+  onClosing: () => {
+    caseCovering = false;
+    updatePaused();
+  },
+  onClosed: () => ejectCartridge(),
+});
+
+function openCaseStudy(slug) {
+  const index = projects.findIndex((p) => p.slug === slug);
+  caseOpenCall = gsap.delayedCall(DURATIONS.caseOpenDelay, () => {
+    if (getState() === STATES.PROJECT) caseStudy.open(projects[index], index, projects.length);
+  });
+}
+
+// Every way of leaving a project goes through here: close the case study first
+// (which then ejects), or eject straight away if it isn't open.
 function eject() {
+  if (caseStudy.isOpen) {
+    caseStudy.close();
+    return;
+  }
+  ejectCartridge();
+}
+
+function ejectCartridge() {
   if (getState() !== STATES.PROJECT || ejecting || !inserted) return;
+  caseOpenCall?.kill();
   ejecting = true;
   zoomOutButton.hide();
   cartMarker.hide();
@@ -351,6 +392,9 @@ function eject() {
 }
 
 function onProjectKey(e) {
+  // Inside a pop-up (case study, enlarged image), that pop-up handles Esc itself,
+  // so the topmost one closes first.
+  if (e.target.closest?.('dialog')) return;
   if (e.key === 'Escape') {
     e.preventDefault();
     eject();
@@ -433,7 +477,10 @@ onStateChange(({ from, to, data }) => {
   }
 
   if (to === STATES.INSERTING) startInsert(data.slug);
-  if (to === STATES.PROJECT) announcer.announce(menu.current.spoken);
+  if (to === STATES.PROJECT) {
+    announcer.announce(menu.current.spoken);
+    openCaseStudy(data.slug);
+  }
   if (to === STATES.RESUME) showResume();
   else {
     resumeOpenCall?.kill();
@@ -477,7 +524,7 @@ const COVERING_STATES = new Set([STATES.FALLBACK_2D]);
 const MENU_VISIBLE = new Set([STATES.INTRO, STATES.MENU, STATES.INSERTING, STATES.PROJECT]);
 let renderPaused = false;
 function updatePaused() {
-  renderPaused = document.hidden || resumeCovering || COVERING_STATES.has(getState());
+  renderPaused = document.hidden || resumeCovering || caseCovering || COVERING_STATES.has(getState());
 }
 document.addEventListener('visibilitychange', updatePaused);
 onStateChange(updatePaused);

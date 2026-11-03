@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#c8553d"/>
+  <rect x="42" y="42" width="1116" height="716" fill="none" stroke="#fff" stroke-opacity="0.35" stroke-width="3"/>
+  <text x="84" y="400" font-family="monospace" font-weight="700" font-size="84" fill="#fff">Plinth</text>
+  <text x="84" y="509.2" font-family="monospace" font-size="50.4" fill="#fff" fill-opacity="0.75">2025</text>
+  <text x="84" y="716" font-family="monospace" font-size="33.6" fill="#fff" fill-opacity="0.5">PLACEHOLDER PROCESS-1</text>
+</svg>

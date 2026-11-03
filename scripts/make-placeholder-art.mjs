@@ -1,13 +1,21 @@
-// Generates temporary label + thumbnail art for every project in projects.json:
-// a card in the project's cartridge colour with its title and year.
+// Generates temporary art for every project file in src/content/projects/: a card
+// in the project's cartridge colour with its title, for each image path the file
+// mentions (label, thumbnail, hero, section images) that doesn't exist yet.
 // Run: node scripts/make-placeholder-art.mjs
-// It only writes files that don't exist yet, so your real art is never overwritten.
-// Replace a placeholder by dropping in your own file and updating the path in projects.json.
+// It only creates missing .svg files, so your real images are never overwritten.
+// To use real art, drop your file into public/projects/<slug>/ and point the path
+// in the project's file at it.
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
+import { dirname, basename } from 'node:path';
 
-const PROJECTS_FILE = 'src/content/projects.json';
-const projects = JSON.parse(readFileSync(PROJECTS_FILE, 'utf8'));
+const DIR = 'src/content/projects';
+const SIZES = {
+  label: [400, 300],
+  thumbnail: [640, 480],
+  hero: [1600, 900],
+  image: [1200, 800],
+};
 
 const escape = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
@@ -24,28 +32,29 @@ function card({ width, height, title, year, color, kind }) {
 `;
 }
 
-for (const p of projects) {
-  const dir = `public/projects/${p.slug}`;
-  mkdirSync(dir, { recursive: true });
-
-  const files = [
-    { key: 'labelImage', name: 'label.svg', width: 400, height: 300, kind: 'label' },
-    { key: 'thumbnail', name: 'thumbnail.svg', width: 640, height: 480, kind: 'thumbnail' },
+// Every image path a project file mentions, with what kind of image it is.
+function imagePaths(p) {
+  const paths = [
+    [p.labelImage, 'label'],
+    [p.thumbnail, 'thumbnail'],
+    [p.hero?.type === 'image' ? p.hero.src : null, 'hero'],
   ];
-
-  for (const f of files) {
-    const path = `${dir}/${f.name}`;
-    // Only fill in projects whose image is missing or still a placeholder path.
-    const current = p[f.key];
-    const currentExists = current && existsSync(`public${current}`);
-    if (currentExists && !current.endsWith(f.name)) continue;
-    if (!existsSync(path)) {
-      writeFileSync(path, card({ ...f, title: p.title, year: p.year, color: p.cartridgeColor }));
-      console.log(`wrote ${path}`);
-    }
-    p[f.key] = `/projects/${p.slug}/${f.name}`;
+  for (const section of p.sections ?? []) {
+    const media = Array.isArray(section.media) ? section.media : section.media ? [section.media] : [];
+    for (const m of media) if (m.type === 'image') paths.push([m.src, 'image']);
   }
+  return paths.filter(([path]) => path && path.endsWith('.svg'));
 }
 
-writeFileSync(PROJECTS_FILE, JSON.stringify(projects, null, 2) + '\n');
-console.log(`updated ${PROJECTS_FILE}`);
+for (const file of readdirSync(DIR).filter((f) => f.endsWith('.json'))) {
+  const p = JSON.parse(readFileSync(`${DIR}/${file}`, 'utf8'));
+  for (const [path, kind] of imagePaths(p)) {
+    const out = `public${path}`;
+    if (existsSync(out)) continue;
+    mkdirSync(dirname(out), { recursive: true });
+    const [width, height] = SIZES[kind];
+    const label = kind === 'image' ? basename(path, '.svg') : kind;
+    writeFileSync(out, card({ width, height, title: p.title, year: p.year, color: p.cartridgeColor, kind: label }));
+    console.log(`wrote ${out}`);
+  }
+}

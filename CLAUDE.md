@@ -23,7 +23,10 @@
 - Cartridges never glow (no emissive, matte plastic); only the selected one lifts. The arrows above them are crisp, not neon.
 - Cartridge insert (INSERTING): Enter / click the screen / click the selected cartridge / gamepad A. The cartridge moves by itself (no hand).
 - Selection cues: in the menu an "Insert" button (bottom-right, ENTER key cap) shows while a project is selected, and a bobbing teal pixel arrow points down at the selected cartridge. Once inserted, stacked up-arrows bob above the cartridge; clicking them or the cartridge ejects (Esc and the Eject button still work).
-- Until the case-study overlay exists (Dylan will provide it later), PROJECT shows the project's title screen on the TV; the top-left button becomes "Eject" (also Esc / gamepad B) and the cartridge returns to the row.
+- PROJECT: the TV shows the project's title screen, then the case study opens in the shared framed pop-up (src/ui/framedDialog.js, same frame as the resume): header, hero, sections, links; Lenis smooth scroll inside it; indicators = progress bar, section list with current marker (click to jump), "Scroll to read" cue. Every image enlarges in the same frame (src/ui/lightbox.js). Closing the case study (X / Esc / click outside / gamepad B) ejects the cartridge back to the menu. Topmost pop-up always handles Esc first.
+- Project copy lives in one file per project: src/content/projects/<slug>.json (guide: README.md in that folder). Body text is a list of paragraphs. Placeholder hero/process images come from scripts/make-placeholder-art.mjs.
+- Reading font: Atkinson Hyperlegible (OFL, self-hosted) for case-study body text at 19px; pixel font for headings/labels. All case-study text colours pass WCAG AAA on --screen-bg.
+- Desk lamp aims at the console, not the cartridge row (bright cartridge colours read as glowing otherwise).
 - Hosting: GitHub Pages from a public repo `retro-tv-portfolio`, auto-deployed by `.github/workflows/deploy.yml`. The site lives in a sub-folder there, so all file paths go through `src/assetUrl.js`; set BASE_PATH to "/" once dylanprasodjo.com points at it.
 - `References/*.mp4` stays out of git (not Dylan's work).
 
@@ -98,12 +101,12 @@ After every visual pass, run a taste review: compare the result against `referen
 * `src/motion/eases.js` named eases and durations
 * `src/styles/tokens.css` locked design tokens
 * `src/content/site.json` name, tagline, intro lines, socials, contact
-* `src/content/projects.json` the projects
+* `src/content/projects/<slug>.json` one file per project (Dylan edits these; guide in `src/content/projects/README.md`), loaded by `src/content/projects.js`
 * `public/models/`, `public/textures/`, `public/audio/`, `public/projects/<slug>/`
 * `references/` my moodboard images
 * `blender/` source .blend files
 
-### projects.json schema
+### Project file schema (`src/content/projects/<slug>.json`; was projects.json)
 Each project: slug, title, year, role, genre (short tag), summary (max 120 chars), cartridgeColor (hex), labelImage, thumbnail, hero (image or video), sections [{heading, body, media}], links [{label, url}], featured (bool).
 Generate placeholder label art and thumbnails (simple coloured cards with the title) so the menu looks complete from day one.
 

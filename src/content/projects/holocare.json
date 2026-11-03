@@ -1,0 +1,61 @@
+{
+  "order": 2,
+  "slug": "holocare",
+  "title": "Holocare",
+  "year": 2024,
+  "role": "[COPY: your role]",
+  "genre": "Design",
+  "summary": "[COPY: one-line summary, max 120 characters]",
+  "cartridgeColor": "#3d7c8c",
+  "labelImage": "/projects/holocare/label.svg",
+  "thumbnail": "/projects/holocare/thumbnail.svg",
+  "hero": {
+    "type": "image",
+    "src": "/projects/holocare/hero.svg",
+    "alt": "[COPY: describe the hero image for people who can't see it]"
+  },
+  "sections": [
+    {
+      "heading": "[COPY: heading for \"the problem\"]",
+      "body": [
+        "[COPY: paragraph]",
+        "[COPY: paragraph]"
+      ],
+      "media": null
+    },
+    {
+      "heading": "[COPY: heading for \"my role\"]",
+      "body": [
+        "[COPY: paragraph]"
+      ],
+      "media": null
+    },
+    {
+      "heading": "[COPY: heading for \"process\"]",
+      "body": [
+        "[COPY: paragraph]",
+        "[COPY: paragraph]"
+      ],
+      "media": {
+        "type": "image",
+        "src": "/projects/holocare/process-1.svg",
+        "alt": "[COPY: describe this image]",
+        "caption": "[COPY: optional caption, or delete this line]"
+      }
+    },
+    {
+      "heading": "[COPY: heading for \"outcome\"]",
+      "body": [
+        "[COPY: paragraph]"
+      ],
+      "media": null
+    }
+  ],
+  "links": [
+    {
+      "label": "[COPY: link label]",
+      "url": "https://www.dylanprasodjo.com/work/holocare"
+    }
+  ],
+  "featured": true
+}

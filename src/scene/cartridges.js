@@ -5,7 +5,7 @@ import { DAMPING } from '../motion/eases.js';
 import { assetUrl } from '../assetUrl.js';
 
 // One cartridge per project, standing in a fanned row next to the console.
-// Colour and label art come from projects.json, never from code.
+// Colour and label art come from each project's file in content/projects/, never from code.
 // The cartridge for the project selected on the TV lifts slightly (no glow).
 
 const textureLoader = new THREE.TextureLoader(loadingManager);

@@ -1,0 +1,61 @@
+{
+  "order": 1,
+  "slug": "plinth",
+  "title": "Plinth",
+  "year": 2025,
+  "role": "[COPY: your role]",
+  "genre": "Design",
+  "summary": "[COPY: one-line summary, max 120 characters]",
+  "cartridgeColor": "#c8553d",
+  "labelImage": "/projects/plinth/label.svg",
+  "thumbnail": "/projects/plinth/thumbnail.svg",
+  "hero": {
+    "type": "image",
+    "src": "/projects/plinth/hero.svg",
+    "alt": "[COPY: describe the hero image for people who can't see it]"
+  },
+  "sections": [
+    {
+      "heading": "[COPY: heading for \"the problem\"]",
+      "body": [
+        "[COPY: paragraph]",
+        "[COPY: paragraph]"
+      ],
+      "media": null
+    },
+    {
+      "heading": "[COPY: heading for \"my role\"]",
+      "body": [
+        "[COPY: paragraph]"
+      ],
+      "media": null
+    },
+    {
+      "heading": "[COPY: heading for \"process\"]",
+      "body": [
+        "[COPY: paragraph]",
+        "[COPY: paragraph]"
+      ],
+      "media": {
+        "type": "image",
+        "src": "/projects/plinth/process-1.svg",
+        "alt": "[COPY: describe this image]",
+        "caption": "[COPY: optional caption, or delete this line]"
+      }
+    },
+    {
+      "heading": "[COPY: heading for \"outcome\"]",
+      "body": [
+        "[COPY: paragraph]"
+      ],
+      "media": null
+    }
+  ],
+  "links": [
+    {
+      "label": "[COPY: link label]",
+      "url": "https://www.dylanprasodjo.com/work/plinth"
+    }
+  ],
+  "featured": true
+}

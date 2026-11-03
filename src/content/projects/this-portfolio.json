@@ -1,0 +1,56 @@
+{
+  "order": 5,
+  "slug": "this-portfolio",
+  "title": "This Portfolio",
+  "year": 2026,
+  "role": "[COPY: your role]",
+  "genre": "[COPY: genre tag]",
+  "summary": "[COPY: one-line summary, max 120 characters]",
+  "cartridgeColor": "#4a4a52",
+  "labelImage": "/projects/this-portfolio/label.svg",
+  "thumbnail": "/projects/this-portfolio/thumbnail.svg",
+  "hero": {
+    "type": "image",
+    "src": "/projects/this-portfolio/hero.svg",
+    "alt": "[COPY: describe the hero image for people who can't see it]"
+  },
+  "sections": [
+    {
+      "heading": "[COPY: heading for \"the problem\"]",
+      "body": [
+        "[COPY: paragraph]",
+        "[COPY: paragraph]"
+      ],
+      "media": null
+    },
+    {
+      "heading": "[COPY: heading for \"my role\"]",
+      "body": [
+        "[COPY: paragraph]"
+      ],
+      "media": null
+    },
+    {
+      "heading": "[COPY: heading for \"process\"]",
+      "body": [
+        "[COPY: paragraph]",
+        "[COPY: paragraph]"
+      ],
+      "media": {
+        "type": "image",
+        "src": "/projects/this-portfolio/process-1.svg",
+        "alt": "[COPY: describe this image]",
+        "caption": "[COPY: optional caption, or delete this line]"
+      }
+    },
+    {
+      "heading": "[COPY: heading for \"outcome\"]",
+      "body": [
+        "[COPY: paragraph]"
+      ],
+      "media": null
+    }
+  ],
+  "links": [],
+  "featured": true
+}

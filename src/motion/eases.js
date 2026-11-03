@@ -30,6 +30,8 @@ export const DURATIONS = {
   resumeZoom: 0.9, // camera glides up to the resume poster
   powerOff: 0.32, // picture collapses to a line, then a dot
   outroDolly: 1.5, // camera glides from the TV back out to the room
+  caseOpenDelay: 0.35, // title screen shows briefly before the case study opens
+  caseJump: 0.7, // scrolling to a section from the section list
   screenGlitch: 0.2, // a rare on/off flicker on the TV picture
   insertCamera: 0.8, // camera eases down to the console
   insertLift: 0.28, // cartridge lifts out of the row

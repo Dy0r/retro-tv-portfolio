@@ -1,0 +1,61 @@
+{
+  "order": 4,
+  "slug": "design-is-addition",
+  "title": "Design is Addition",
+  "year": 2023,
+  "role": "[COPY: your role]",
+  "genre": "Branding",
+  "summary": "[COPY: one-line summary, max 120 characters]",
+  "cartridgeColor": "#5b6b3a",
+  "labelImage": "/projects/design-is-addition/label.svg",
+  "thumbnail": "/projects/design-is-addition/thumbnail.svg",
+  "hero": {
+    "type": "image",
+    "src": "/projects/design-is-addition/hero.svg",
+    "alt": "[COPY: describe the hero image for people who can't see it]"
+  },
+  "sections": [
+    {
+      "heading": "[COPY: heading for \"the problem\"]",
+      "body": [
+        "[COPY: paragraph]",
+        "[COPY: paragraph]"
+      ],
+      "media": null
+    },
+    {
+      "heading": "[COPY: heading for \"my role\"]",
+      "body": [
+        "[COPY: paragraph]"
+      ],
+      "media": null
+    },
+    {
+      "heading": "[COPY: heading for \"process\"]",
+      "body": [
+        "[COPY: paragraph]",
+        "[COPY: paragraph]"
+      ],
+      "media": {
+        "type": "image",
+        "src": "/projects/design-is-addition/process-1.svg",
+        "alt": "[COPY: describe this image]",
+        "caption": "[COPY: optional caption, or delete this line]"
+      }
+    },
+    {
+      "heading": "[COPY: heading for \"outcome\"]",
+      "body": [
+        "[COPY: paragraph]"
+      ],
+      "media": null
+    }
+  ],
+  "links": [
+    {
+      "label": "[COPY: link label]",
+      "url": "https://www.dylanprasodjo.com/work/design-is-addition"
+    }
+  ],
+  "featured": true
+}

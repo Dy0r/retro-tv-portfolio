@@ -1,6 +1,15 @@
 import { defineConfig } from 'vite';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 
+// Same order as src/content/projects.js: one JSON file per project, sorted by `order`.
+function readProjects() {
+  const dir = 'src/content/projects';
+  return readdirSync(dir)
+    .filter((f) => f.endsWith('.json'))
+    .map((f) => JSON.parse(readFileSync(`${dir}/${f}`, 'utf8')))
+    .sort((a, b) => a.order - b.order);
+}
+
 // Fills index.html from the content JSON: the <noscript> project list (so visitors
 // and search engines without WebGL/JavaScript still see the work) and the loading
 // screen label. No site text lives in the HTML itself.
@@ -9,7 +18,7 @@ function htmlFromContent() {
     name: 'html-from-content',
     transformIndexHtml(html) {
       const site = JSON.parse(readFileSync('src/content/site.json', 'utf8'));
-      const projects = JSON.parse(readFileSync('src/content/projects.json', 'utf8'));
+      const projects = readProjects();
       const items = projects
         .map((p) => `<li><a href="#/project/${p.slug}">${p.title}</a> (${p.year}) — ${p.summary}</li>`)
         .join('\n        ');
