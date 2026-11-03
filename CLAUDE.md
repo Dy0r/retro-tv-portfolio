@@ -19,6 +19,11 @@
 - Room neon: three abstract tube pieces (red ring-and-bar by the window, teal corner tube, teal wave above the shelf), each flickering rarely (every 8-20 s). No text or logos in neon.
 - Resume: the poster (`ResumePoster` mesh) is clickable from the opening shot and the menu. Camera zooms to it, then a modal overlay shows the PDF in a stepped-corner teal frame with a pixel X; X / Esc / click outside closes. This is the RESUME state (returns to where it came from). PDF lives at `public/resume/dylan-prasodjo-resume.pdf` (path in site.json). Dylan is fine with it being public. Labels "Close resume" / "Open PDF" approved.
 - Zoom out: from the menu, a top-left button ("Zoom out" + ESC key cap), Esc or gamepad B returns to the opening shot (MENU -> BOOT). The TV powers off (picture -> line -> dot) while the camera glides back; then the flicker and hint return. With the resume open, the first Esc closes the resume, the second zooms out.
+- TV picture: faint moving grain while on, plus a rare ~0.2 s glitch (on/off flicker + small sideways tear) every 15-30 s. None under reduced motion.
+- Cartridge insert (INSERTING): Enter / click the screen / click the selected cartridge / gamepad A. Two versions kept side by side for comparison: original (cartridge moves by itself, default) and hand test (`?insert=hand`, first-person hand in a black sleeve, `public/models/hand.glb`). Dylan will choose one.
+- Until the case-study overlay exists (Dylan will provide it later), PROJECT shows the project's title screen on the TV; the top-left button becomes "Eject" (also Esc / gamepad B) and the cartridge returns to the row.
+- Hosting: GitHub Pages from a public repo `retro-tv-portfolio`, auto-deployed by `.github/workflows/deploy.yml`. The site lives in a sub-folder there, so all file paths go through `src/assetUrl.js`; set BASE_PATH to "/" once dylanprasodjo.com points at it.
+- `References/*.mp4` stays out of git (not Dylan's work).
 
 ---
 
