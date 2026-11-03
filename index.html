@@ -3,12 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>[COPY: page title]</title>
-    <meta name="description" content="[COPY: meta description]" />
-    <meta property="og:title" content="[COPY: page title]" />
-    <meta property="og:description" content="[COPY: meta description]" />
-    <meta property="og:image" content="/og-image.png" />
+    <title>%PAGE_TITLE%</title>
+    <meta name="description" content="%META_DESCRIPTION%" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+    <!-- Link previews (iMessage, LinkedIn, Slack, X...). Text comes from site.json. -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="%SITE_NAME%" />
+    <meta property="og:title" content="%PAGE_TITLE%" />
+    <meta property="og:description" content="%META_DESCRIPTION%" />
+    <meta property="og:url" content="%SITE_URL%" />
+    <meta property="og:image" content="%SHARE_IMAGE%" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="%SHARE_IMAGE_ALT%" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="%PAGE_TITLE%" />
+    <meta name="twitter:description" content="%META_DESCRIPTION%" />
+    <meta name="twitter:image" content="%SHARE_IMAGE%" />
   </head>
   <body>
     <canvas id="scene" aria-hidden="true"></canvas>

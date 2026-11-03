@@ -1,7 +1,10 @@
 {
   "name": "Dylan Prasodjo",
-  "pageTitle": "[COPY: browser tab / search result title]",
-  "metaDescription": "[COPY: 150-character description for search engines and link previews]",
+  "pageTitle": "Dylan Prasodjo's Portfolio",
+  "metaDescription": "I solve complex problems by creating unique digital experiences that goes beyond aesthetics.",
+  "siteUrl": "https://dy0r.github.io/retro-tv-portfolio/",
+  "shareImage": "og-image.jpg",
+  "shareImageAlt": "[COPY: describe the share image, e.g. what the room shot shows]",
   "tagline": "[COPY: one-line intro shown under your name on the loading screen]",
   "introLines": [
     "[COPY: short line about you #1]",

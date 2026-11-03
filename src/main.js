@@ -608,5 +608,25 @@ gsap.ticker.add(tick);
 if (import.meta.env.DEV) {
   import('./ui/debug.js').then(({ initDebug }) => initDebug());
   rig.enableDevOrbit(canvas);
-  window.__dev = { scene, tvScreen, menu, renderer };
+  window.__dev = {
+    scene,
+    tvScreen,
+    menu,
+    renderer,
+    // Saves the current view as the 1200x630 link-preview image (public/og-image.jpg).
+    async saveShareImage() {
+      postFx.render(0);
+      const shot = document.createElement('canvas');
+      shot.width = 1200;
+      shot.height = 630;
+      const ctx = shot.getContext('2d');
+      const src = renderer.domElement;
+      const scale = Math.max(shot.width / src.width, shot.height / src.height);
+      const w = src.width * scale;
+      const h = src.height * scale;
+      ctx.drawImage(src, (shot.width - w) / 2, (shot.height - h) / 2, w, h);
+      const res = await fetch('/__dev/save-share-image', { method: 'POST', body: shot.toDataURL('image/jpeg', 0.88) });
+      return res.text();
+    },
+  };
 }

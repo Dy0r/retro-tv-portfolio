@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync, writeFileSync } from 'node:fs';
 
 // Same order as src/content/projects.js: one JSON file per project, sorted by `order`.
 function readProjects() {
@@ -22,7 +22,15 @@ function htmlFromContent() {
       const items = projects
         .map((p) => `<li><a href="#/project/${p.slug}">${p.title}</a> (${p.year}) — ${p.summary}</li>`)
         .join('\n        ');
+      // Text that goes inside HTML attributes, made safe for quotes and ampersands.
+      const attr = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
       return html
+        .replaceAll('%PAGE_TITLE%', attr(site.pageTitle))
+        .replaceAll('%META_DESCRIPTION%', attr(site.metaDescription))
+        .replaceAll('%SITE_NAME%', attr(site.name))
+        .replaceAll('%SITE_URL%', attr(site.siteUrl))
+        .replaceAll('%SHARE_IMAGE%', attr(site.siteUrl + site.shareImage))
+        .replaceAll('%SHARE_IMAGE_ALT%', attr(site.shareImageAlt))
         .replaceAll('<!--LOADING_LABEL-->', site.loadingLabel)
         .replace('<!--NOSCRIPT_NAME-->', site.name)
         .replace('<!--NOSCRIPT_PROJECTS-->', `<ul>\n        ${items}\n      </ul>`);
@@ -63,7 +71,25 @@ function availableModels() {
 
 // BASE_PATH lets the site live in a sub-folder, e.g. GitHub Pages serves it at
 // /retro-tv-portfolio/ (set in .github/workflows/deploy.yml). Defaults to the root.
+// Dev only: lets the running site save a fresh share image (public/og-image.jpg).
+// In the browser console on the dev site, run: __dev.saveShareImage()
+function shareImageSaver() {
+  return {
+    name: 'share-image-saver',
+    configureServer(server) {
+      server.middlewares.use('/__dev/save-share-image', (req, res) => {
+        let body = '';
+        req.on('data', (chunk) => (body += chunk));
+        req.on('end', () => {
+          writeFileSync('public/og-image.jpg', Buffer.from(body.replace(/^data:image\/jpeg;base64,/, ''), 'base64'));
+          res.end('saved public/og-image.jpg');
+        });
+      });
+    },
+  };
+}
+
 export default defineConfig({
   base: process.env.BASE_PATH || '/',
-  plugins: [htmlFromContent(), availableModels()],
+  plugins: [htmlFromContent(), availableModels(), shareImageSaver()],
 });
