@@ -8,7 +8,7 @@
   "summary": "[COPY: one-line summary, max 120 characters]",
   "cartridgeColor": "#3d7c8c",
   "labelImage": "/projects/holocare/label.svg",
-  "thumbnail": "/projects/holocare/hero.jpg",
+  "thumbnail": "/projects/holocare/thumbnail.jpg",
   "hero": {
     "type": "image",
     "src": "/projects/holocare/hero.jpg",

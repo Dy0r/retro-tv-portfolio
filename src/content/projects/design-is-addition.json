@@ -8,7 +8,7 @@
   "summary": "[COPY: one-line summary, max 120 characters]",
   "cartridgeColor": "#5b6b3a",
   "labelImage": "/projects/design-is-addition/label.svg",
-  "thumbnail": "/projects/design-is-addition/hero.jpg",
+  "thumbnail": "/projects/design-is-addition/thumbnail.jpg",
   "hero": {
     "type": "image",
     "src": "/projects/design-is-addition/hero.jpg",

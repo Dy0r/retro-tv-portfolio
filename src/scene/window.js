@@ -11,6 +11,7 @@ import { ROOM, WINDOW } from './room.js';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const PX_PER_METRE = 420;
+const SKY_PX_PER_METRE = 64;
 
 // Small seeded random generator, so the skyline looks the same on every visit.
 function seededRandom(seed) {
@@ -22,10 +23,11 @@ function seededRandom(seed) {
   };
 }
 
-function canvasLayer(width, height, draw) {
+// `density`: canvas pixels per metre. Soft layers (the sky) need far fewer.
+function canvasLayer(width, height, draw, density = PX_PER_METRE) {
   const canvas = document.createElement('canvas');
-  canvas.width = Math.round(width * PX_PER_METRE);
-  canvas.height = Math.round(height * PX_PER_METRE);
+  canvas.width = Math.round(width * density);
+  canvas.height = Math.round(height * density);
   draw(canvas.getContext('2d'), canvas.width, canvas.height);
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
@@ -389,7 +391,7 @@ export function buildWindow() {
   const { x } = WINDOW;
   const z = ROOM.backZ;
 
-  const sky = canvasLayer(12, 6, drawSky);
+  const sky = canvasLayer(12, 6, drawSky, SKY_PX_PER_METRE); // only soft gradients: 768x384 is plenty
   sky.material.transparent = false;
   sky.position.set(x - 2.5, 1.6, z - 4);
 

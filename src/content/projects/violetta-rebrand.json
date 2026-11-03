@@ -8,7 +8,7 @@
   "summary": "[COPY: one-line summary, max 120 characters]",
   "cartridgeColor": "#d9a441",
   "labelImage": "/projects/violetta-rebrand/label.svg",
-  "thumbnail": "/projects/violetta-rebrand/hero.jpg",
+  "thumbnail": "/projects/violetta-rebrand/thumbnail.jpg",
   "hero": {
     "type": "image",
     "src": "/projects/violetta-rebrand/hero.jpg",

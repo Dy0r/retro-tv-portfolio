@@ -45,6 +45,9 @@ import { EASES, DURATIONS } from './motion/eases.js';
 // Starts straight away; real progress comes from the shared LoadingManager.
 const loader = createLoader();
 loadingManager.onProgress = (_url, loaded, total) => loader.setProgress((loaded / total) * 0.9);
+// Let the browser paint the loading screen before the heavy scene set-up below,
+// so it shows straight away even on slow phones.
+await new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve)));
 
 // --- Renderer ---------------------------------------------------------------
 const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;

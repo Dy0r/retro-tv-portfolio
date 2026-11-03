@@ -8,7 +8,7 @@
   "summary": "[COPY: one-line summary, max 120 characters]",
   "cartridgeColor": "#c8553d",
   "labelImage": "/projects/plinth/label.svg",
-  "thumbnail": "/projects/plinth/hero.jpg",
+  "thumbnail": "/projects/plinth/thumbnail.jpg",
   "hero": {
     "type": "image",
     "src": "/projects/plinth/hero.jpg",

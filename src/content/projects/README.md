@@ -17,7 +17,7 @@ Anything that looks like `[COPY: …]` is a placeholder for you to replace.
 | `summary` | One line on the TV menu. **Max 120 characters.** |
 | `cartridgeColor` | The cartridge's plastic colour, e.g. `"#d9a441"`. |
 | `labelImage` | Art on the cartridge label (4:3, e.g. 400×300). |
-| `thumbnail` | Picture on the TV menu (4:3, e.g. 640×480). |
+| `thumbnail` | Picture on the TV menu, small (640 px wide). Make it from the hero with `node scripts/make-thumbnails.mjs` (writes `thumbnail.jpg` next to `hero.jpg`). |
 | `hero` | Big image (or video) at the top of the case study. |
 | `sections` | The case study, in order. Each has a `heading`, a `body` and an optional `media`. |
 | `links` | Buttons at the end, e.g. live site, Behance. Each has a `label` and a `url`. |
