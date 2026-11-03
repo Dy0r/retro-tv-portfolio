@@ -17,6 +17,7 @@ import { buildLeds } from './scene/leds.js';
 import { buildProps } from './scene/props.js';
 import { buildNeonSigns } from './scene/neonSigns.js';
 import { createCameraRig } from './scene/camera.js';
+import { createPostFx } from './scene/postfx.js';
 import { createAttract } from './scene/attract.js';
 import { playIntro, playOutro, LED_ON, LED_STANDBY, GLOW_ON } from './scene/intro.js';
 import { playInsert, playEject } from './scene/insert.js';
@@ -62,10 +63,14 @@ function onResize() {
   const h = window.innerHeight;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, MAX_DPR));
   renderer.setSize(w, h, false);
+  postFx.setSize(w, h, renderer.getPixelRatio());
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
 }
 window.addEventListener('resize', onResize);
+
+// Bloom + colour grade on every frame (see scene/postfx.js).
+const postFx = createPostFx(renderer, scene, camera);
 
 // --- Scene layout -------------------------------------------------------------
 // Everything sits on the TV stand. Positions are in metres.
@@ -451,7 +456,7 @@ Promise.all([buildScene(), menu.ready])
       poses.resume = { position: center.clone().add(new THREE.Vector3(0, 0.02, 0.9)), lookAt: center };
     }
     setLed(LED_STANDBY);
-    return renderer.compileAsync(scene, camera);
+    return renderer.compileAsync(scene, camera).then(() => postFx.render(0)); // warm up the post passes too
   })
   .then(() => {
     loader.setProgress(1);
@@ -490,7 +495,7 @@ function tick(_time, deltaMs) {
   roomWindow.update(dt);
   neonSigns.update(dt);
   attract.update(dt);
-  renderer.render(scene, camera);
+  postFx.render(dt);
 }
 gsap.ticker.add(tick);
 

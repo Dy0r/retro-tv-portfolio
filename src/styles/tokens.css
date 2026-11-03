@@ -94,6 +94,10 @@
   --skyline-window-warm: #ffc27a;
   --skyline-window-cool: #bfe9e2;
 
+  /* Colour grade: shadows lean teal, highlights lean warm (provisional) */
+  --grade-shadow: #4f8f8a;
+  --grade-highlight: #e0a86a;
+
   /* Scene lights (provisional) */
   --light-lamp: #ffb46b;
   --light-crt: #7fb8ff;

@@ -11,8 +11,8 @@ import { ROOM } from './room.js';
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 const TUBE_RADIUS = 0.007;
-const BRIGHTNESS = 2.2; // tubes are brighter than their token colour, like lit glass
-const HALO_OPACITY = 0.45;
+const BRIGHTNESS = 1.6; // tubes are brighter than their token colour; bloom (postfx.js) adds the rest of the glow
+const HALO_OPACITY = 0.28;
 const LIGHT_INTENSITY = 0.35;
 
 // One buzz: [seconds since it started, brightness 0..1].

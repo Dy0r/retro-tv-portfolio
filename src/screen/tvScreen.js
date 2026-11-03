@@ -63,7 +63,7 @@ const fragmentShader = /* glsl */ `
     float slip = step(0.6, hash(vec2(row, tick))) * (hash(vec2(tick, row)) - 0.5);
     puv.x += slip * 0.05 * uGlitch;
 
-    vec3 picture = texture2D(uMap, puv).rgb * 1.35 * uContent;
+    vec3 picture = texture2D(uMap, puv).rgb * 1.2 * uContent;
     picture *= 0.9 + 0.1 * sin(vUv.y * 900.0);            // light scanlines
     picture *= mix(0.65, 1.0, vignette);
     float noise = hash(floor(vUv * vec2(320.0, 240.0)) + fract(uTime) * 91.0);
