@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <rect width="640" height="480" fill="#3d7c8c"/>
+  <rect x="22.5" y="22.5" width="595" height="435" fill="none" stroke="#fff" stroke-opacity="0.35" stroke-width="3"/>
+  <text x="45" y="240" font-family="monospace" font-weight="700" font-size="45" fill="#fff">Holocare</text>
+  <text x="45" y="298.5" font-family="monospace" font-size="27" fill="#fff" fill-opacity="0.75">2024</text>
+  <text x="45" y="435" font-family="monospace" font-size="18" fill="#fff" fill-opacity="0.5">PLACEHOLDER THUMBNAIL</text>
+</svg>

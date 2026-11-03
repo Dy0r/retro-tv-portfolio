@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#5b6b3a"/>
+  <rect x="14" y="14" width="372" height="272" fill="none" stroke="#fff" stroke-opacity="0.35" stroke-width="3"/>
+  <text x="28" y="150" font-family="monospace" font-weight="700" font-size="34" fill="#fff">Design is Addition</text>
+  <text x="28" y="194.2" font-family="monospace" font-size="20.4" fill="#fff" fill-opacity="0.75">2023</text>
+  <text x="28" y="272" font-family="monospace" font-size="13.600000000000001" fill="#fff" fill-opacity="0.5">PLACEHOLDER LABEL</text>
+</svg>

@@ -8,7 +8,11 @@
     "[COPY: short line about you #2]",
     "[COPY: short line about you #3]"
   ],
-  "pressStart": "[COPY: prompt that tells visitors to press start]",
+  "pressStart": "Scroll to switch on",
+  "pressStartTouch": "Tap to switch on",
+  "resume": {
+    "posterTitle": "Resume"
+  },
   "skipLink": "[COPY: label for the 'skip to projects' link]",
   "contact": {
     "email": "dylanprasodjo@gmail.com"

@@ -3,9 +3,72 @@
   After a direction is chosen from the references/ moodboard, every colour, font,
   size and duration used on the site gets defined here, and nowhere else.
   The values below are provisional scaffolding only.
+  The 3D scene reads the --scene-* and --light-* values through src/styles/tokens.js.
 */
 :root {
   --color-void: #000000;
   --color-debug-text: #7cff7c;
   --font-debug: ui-monospace, monospace;
+
+  /* UI (provisional until the direction and pixel font are chosen) */
+  --font-ui: ui-monospace, monospace;
+  --font-poster: 'Helvetica Neue', Arial, sans-serif;
+  --color-hint: #dfeee9;
+  --color-focus: #22d6bd;
+  --size-hint: 13px;
+  --space-hint-bottom: 40px;
+  --dur-hint-in: 700ms;
+  --dur-hint-out: 350ms;
+  --dur-hint-loop: 1800ms;
+  --ease-hint: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Scene surfaces (provisional) */
+  --scene-wall: #1c1a20;
+  --scene-floor: #2b2019;
+  --scene-stand: #3a2a20;
+  --scene-tv-body: #2a2a2d;
+  --scene-tv-bezel: #1d1d20;
+  --scene-screen-off: #0c1517;
+  --scene-console-body: #3b3c40;
+  --scene-console-detail: #2a2b2e;
+  --scene-slot: #0b0b0d;
+  --scene-led: #ff3b2f;
+  --scene-lamp-metal: #1e1e21;
+  --scene-lamp-bulb: #ffd9a8;
+
+  /* Room details (provisional) */
+  --scene-ceiling: #141318;
+  --scene-window-frame: #b9b2a6;
+  --scene-blinds: #c9c2b5;
+  --scene-bed-frame: #2a211c;
+  --scene-mattress: #9d968b;
+  --scene-blanket: #2f3d3b;
+  --scene-pillow: #b9b1a4;
+  --scene-rug: #4a2a22;
+  --scene-cable: #111113;
+  --scene-book-a: #7a2e2a;
+  --scene-book-b: #2f4a47;
+  --scene-book-c: #b08a4a;
+  --scene-book-d: #3d3d44;
+  --scene-plant: #2f5a3a;
+  --scene-pot: #8a5a3c;
+  --scene-poster-paper: #e6dac2;
+
+  /* Neon: red outside, teal inside (provisional) */
+  --neon-red: #ff2a3d;
+  --neon-teal: #22d6bd;
+  --neon-core: #fff6ee;
+
+  /* Skyline behind the window (provisional) */
+  --skyline-sky: #040507;
+  --skyline-haze: #3a0d14;
+  --skyline-far: #0d0f14;
+  --skyline-near: #07080b;
+  --skyline-window-warm: #ffc27a;
+  --skyline-window-cool: #bfe9e2;
+
+  /* Scene lights (provisional) */
+  --light-lamp: #ffb46b;
+  --light-crt: #7fb8ff;
+  --light-fill: #26304a;
 }

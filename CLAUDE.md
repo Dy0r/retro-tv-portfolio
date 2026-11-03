@@ -9,6 +9,8 @@
 - Hand: first-person hand with a plain black shirt sleeve. Cartridges rest next to the console before pickup.
 - Models in `~/Downloads` (`nintendo_64*.glb`, `japroom_14_otaku.glb`, `retro-crt-tv.zip`) are REFERENCE ONLY for proportion and style. TV, console, cartridge and room are rebuilt as original models in Blender. The console/cart must not copy a real console's shape or branding.
 - `hand_animation_test.glb` (SantosGabriel, CC-BY-4.0, Sketchfab) may be used with credit on the Credits screen.
+- Room look: lived-in bedroom with cyberpunk accents. Neon pair is red (outside: skyline signs, city light through the window) + teal (inside: LED strips). Avoid magenta/cyan and purple/blue gradients.
+- Opening moment (end of BOOT, after loading): wide room shot, TV flickering to draw the eye, and an enter hint ("scroll to enter" signifier). Scroll / Enter / Space / click / tap enters → INTRO → MENU. Hint text lives in site.json (`pressStart`, `pressStartTouch`): "Scroll to switch on" / "Tap to switch on" (approved by Dylan).
 
 ---
 
