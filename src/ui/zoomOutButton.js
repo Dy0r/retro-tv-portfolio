@@ -111,7 +111,7 @@ function linesIcon() {
 }
 
 // Top-right link to the text-only site (simple/), same look as the buttons above.
-// Shown once loading has finished.
+// Visible from the start, over the loading screen too.
 export function createPlainSiteLink() {
   const link = document.createElement('a');
   link.className = 'zoom-out zoom-out--plain';

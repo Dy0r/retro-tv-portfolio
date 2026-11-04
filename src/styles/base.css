@@ -906,9 +906,59 @@ dialog.framed.is-open .framed__glow {
   }
 }
 
-/* Top-right link to the text-only site; same look as Zoom out. */
+/* Top-right link to the text-only site; same look as Zoom out. Sits above the
+   loading screen so it's there from the first second. */
 .zoom-out--plain {
   left: auto;
   right: 16px;
+  z-index: 110;
   text-decoration: none;
+}
+
+/* Offer of the text version (reduced motion, low-power devices): a small framed pop-up. */
+.offer .framed__glow {
+  width: min(480px, calc(100vw - 32px));
+}
+.offer .framed__inner {
+  padding: 32px 28px 28px;
+  color: var(--screen-ink);
+}
+.offer__title {
+  margin: 0 0 12px;
+  font: 700 var(--size-case-heading) / 1.2 var(--font-pixel);
+  color: var(--screen-ink);
+}
+.offer__body {
+  margin: 0 0 24px;
+  font: 400 var(--size-body) / var(--line-body) var(--font-text);
+  color: var(--screen-dim);
+}
+.offer__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0;
+}
+.offer__go,
+.offer__stay {
+  padding: 10px 14px;
+  border: 2px solid var(--screen-accent);
+  font: 400 var(--size-hint) / 1 var(--font-pixel);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+}
+.offer__go {
+  background: var(--screen-accent);
+  color: var(--screen-bg);
+}
+.offer__stay {
+  background: var(--screen-bg);
+  color: var(--screen-accent);
+}
+.offer__go:focus-visible,
+.offer__stay:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 4px;
 }

@@ -41,6 +41,7 @@
 - Text-only site, direction A (ctpt.co-style index, approved): `simple/index.html`, live at `<site>/simple/`. Rendered at build time by `src/simple/render.mjs` from the same content files, so editing a project updates both sites. Works without JavaScript (case studies are `:target` articles). White page, Atkinson Hyperlegible, tokens `--simple-*`. Labels in site.json `simple`.
 - 3D site has a top-right "Text version" link to /simple/ (label in site.json `plainSite`). Case-study images get their real size before loading (`virtual:image-sizes`), so the reader's progress bar stays accurate; it reaches 100% at the end of the content.
 - Project order: This Portfolio first, then Plinth, Holocare, Violetta Rebrand, Design is Addition (`order` in each project file).
+- FALLBACK_2D = the text site. No WebGL: main.js redirects straight to /simple/. Reduced motion, ≤2 CPU cores, ≤2 GB memory or data saver: after loading, a framed pop-up offers the text version (src/ui/fallbackOffer.js; "Stay in 3D" is remembered in localStorage). The top-right "Text version" link is visible from the first second, over the loading screen (the brief's "Skip to projects"). Words in site.json `fallback`.
 - City life in the window: a plane with blinking lights, an elevated train every 8-14 s, office lights switching on and off. Placed where the opening shot sees them (lower half of the window). Off under reduced motion.
 
 ---

@@ -176,5 +176,12 @@
     "label": "Text version",
     "url": "/simple/",
     "title": "Open the simple text version of this portfolio"
+  },
+  "fallback": {
+    "title": "Prefer a simpler version?",
+    "motionBody": "Your device is set to reduce motion. There’s also a text version of this portfolio with the same projects and no animation.",
+    "deviceBody": "This 3D site can be heavy on some devices. There’s also a lighter text version with the same projects.",
+    "goLabel": "Open text version",
+    "stayLabel": "Stay in 3D"
   }
 }

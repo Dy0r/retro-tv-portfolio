@@ -39,11 +39,22 @@ import { createCaseStudy } from './ui/caseStudy.js';
 import { createSfx } from './audio/sfx.js';
 import { createMusicPlayer } from './audio/musicPlayer.js';
 import { dialogEvents } from './ui/framedDialog.js';
+import { hasWebGL, createFallbackOffer } from './ui/fallbackOffer.js';
+import { assetUrl } from './assetUrl.js';
 import { EASES, DURATIONS } from './motion/eases.js';
+
+// --- No WebGL: the 3D site can't run, so go straight to the text version ------------
+if (!hasWebGL()) {
+  window.location.replace(assetUrl(site.plainSite.url));
+  await new Promise(() => {}); // stop here; the browser is leaving
+}
 
 // --- Loading screen ---------------------------------------------------------------
 // Starts straight away; real progress comes from the shared LoadingManager.
 const loader = createLoader();
+// Always visible, even over the loading screen: the brief's "skip to projects".
+const plainSiteLink = createPlainSiteLink();
+plainSiteLink.setVisible(true);
 loadingManager.onProgress = (_url, loaded, total) => loader.setProgress((loaded / total) * 0.9);
 // Let the browser paint the loading screen before the heavy scene set-up below,
 // so it shows straight away even on slow phones.
@@ -149,7 +160,7 @@ function setLed(level) {
 // as browsers require). Music only plays when someone presses play on the player.
 const sfx = createSfx();
 const music = createMusicPlayer();
-const plainSiteLink = createPlainSiteLink();
+const fallbackOffer = createFallbackOffer();
 dialogEvents.addEventListener('open', () => sfx.open());
 dialogEvents.addEventListener('close', () => sfx.close());
 
@@ -608,7 +619,7 @@ Promise.all([buildScene(), menu.ready])
   })
   .then(() => {
     music.setVisible(true);
-    plainSiteLink.setVisible(true);
+    fallbackOffer.maybeOpen();
     if (getState() !== STATES.BOOT) return;
     const deepLink = slugFromHash();
     if (deepLink) enterProjectDirectly(deepLink);
