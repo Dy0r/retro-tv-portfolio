@@ -11,7 +11,7 @@
   --font-debug: ui-monospace, monospace;
 
   /* UI (provisional until the direction is chosen) */
-  --font-pixel: 'Pixelify Sans', monospace;
+  --font-pixel: 'VT323', monospace; /* chosen for clear digits (5 vs S vs 8); one weight only */
   --font-ui: var(--font-pixel);
   --font-poster: 'Helvetica Neue', Arial, sans-serif;
 
@@ -19,7 +19,7 @@
   --color-loader: #c8c34a;
   --color-loader-dust: #262626;
   --color-loader-cell-off: #2b2a14;
-  --size-loader-label: 22px;
+  --size-loader-label: 28px;
   --dur-loader-dots: 1200ms;
   --dur-loader-fade: 500ms;
 
@@ -43,10 +43,10 @@
   --font-text: 'Atkinson Hyperlegible', sans-serif;
   --size-body: 19px;
   --line-body: 1.65;
-  --size-case-title: 34px;
-  --size-case-heading: 22px;
+  --size-case-title: 44px;
+  --size-case-heading: 28px;
   --size-case-nav: 16px;
-  --size-case-small: 14px;
+  --size-case-small: 19px;
   --case-max-width: 1120px;
   --case-nav-width: 240px;
   --case-measure: 68ch;
@@ -70,7 +70,7 @@
   /* Enter hint and focus rings (provisional) */
   --color-hint: #dfeee9;
   --color-focus: #22d6bd;
-  --size-hint: 14px;
+  --size-hint: 19px;
   --space-hint-bottom: 40px;
   --dur-hint-in: 700ms;
   --dur-hint-out: 350ms;

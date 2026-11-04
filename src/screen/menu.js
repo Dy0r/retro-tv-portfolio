@@ -14,11 +14,11 @@ import { assetUrl } from '../assetUrl.js';
 // hover, the slide between items, or the cursor blink.
 //
 // Readability: the canvas shows on screen at roughly half size (about 0.6x with
-// the menu framing at 1440x900), so the smallest text is 34px here to land at
-// ~16px or more on screen. On phones the screen shows at about a third of its
+// the menu framing at 1440x900), so the smallest text is 44px here (VT323 runs
+// small for its size) to land at ~16px or more on screen. On phones the screen shows at about a third of its
 // size even with the camera close, so a compact layout takes over: bigger type,
-// smaller picture, long titles and summaries shrink to fit (smallest text 40px,
-// ~14px on a phone; most summaries stay at 46px, ~16px). All text colours pass WCAG AAA (7:1) on --screen-bg.
+// smaller picture, long titles and summaries shrink to fit (smallest text 52px,
+// most summaries stay at 58px). All text colours pass WCAG AAA (7:1) on --screen-bg.
 
 const { width: W, height: H } = SCREEN_CANVAS;
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -27,7 +27,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const SUMMARY_LINES = 3;
 const LAYOUTS = {
   regular: {
-    type: { counter: 32, title: 76, titleMin: 76, meta: 34, summary: 34, summaryMin: 34, summaryLine: 44 },
+    type: { counter: 42, title: 96, titleMin: 96, meta: 44, summary: 44, summaryMin: 44, summaryLine: 50 },
     thumb: { x: 320, y: 78, w: 384, h: 288 },
     thumbPlaying: { x: 288, y: 64, w: 448, h: 336 },
     textY: {
@@ -39,7 +39,7 @@ const LAYOUTS = {
     arrow: { size: 46, y: 78 + 288 / 2 },
   },
   compact: {
-    type: { counter: 44, title: 100, titleMin: 64, meta: 48, summary: 46, summaryMin: 40, summaryLine: 58 },
+    type: { counter: 56, title: 124, titleMin: 84, meta: 60, summary: 58, summaryMin: 52, summaryLine: 62 },
     thumb: { x: 352, y: 92, w: 320, h: 240 },
     thumbPlaying: { x: 312, y: 56, w: 400, h: 300 },
     textY: {
@@ -122,10 +122,10 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
     const key = layout === LAYOUTS.compact ? 'compactTitle' : 'regularTitle';
     if (item[key]) return item[key];
     let size = layout.type.title;
-    ctx.font = `700 ${size}px ${font}`;
+    ctx.font = `400 ${size}px ${font}`;
     while (size > layout.type.titleMin && ctx.measureText(item.title).width > layout.titleWidth) {
       size -= 4;
-      ctx.font = `700 ${size}px ${font}`;
+      ctx.font = `400 ${size}px ${font}`;
     }
     item[key] = size;
     return size;
@@ -234,7 +234,7 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
     const y = playing ? layout.textY.playing : layout.textY.menu;
     const size = titleSize(item);
     ctx.fillStyle = colors.ink;
-    ctx.font = `700 ${size}px ${font}`;
+    ctx.font = `400 ${size}px ${font}`;
     ctx.fillText(item.title, W / 2, y.title);
     if (cursorOn) {
       const tw = ctx.measureText(item.title).width;
@@ -299,7 +299,7 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
   }
 
   return {
-    ready: Promise.all([document.fonts.load(`700 ${LAYOUTS.regular.type.title}px ${font}`), document.fonts.load(`400 ${LAYOUTS.regular.type.summary}px ${font}`), imagesReady]).then(draw),
+    ready: Promise.all([document.fonts.load(`400 ${LAYOUTS.regular.type.title}px ${font}`), document.fonts.load(`400 ${LAYOUTS.regular.type.summary}px ${font}`), imagesReady]).then(draw),
     get current() {
       return items[index];
     },

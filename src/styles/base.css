@@ -1,3 +1,8 @@
+/* VT323 (the pixel font) has one weight: never let the browser fake a blurry bold. */
+html {
+  font-synthesis-weight: none;
+}
+
 html,
 body {
   margin: 0;
