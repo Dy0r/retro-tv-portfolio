@@ -170,7 +170,10 @@
     "open3d": "3D version",
     "backToWork": "All work",
     "resume": "Resume",
-    "footer": "Also available as a 3D retro-TV portfolio."
+    "footer": "Also available as a 3D retro-TV portfolio.",
+    "nextProject": "Next project",
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "This page has moved or doesn’t exist. All of the work is on the index."
   },
   "plainSite": {
     "label": "Text version",
@@ -183,5 +186,35 @@
     "deviceBody": "This 3D site can be heavy on some devices. There’s also a lighter text version with the same projects.",
     "goLabel": "Open text version",
     "stayLabel": "Stay in 3D"
+  },
+  "seo": {
+    "jobTitle": "UX/UI and Product Designer",
+    "alumniOf": "University of New South Wales",
+    "redirects": [
+      {
+        "from": "/about",
+        "to": "/simple/#about"
+      },
+      {
+        "from": "/contact",
+        "to": "/simple/#contact"
+      },
+      {
+        "from": "/work",
+        "to": "/simple/"
+      },
+      {
+        "from": "/work/violetta",
+        "to": "/work/violetta-rebrand/"
+      },
+      {
+        "from": "/pricing",
+        "to": "/"
+      },
+      {
+        "from": "/services",
+        "to": "/"
+      }
+    ]
   }
 }

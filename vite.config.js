@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
-import { readFileSync, readdirSync, existsSync, writeFileSync } from 'node:fs';
-import { renderSimpleSite } from './src/simple/render.mjs';
+import { readFileSync, readdirSync, existsSync, writeFileSync, mkdirSync } from 'node:fs';
+import { renderSimpleSite, renderProjectPage, renderRedirect, renderSitemap, renderRobots, renderNotFound, personJsonLd } from './src/simple/render.mjs';
 
 // Same order as src/content/projects.js: one JSON file per project, sorted by `order`.
 function readProjects() {
@@ -21,7 +21,7 @@ function htmlFromContent() {
       const site = JSON.parse(readFileSync('src/content/site.json', 'utf8'));
       const projects = readProjects();
       const items = projects
-        .map((p) => `<li><a href="#/project/${p.slug}">${p.title}</a> (${p.year}) — ${p.summary}</li>`)
+        .map((p) => `<li><a href="work/${p.slug}/">${p.title}</a> (${p.year}) — ${p.summary}</li>`)
         .join('\n        ');
       // Text that goes inside HTML attributes, made safe for quotes and ampersands.
       const attr = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
@@ -33,6 +33,7 @@ function htmlFromContent() {
         .replaceAll('%SITE_URL%', attr(site.siteUrl))
         .replaceAll('%SHARE_IMAGE%', attr(site.siteUrl + site.shareImage))
         .replaceAll('%SHARE_IMAGE_ALT%', attr(site.shareImageAlt))
+        .replace('<!--PERSON_JSONLD-->', personJsonLd(site))
         .replaceAll('<!--LOADING_LABEL-->', site.loadingLabel)
         .replace('<!--NOSCRIPT_NAME-->', site.name)
         .replace('<!--NOSCRIPT_PROJECTS-->', `<ul>\n        ${items}\n      </ul>`);
@@ -42,22 +43,57 @@ function htmlFromContent() {
 
 // Fills simple/index.html (the text-only site) with the index and every case study,
 // built from the same content files. Re-renders whenever a content file changes.
+// Also writes, at build time, the search-friendly pages: work/<slug>/ for every
+// case study, forwarding pages for the old Framer addresses (site.json seo.redirects),
+// sitemap.xml, robots.txt and 404.html. In dev, /work/<slug>/ is served on the fly.
 function simpleSite() {
   let base = '/';
+  let outDir = 'dist';
+  let isBuild = false;
+  const readSite = () => JSON.parse(readFileSync('src/content/site.json', 'utf8'));
+  const write = (path, text) => {
+    const file = `${outDir}/${path}`;
+    mkdirSync(file.slice(0, file.lastIndexOf('/')), { recursive: true });
+    writeFileSync(file, text);
+  };
   return {
     name: 'simple-site',
     configResolved(config) {
       base = config.base;
+      outDir = config.build.outDir;
+      isBuild = config.command === 'build';
     },
     transformIndexHtml(html) {
       if (!html.includes('<!--SIMPLE_SITE-->')) return html;
-      const site = JSON.parse(readFileSync('src/content/site.json', 'utf8'));
-      return html.replace('<!--SIMPLE_SITE-->', renderSimpleSite({ site, projects: readProjects(), base }));
+      return html.replace('<!--SIMPLE_SITE-->', renderSimpleSite({ site: readSite(), projects: readProjects(), base, imageSizes: readImageSizes() }));
     },
     configureServer(server) {
       server.watcher.on('change', (file) => {
         if (file.includes('/src/content/') || file.includes('/src/simple/render')) server.ws.send({ type: 'full-reload' });
       });
+      server.middlewares.use(async (req, res, next) => {
+        const slug = req.url.match(/^\/work\/([\w-]+)\/?$/)?.[1];
+        const project = slug && readProjects().find((p) => p.slug === slug);
+        if (!project) return next();
+        const assets = '<script type="module" src="/src/simple/main.js"></script>';
+        const html = renderProjectPage({ site: readSite(), project, projects: readProjects(), base, imageSizes: readImageSizes(), assets });
+        res.setHeader('Content-Type', 'text/html');
+        res.end(await server.transformIndexHtml(req.url, html));
+      });
+    },
+    closeBundle() {
+      if (!isBuild) return;
+      const site = readSite();
+      const projects = readProjects();
+      const imageSizes = readImageSizes();
+      // Reuse the CSS and script tags Vite produced for the text index.
+      const head = readFileSync(`${outDir}/simple/index.html`, 'utf8').match(/<head>([\s\S]*?)<\/head>/)[1];
+      const assets = (head.match(/<(link|script)[^>]*\/assets\/[^>]*>(<\/script>)?/g) || []).join('\n    ');
+      for (const project of projects) write(`work/${project.slug}/index.html`, renderProjectPage({ site, project, projects, base, imageSizes, assets }));
+      for (const { from, to } of site.seo.redirects) write(`${from.replace(/^\//, '')}/index.html`, renderRedirect({ site, base, to, title: site.name }));
+      write('sitemap.xml', renderSitemap({ site, projects }));
+      write('robots.txt', renderRobots({ site }));
+      write('404.html', renderNotFound({ site, base, assets }));
     },
   };
 }
@@ -81,6 +117,22 @@ function imageSize(file) {
   return null;
 }
 
+function readImageSizes() {
+  const sizes = {};
+  const walk = (dir) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const path = `${dir}/${entry.name}`;
+      if (entry.isDirectory()) walk(path);
+      else if (/\.(jpe?g|png)$/i.test(entry.name)) {
+        const size = imageSize(path);
+        if (size) sizes[path.slice('public'.length)] = size;
+      }
+    }
+  };
+  walk('public');
+  return sizes;
+}
+
 function imageSizes() {
   const id = 'virtual:image-sizes';
   const resolvedId = '\0' + id;
@@ -90,20 +142,7 @@ function imageSizes() {
       if (source === id) return resolvedId;
     },
     load(loadId) {
-      if (loadId !== resolvedId) return;
-      const sizes = {};
-      const walk = (dir) => {
-        for (const entry of readdirSync(dir, { withFileTypes: true })) {
-          const path = `${dir}/${entry.name}`;
-          if (entry.isDirectory()) walk(path);
-          else if (/\.(jpe?g|png)$/i.test(entry.name)) {
-            const size = imageSize(path);
-            if (size) sizes[path.slice('public'.length)] = size;
-          }
-        }
-      };
-      walk('public');
-      return `export default ${JSON.stringify(sizes)};`;
+      if (loadId === resolvedId) return `export default ${JSON.stringify(readImageSizes())};`;
     },
   };
 }

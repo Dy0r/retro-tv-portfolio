@@ -1,5 +1,6 @@
-/* Text-only site: white page, black type, a centred masthead and one project after
-   another, pictures alternating centre / left / right like a printed index.
+/* Text-only pages (simple/ index, work/<slug>/ case studies, 404): white page,
+   black type, a centred masthead and, on the index, one project after another,
+   pictures alternating centre / left / right like a printed index.
    Every value comes from tokens.css (--simple-*, --font-text). */
 
 *,
@@ -88,7 +89,8 @@ iframe {
   width: 20px;
 }
 
-.masthead h1 {
+.masthead h1,
+.masthead__name {
   margin: 0;
   font: inherit;
 }
@@ -195,7 +197,7 @@ main {
   font-size: var(--size-simple-small);
 }
 
-/* About and Contact on the index, and every case study: one readable column. */
+/* About and Contact on the index, every case study and the 404: one readable column. */
 .page,
 .case {
   max-width: var(--simple-measure);
@@ -207,6 +209,7 @@ main {
   border-top: 1px solid var(--simple-line);
 }
 
+h1,
 h2 {
   margin: 0 0 16px;
   font-size: var(--size-simple-heading);
@@ -214,7 +217,8 @@ h2 {
   line-height: 1.25;
 }
 
-h3 {
+h3,
+.case section h2 {
   margin: 40px 0 8px;
   font-size: var(--size-simple-body);
   font-weight: 700;
@@ -253,19 +257,13 @@ figcaption {
   margin: 12px 0;
 }
 
-/* Case studies: hidden until a link points at one (#plinth), then shown instead
-   of the index. Works without JavaScript. */
-.case {
-  display: none;
+.case,
+.page--plain {
   padding-top: 56px;
 }
 
-.case:target {
-  display: block;
-}
-
-main:has(.case:target) .index {
-  display: none;
+.page--plain {
+  border-top: 0;
 }
 
 .case__back {
@@ -276,7 +274,7 @@ main:has(.case:target) .index {
   margin: 24px 0 8px;
 }
 
-.case__header h2 {
+.case__header h1 {
   margin-bottom: 8px;
   letter-spacing: 0.02em;
   text-transform: uppercase;

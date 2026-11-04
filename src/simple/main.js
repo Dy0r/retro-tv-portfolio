@@ -1,17 +1,12 @@
-// The text-only site works without JavaScript (see render.mjs). This file only
-// loads its fonts and styles, and keeps the browser tab title in step with the
-// case study being read.
+// The text-only pages work without JavaScript (see render.mjs). This file only
+// loads their fonts and styles, and forwards old index links to case studies
+// (simple/#plinth) to the case study's own page (work/plinth/).
 import '@fontsource/atkinson-hyperlegible/latin-400.css';
 import '@fontsource/atkinson-hyperlegible/latin-700.css';
 import '../styles/tokens.css';
 import './simple.css';
 
-const baseTitle = document.title;
-
-function updateTitle() {
-  const article = document.querySelector('.case:target h2');
-  document.title = article ? `${article.firstChild.textContent.trim()} — ${baseTitle}` : baseTitle;
+const slug = window.location.hash.slice(1);
+if (slug && document.getElementById(`p-${slug}`)) {
+  window.location.replace(new URL(`../work/${slug}/`, window.location.href));
 }
-
-window.addEventListener('hashchange', updateTitle);
-updateTitle();
