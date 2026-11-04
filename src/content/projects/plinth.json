@@ -3,31 +3,32 @@
   "slug": "plinth",
   "title": "Plinth",
   "year": 2025,
-  "role": "[COPY: your role]",
-  "genre": "Design",
-  "summary": "[COPY: one-line summary, max 120 characters]",
+  "role": "Sole designer: research, UX/UI, brand",
+  "genre": "UX/UI",
+  "summary": "Fair ticketing that gives artists 95% of revenue. Three test rounds cut merch checkout time by over 70%.",
   "cartridgeColor": "#c8553d",
   "labelImage": "/projects/plinth/label.svg",
   "thumbnail": "/projects/plinth/thumbnail.jpg",
   "hero": {
     "type": "image",
     "src": "/projects/plinth/hero.jpg",
-    "alt": "[COPY: describe the hero image for people who can't see it]"
+    "alt": "A laptop in a dim green room showing the Plinth home page, headed “Discover and Support Artists at a Cheaper Price”, with genre buttons below."
   },
   "sections": [
     {
       "heading": "Overview",
       "body": [
-        "Plinth is a fully transparent ticketing platform designed to empower emerging artists, support local music venues, and connect fans with authentic live music experiences. Built as a response to the monopolistic practices and hidden fees of traditional ticketing services, Plinth returns 95% of ticket and merchandise revenue directly to artists while offering listeners fair pricing and seamless discovery."
+        "Plinth is a fully transparent ticketing platform designed to empower emerging artists, support local music venues and connect fans with authentic live music. It responds to the monopolistic practices and hidden fees of traditional ticketing services: Plinth returns 95% of ticket and merchandise revenue directly to artists, while listeners get fair pricing and easy discovery.",
+        "It serves three audiences with three different needs: listeners who want to find gigs and buy tickets quickly, artists who want to be found and paid fairly, and venues that need to list and manage events."
       ],
       "media": null,
       "links": [
         {
-          "label": "View the entire process booklet here",
+          "label": "View the full process booklet",
           "url": "https://drive.google.com/file/d/1FD414cXy8bxxXPCYOhO2EwEtg3lxTcJr/view?usp=sharing"
         },
         {
-          "label": "Final website walkthrough here",
+          "label": "Watch the final website walkthrough",
           "url": "https://youtu.be/IwEA0-FwvAk"
         }
       ]
@@ -35,158 +36,217 @@
     {
       "heading": "My Role",
       "body": [
-        "As the sole creator of this concept, I was responsible for end-to-end development. From initial research and brand strategy to interaction design, visual identity, and high-fidelity prototyping. The project was guided by Prarthana Johnson (former Head of Design at Atlassian), whose mentorship in product design and usability deeply shaped the iterative process."
+        "I created this concept on my own and owned it end to end: research, brand strategy, interaction design, visual identity and high-fidelity prototyping. The project was guided by Prarthana Johnson (former Head of Design at Atlassian), whose mentorship in product design and usability shaped how I tested and iterated."
       ],
       "media": null
     },
     {
-      "heading": "Concept & Research",
+      "heading": "The Problem",
       "body": [
-        "Identified systemic pain points in the Australian music industry through surveys and data analysis, revealing that high platform fees and poor UX discourage both artists and fans."
+        "Through surveys and data analysis I found systemic pain points in the Australian music industry: high platform fees and poor booking experiences discourage both artists and fans. Emerging artists lose a large share of each sale, and listeners often meet surprise fees at the very end of a long checkout."
       ],
       "media": null
+    },
+    {
+      "heading": "Ideation: Paper Prototypes and Card Sorting",
+      "body": [
+        "I started on paper, sketching the listener journey (home, search, event details, purchase) and the artist and venue journey (account and event creation). From the research, the priority was a much shorter purchase flow with every fee shown upfront.",
+        "To decide what the home page should lead with, I ran a card-sorting test. All three participants ranked finding events from their own listening history (connecting Spotify) first; recommended picks, popularity and location followed."
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "/projects/plinth/01.jpg",
+          "alt": "Two pages of hand-drawn paper prototypes: listener screens on the left, artist and venue screens on the right.",
+          "caption": "Paper prototypes for the listener, artist and venue journeys."
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/02.jpg",
+          "alt": "Three rows of handwritten paper cards on a wooden table, each ranking home page features in a different order.",
+          "caption": "Card sorting: every participant put Spotify-based discovery first."
+        }
+      ]
+    },
+    {
+      "heading": "Lo-fi to Mid-fi",
+      "body": [
+        "Lo-fi wireframes mapped the flows and brought in the research findings, such as a short checkout. The artist and venue pages share one layout because they do the same job, attracting people to join Plinth, but each speaks to its own audience through its copy.",
+        "At mid fidelity I introduced the brand (colour blobs and greens from the brand guidelines) and built out the artist and venue dashboard: home, events, marketing, finance, search and settings."
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "/projects/plinth/03.jpg",
+          "alt": "Grey lo-fi wireframes of the listener flow and the artist and venue sign-up pages.",
+          "caption": "Lo-fi wireframes."
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/04.jpg",
+          "alt": "Mid-fidelity listener screens in green and beige: home page, event list, checkout and confirmation.",
+          "caption": "Mid-fi listener screens with the brand colours."
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/05.jpg",
+          "alt": "Mid-fidelity artist and venue landing pages next to a grid of dashboard screens.",
+          "caption": "Mid-fi artist and venue pages and dashboard."
+        }
+      ]
+    },
+    {
+      "heading": "Iteration 1: High Fidelity",
+      "body": [
+        "The landing page opens with Plinth’s hook, “Discover and support artists at a cheaper price”, so the value is clear in seconds. Events from your listening history come first, following the card sort. A search page with an interactive map lets people find gigs near them, and artist pages hold tour dates, merch and an about section so fans don’t need to leave Plinth.",
+        "For artists and venues I simplified creating an event and listing a venue. Most of the dashboard follows the familiar pattern of Eventbrite’s, so people don’t have to learn something new; Plinth adds search for artists and venues and a marketing page."
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "/projects/plinth/06.jpg",
+          "alt": "High-fidelity listener screens: landing page with artist photos, event pages, search map and a merch checkout.",
+          "caption": "First high-fidelity listener flow."
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/07.jpg",
+          "alt": "High-fidelity artist and venue landing pages and a grid of dashboard screens.",
+          "caption": "First high-fidelity artist and venue dashboard."
+        }
+      ]
+    },
+    {
+      "heading": "Testing with a Real Artist",
+      "body": [
+        "To test the artist side I interviewed b/t, an emerging artist with a viral song and around 100k monthly listeners who hadn’t played live yet. Rather than give him tasks, I let him explore as he would if he’d just found Plinth. He spent 3 minutes 4 seconds on the home page and dashboard.",
+        "His key insight: for a smaller artist, ticket sales matter less than the 5% fee. That changed the message. He also asked for clearer event icons, a more obvious back button and a separate dashboard for venues."
+      ],
+      "media": {
+        "type": "image",
+        "src": "/projects/plinth/08.jpg",
+        "alt": "Interview notes beside a photo of the artist b/t standing on a beach at sunset.",
+        "caption": "User interview with the artist b/t."
+      }
+    },
+    {
+      "heading": "Testing with Listeners",
+      "body": [
+        "Seven participants completed two timed tasks: buy two seated tickets for b/t’s Sydney show, and buy a b/t hoodie. Tickets took 1 minute 3 seconds on average and the hoodie 53 seconds. Engagement scored 4.28 out of 5 and ease of navigation 4.14.",
+        "I also asked what was missing. People wanted a different carousel movement, an order confirmation page that leads back home, and a clearer split between events and merch."
+      ],
+      "media": {
+        "type": "image",
+        "src": "/projects/plinth/11.jpg",
+        "alt": "Results table for the first listener test: tickets 1 minute 3 seconds, hoodie 53 seconds, engagement 4.28 out of 5, navigation 4.14.",
+        "caption": "Round 1 results with 7 participants."
+      }
+    },
+    {
+      "heading": "Iteration 2: Clearer Value, Fewer Dead Ends",
+      "body": [
+        "Following b/t’s feedback I rewrote the artist page around “95% of ticket and merch sales goes to you” and built a separate venue dashboard with its own icon and a screen for venues that own several spaces.",
+        "To choose the carousel movement I ran an A/B test with three peers: arrows that move one item at a time against free scrolling. All three found scrolling more intuitive, because people already scroll through a page and moving to the arrows takes longer.",
+        "For listeners I made merch and events easier to tell apart, added a “?” button and a checkout link that explain where the money goes, and added a way home after purchase, an order history and a login."
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "/projects/plinth/09.jpg",
+          "alt": "Revised artist landing page headed “The ticketing platform where you are prioritised”, beside the artist dashboard screens.",
+          "caption": "Artist page rewritten around the 95% message."
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/10.jpg",
+          "alt": "Venue landing page headed “We bring the crowd, you provide the space”, beside the separate venue dashboard.",
+          "caption": "A separate dashboard for venues."
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/12.jpg",
+          "alt": "Two versions of the “Our Top Picks” carousel compared side by side: arrow buttons on the left, scrolling on the right.",
+          "caption": "A/B test: scrolling beat arrow buttons."
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/13.jpg",
+          "alt": "Listener home page with two pop-ups explaining transparency and fees, and how buying supports artists directly.",
+          "caption": "Explaining the fees where people make the decision."
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/14.jpg",
+          "alt": "Order confirmation screens with a back-to-home button, an order history page, and sign-up and login screens with a vinyl record graphic.",
+          "caption": "Order confirmation, order history and login."
+        }
+      ]
+    },
+    {
+      "heading": "Round 2",
+      "body": [
+        "The second round added a third task, creating an account. Tickets now took 37.5 seconds and the hoodie 38.5. People still found it hard to tell where to scroll, and some missed Plinth’s main selling point, so those became the next priorities."
+      ],
+      "media": {
+        "type": "image",
+        "src": "/projects/plinth/15.jpg",
+        "alt": "Results table for the second listener test: tickets 37.5 seconds, hoodie 38.5 seconds, account 35.5 seconds.",
+        "caption": "Round 2 results."
+      }
+    },
+    {
+      "heading": "Iteration 3: Signifiers",
+      "body": [
+        "I added a scrolling signifier, a gently pulsing arrow, so people know there’s more below, and an “about” section on the home page that explains how Plinth works and why it’s fairer. To encourage merch sales, buying a ticket now offers a 10% merch discount in a pop-up, which also leads people straight to the merch."
+      ],
+      "media": {
+        "type": "image",
+        "src": "/projects/plinth/16.jpg",
+        "alt": "Home page with a pulsing scroll arrow and an explanation of Plinth’s 5% fee, beside a pop-up offering a hoodie with a 10% discount after buying a ticket.",
+        "caption": "A pulsing scroll arrow and a merch offer after checkout."
+      }
+    },
+    {
+      "heading": "Round 3 and Usability Scores",
+      "body": [
+        "In the final round tickets took 29.5 seconds, the hoodie 11.75 and creating an account 14.75. From the first round to the last, buying tickets got about 53% faster and buying merch over 70% faster; creating an account got 58% faster between rounds 2 and 3.",
+        "On my mentor’s advice I added Single Ease Questions (SEQs). People rated Plinth 4.8 out of 5 for communicating its value and 4.8 for wanting to use it often. They gave “the system is complex” 1.4 and “annoying to use” 1.2, where low is good. Learnability and how well the features fit together both scored 4.6."
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "/projects/plinth/17.jpg",
+          "alt": "Results table for the third listener test: tickets 29.5 seconds, hoodie 11.75 seconds, account 14.75 seconds.",
+          "caption": "Round 3: every task got faster."
+        },
+        {
+          "type": "image",
+          "src": "/projects/plinth/18.jpg",
+          "alt": "Notes on Single Ease Questions beside two bar charts where most answers are 5 out of 5.",
+          "caption": "Single Ease Question results."
+        }
+      ]
     },
     {
       "heading": "Brand Identity",
       "body": [
-        "Developed the name, logo, and full brand system for Plinth. The logo represents the three pillars of the music ecosystem, the artists, venues, and listeners. The visual language uses grain textures and warm tones to evoke the authenticity of vinyl records."
-      ],
-      "media": null
-    },
-    {
-      "heading": "User-Centered Design",
-      "body": [
-        "Created distinct user journeys for listeners, artists, and venues. Conducted multiple rounds of user testing, card sorting, and A/B testing to refine flows, resulting in a 70% improvement in task completion time for merchandise purchases."
-      ],
-      "media": null
-    },
-    {
-      "heading": "Website Prototype",
-      "body": [
-        "Designed and iterated on a fully interactive web platform featuring:",
-        "– Transparent pricing with fee breakdowns",
-        "– Integrated Spotify discovery",
-        "– Dashboards for artist promotion and venue management",
-        "– Streamlined checkout and merch integration"
-      ],
-      "media": null
-    },
-    {
-      "heading": "Usability Validation",
-      "body": [
-        "Implemented Single Ease Questions (SEQs) based on mentor guidance, achieving an average score of 4.6/5 for usability and intent to reuse."
+        "I developed Plinth’s name, logo and brand system. The logo stands for the three pillars of the music ecosystem: artists, venues and listeners. Grain textures and warm tones recall the authenticity of vinyl records."
       ],
       "media": null
     },
     {
       "heading": "Outcome",
       "body": [
-        "Plinth presents a viable, human-centered alternative to incumbent ticketing platforms, proving that ethical design and transparent business models can foster a more sustainable and connected music community."
+        "Plinth is a viable, human-centred alternative to incumbent ticketing platforms. It shows that ethical design and a transparent business model can support a more sustainable and connected music community, and that small, tested changes such as clearer copy, familiar patterns and better signifiers add up to measurably faster journeys."
       ],
       "media": null
     },
     {
       "heading": "Tools & Methods",
       "body": [
-        "Figma, Illustrator, User Surveys, Personas, User Flows, Prototyping, A/B Testing, SEQ Analysis"
+        "Figma, Illustrator, user surveys, paper prototyping, card sorting, personas, user flows, user interviews, timed task testing, A/B testing, Single Ease Questions."
       ],
       "media": null
-    },
-    {
-      "heading": "[COPY: heading for the image gallery]",
-      "body": [],
-      "media": [
-        {
-          "type": "image",
-          "src": "/projects/plinth/01.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/plinth/02.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/plinth/03.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/plinth/04.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/plinth/05.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/plinth/06.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/plinth/07.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/plinth/08.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/plinth/09.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/plinth/10.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/plinth/11.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/plinth/12.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/plinth/13.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/plinth/14.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/plinth/15.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/plinth/16.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/plinth/17.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/plinth/18.jpg",
-          "alt": "[COPY: describe this image]"
-        }
-      ]
     }
   ],
   "links": [],

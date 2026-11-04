@@ -3,111 +3,106 @@
   "slug": "violetta-rebrand",
   "title": "Violetta Rebrand",
   "year": 2025,
-  "role": "[COPY: your role]",
+  "role": "Brand Designer",
   "genre": "Branding",
-  "summary": "[COPY: one-line summary, max 120 characters]",
+  "summary": "A modern identity for a family interior design studio: a rose growing from a V, refreshed without losing its heritage.",
   "cartridgeColor": "#d9a441",
   "labelImage": "/projects/violetta-rebrand/label.svg",
   "thumbnail": "/projects/violetta-rebrand/thumbnail.jpg",
   "hero": {
     "type": "image",
     "src": "/projects/violetta-rebrand/hero.jpg",
-    "alt": "[COPY: describe the hero image for people who can't see it]"
+    "alt": "Two Violetta business cards on a sunlit kerb: a gold card with the debossed rose logo on top of a white card reading “Violetta Interior Design Studio.”"
   },
   "sections": [
     {
       "heading": "Client Overview",
       "body": [
-        "Violetta is a longstanding interior design business with deep roots in family tradition. The brand has been passed down through generations, evolving while maintaining its core values of refinement and luxury. However, as the market modernised, Violetta needed a refreshed identity that balanced contemporary aesthetics with its rich heritage."
+        "Violetta is a long-standing interior design business with deep roots in family tradition. Passed down through generations, it has kept its core values of refinement and luxury. As the market modernised, Violetta needed a refreshed identity that balanced contemporary aesthetics with that heritage."
       ],
-      "media": null
+      "media": {
+        "type": "image",
+        "src": "/projects/violetta-rebrand/03.jpg",
+        "alt": "The original Violetta Interior logo in gold foil on black: a rose inside a serif V.",
+        "caption": "The original logo."
+      }
     },
     {
       "heading": "The Challenge",
       "body": [
-        "The primary challenge was to redesign Violetta’s logo and visual identity to appeal to a modern audience while preserving key elements from the original logo that reflected its family legacy. Additionally, the rebrand needed to incorporate symbolic elements (such as floral motifs) in a way that reinforced the brand’s story of perseverance and elegance."
+        "Redesign Violetta’s logo and visual identity to appeal to a modern audience while keeping the elements of the original logo that carry its family legacy. The rebrand also needed symbolic elements, such as floral motifs, that tell the brand’s story of perseverance and elegance."
       ],
       "media": null
     },
     {
-      "heading": "1. Logo Redesign – Balancing Tradition and Modernity",
+      "heading": "1. Logo Redesign: Balancing Tradition and Modernity",
       "body": [
-        "The original logo featured a rose inside a \"V,\" symbolising the brand’s name and its floral-inspired identity. To modernise it while retaining its essence, I:",
-        "Simplified the lines of the rose and \"V\" for a cleaner, more contemporary look.",
-        "Maintained the serif font (Reckless Neue) as a nod to the original, reinforcing maturity and timelessness.",
-        "Embedded symbolism:",
-        "The \"V\" acts as both a vase (nurturing growth) and a shield (protection and resilience).",
-        "The rose growing out of the \"V\" represents renewal and evolution, mirroring the brand’s journey."
+        "The original logo featured a rose inside a “V”, symbolising the brand’s name and its floral identity. To modernise it while keeping its essence, I:",
+        "– Simplified the lines of the rose and the “V” for a cleaner, more contemporary look.",
+        "– Kept a serif typeface (Reckless Neue) as a nod to the original, reinforcing maturity and timelessness.",
+        "– Embedded symbolism: the “V” acts as both a vase (nurturing growth) and a shield (protection and resilience), and the rose growing out of it stands for renewal, mirroring the brand’s journey."
       ],
       "media": null
     },
     {
-      "heading": "2. Colour Palette – Luxury with a Vintage Touch",
+      "heading": "2. Colour Palette: Luxury with a Vintage Touch",
       "body": [
-        "To convey refinement and warmth, we selected a gold-dominated palette (#DAAC00, #FFE687) inspired by the original logo. Supporting colours, such as a light blue (#6B82FF), were introduced sparingly for contrast, ensuring a balance between vintage charm and modern sophistication."
+        "To convey refinement and warmth, the palette is led by golds (#DAAC00, #FFE687) taken from the original logo. A light blue (#6B82FF) is used sparingly for contrast, balancing vintage charm with modern sophistication."
       ],
       "media": null
     },
     {
-      "heading": "3. Typography – Classic Meets Contemporary",
+      "heading": "3. Typography: Classic Meets Contemporary",
       "body": [
-        "Headings: Reckless Neue (a modern serif) was chosen to honour the original logo’s typography while feeling fresh.",
-        "Body Text: DM Sans (a clean sans-serif) ensured readability and versatility, making the brand accessible across digital and print media."
+        "Headings: Reckless Neue, a modern serif that honours the original logo’s lettering while feeling fresh.",
+        "Body text: DM Sans, a clean sans-serif that stays readable across digital and print."
       ],
       "media": null
     },
     {
-      "heading": "4. Graphic Devices – Reinforcing Brand Storytelling",
+      "heading": "4. Graphic Devices: Reinforcing the Story",
       "body": [
-        "Floral Motifs: The rose was adapted into patterns and standalone graphics, reinforcing brand recognition.",
-        "Fluid Shapes: Organic, handcrafted-inspired shapes were used to symbolise adaptability and bespoke service."
+        "Floral motifs: the rose becomes patterns and standalone graphics that build recognition.",
+        "Fluid shapes: organic, hand-crafted shapes that suggest adaptability and bespoke service."
       ],
       "media": null
     },
     {
-      "heading": "Implementation & Applications",
+      "heading": "Applications",
       "body": [
-        "The new identity was applied across multiple touch points:",
-        "Debossed Business Cards: Elevated tactile feel, emphasising luxury.",
-        "Social Media (Instagram): A curated feed blending high-end interiors with storytelling captions.",
-        "Posters & Print Collateral: Showcasing the brand’s refined aesthetic through minimalist yet impactful designs."
+        "The identity was applied across several touchpoints:",
+        "– Debossed business cards, for a tactile, luxurious feel.",
+        "– Instagram: a curated feed that pairs high-end interiors with storytelling captions.",
+        "– Posters and print: minimal but striking designs that show off the refined aesthetic."
       ],
-      "media": null
-    },
-    {
-      "heading": "Results & Impact",
-      "body": [
-        "Stronger Brand Recognition: The modernised logo retained familiarity for long-time clients while attracting new audiences.",
-        "Cohesive Visual Language: The strategic use of colour, typography, and symbolism created a unified brand experience.",
-        "Emotional Connection: The embedded meanings (rose, shield, vase) deepened customer engagement by tying the brand to its heritage."
-      ],
-      "media": null
-    },
-    {
-      "heading": "[COPY: heading for the image gallery]",
-      "body": [],
       "media": [
         {
           "type": "image",
-          "src": "/projects/violetta-rebrand/01.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
           "src": "/projects/violetta-rebrand/02.jpg",
-          "alt": "[COPY: describe this image]"
+          "alt": "A row of Violetta posters on a brick wall by a street, with gold and blue panels, the rose logo and the line “01 Interior Design Done Right.”",
+          "caption": "Poster series."
         },
         {
           "type": "image",
-          "src": "/projects/violetta-rebrand/03.jpg",
-          "alt": "[COPY: describe this image]"
+          "src": "/projects/violetta-rebrand/01.jpg",
+          "alt": "Mock-up of an Instagram post for Violetta: a pale yellow square with the wordmark, placeholder text and the rose logo.",
+          "caption": "Instagram template."
         }
       ]
+    },
+    {
+      "heading": "Results and Impact",
+      "body": [
+        "Stronger recognition: the modernised logo stays familiar to long-time clients while attracting new audiences.",
+        "A cohesive visual language: colour, typography and symbolism work together as one brand experience.",
+        "Emotional connection: the embedded meanings (rose, shield, vase) tie the brand back to its heritage."
+      ],
+      "media": null
     }
   ],
   "links": [
     {
-      "label": "[COPY: label for this link]",
+      "label": "View the full project",
       "url": "https://drive.google.com/file/d/1f8burZ7Ydzuz4HtcX_xdSaj6xaKCDR1n/view?usp=sharing"
     }
   ],

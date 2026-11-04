@@ -54,6 +54,19 @@
   --space-above-music: 28px; /* phones: screen edge + gap, for UI stacked above the music player */
   --ease-snap: cubic-bezier(0.2, 0.9, 0.25, 1.06);
 
+  /* Text-only site (simple/index.html): white page, black type, like a printed index */
+  --simple-bg: #ffffff;
+  --simple-ink: #111111;
+  --simple-dim: #545454; /* 7.5:1 on white (AAA) */
+  --simple-line: #e2e2e2;
+  --simple-focus: #0b6e63;
+  --simple-max: 1120px;
+  --simple-measure: 64ch;
+  --size-simple-small: 14px;
+  --size-simple-body: 17px;
+  --size-simple-heading: 22px;
+  --space-simple-gap: 112px; /* between projects on the index */
+
   /* Enter hint and focus rings (provisional) */
   --color-hint: #dfeee9;
   --color-focus: #22d6bd;

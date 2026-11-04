@@ -126,8 +126,8 @@ export function createCaseStudy({ onOpened, onClosing, onClosed }) {
     const list = el('ul', 'case__links');
     for (const link of links) {
       const a = el('a', null, link.label);
-      a.href = link.url;
-      if (/^https?:/.test(link.url)) {
+      a.href = assetUrl(link.url); // site files like the resume PDF need the sub-folder prefix
+      if (/^https?:/.test(link.url) || link.url.endsWith('.pdf')) {
         a.target = '_blank';
         a.rel = 'noopener';
       }

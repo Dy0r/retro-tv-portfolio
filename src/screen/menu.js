@@ -17,8 +17,8 @@ import { assetUrl } from '../assetUrl.js';
 // the menu framing at 1440x900), so the smallest text is 34px here to land at
 // ~16px or more on screen. On phones the screen shows at about a third of its
 // size even with the camera close, so a compact layout takes over: bigger type,
-// smaller picture, long titles shrink to fit (smallest text 46px, ~15px on a
-// phone). All text colours pass WCAG AAA (7:1) on --screen-bg.
+// smaller picture, long titles and summaries shrink to fit (smallest text 40px,
+// ~14px on a phone; most summaries stay at 46px, ~16px). All text colours pass WCAG AAA (7:1) on --screen-bg.
 
 const { width: W, height: H } = SCREEN_CANVAS;
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -27,7 +27,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const SUMMARY_LINES = 3;
 const LAYOUTS = {
   regular: {
-    type: { counter: 32, title: 76, titleMin: 76, meta: 34, summary: 34, summaryLine: 44 },
+    type: { counter: 32, title: 76, titleMin: 76, meta: 34, summary: 34, summaryMin: 34, summaryLine: 44 },
     thumb: { x: 320, y: 78, w: 384, h: 288 },
     thumbPlaying: { x: 288, y: 64, w: 448, h: 336 },
     textY: {
@@ -35,11 +35,11 @@ const LAYOUTS = {
       playing: { title: 490, meta: 544 },
     },
     titleWidth: 820,
-    summaryWidth: 820,
+    summaryWidth: 900,
     arrow: { size: 46, y: 78 + 288 / 2 },
   },
   compact: {
-    type: { counter: 44, title: 100, titleMin: 64, meta: 48, summary: 46, summaryLine: 58 },
+    type: { counter: 44, title: 100, titleMin: 64, meta: 48, summary: 46, summaryMin: 40, summaryLine: 58 },
     thumb: { x: 352, y: 92, w: 320, h: 240 },
     thumbPlaying: { x: 312, y: 56, w: 400, h: 300 },
     textY: {
@@ -47,7 +47,7 @@ const LAYOUTS = {
       playing: { title: 490, meta: 562 },
     },
     titleWidth: 800,
-    summaryWidth: 900,
+    summaryWidth: 940,
     arrow: { size: 56, y: 92 + 240 / 2 },
   },
 };
@@ -129,6 +129,33 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
     }
     item[key] = size;
     return size;
+  }
+
+  // Summary size: the layout's size, shrunk in steps until it fits in SUMMARY_LINES
+  // lines, so nothing is ever cut off (worked out once per item, then remembered).
+  function summarySize(item) {
+    const key = layout === LAYOUTS.compact ? 'compactSummary' : 'regularSummary';
+    if (item[key]) return item[key];
+    let size = layout.type.summary;
+    while (size > layout.type.summaryMin && summaryLines(item.summary, size) > SUMMARY_LINES) size -= 2;
+    item[key] = size;
+    return size;
+  }
+
+  function summaryLines(text, size) {
+    ctx.font = `400 ${size}px ${font}`;
+    let line = '';
+    let lines = 1;
+    for (const word of text.split(' ')) {
+      const test = line ? `${line} ${word}` : word;
+      if (ctx.measureText(test).width > layout.summaryWidth && line) {
+        lines++;
+        line = word;
+      } else {
+        line = test;
+      }
+    }
+    return lines;
   }
 
   function drawArrow(x, dir, state) {
@@ -222,8 +249,9 @@ export function createMenu({ projects, pages, tvScreen, onChange }) {
     }
     if (!playing) {
       ctx.fillStyle = colors.dim;
-      ctx.font = `400 ${type.summary}px ${font}`;
-      wrapSummary(item.summary, W / 2, item.meta ? y.summary : y.summaryNoMeta, layout.summaryWidth, type.summaryLine);
+      const summary = summarySize(item);
+      ctx.font = `400 ${summary}px ${font}`;
+      wrapSummary(item.summary, W / 2, item.meta ? y.summary : y.summaryNoMeta, layout.summaryWidth, (type.summaryLine * summary) / type.summary);
     }
     ctx.restore();
 

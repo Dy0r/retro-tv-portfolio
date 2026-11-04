@@ -1,0 +1,326 @@
+/* Text-only site: white page, black type, a centred masthead and one project after
+   another, pictures alternating centre / left / right like a printed index.
+   Every value comes from tokens.css (--simple-*, --font-text). */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--simple-bg);
+  color: var(--simple-ink);
+  font: 400 var(--size-simple-body) / 1.6 var(--font-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--simple-focus);
+  outline-offset: 3px;
+}
+
+img,
+video,
+iframe {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip {
+  position: absolute;
+  left: 16px;
+  top: -100px;
+  padding: 8px 12px;
+  background: var(--simple-ink);
+  color: var(--simple-bg);
+}
+
+.skip:focus {
+  top: 16px;
+}
+
+/* Masthead: small, centred, all caps. */
+.masthead {
+  max-width: var(--simple-max);
+  margin: 0 auto;
+  padding: 40px 16px 0;
+  text-align: center;
+  font-size: var(--size-simple-small);
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.masthead__mark {
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.masthead__mark img {
+  width: 20px;
+}
+
+.masthead h1 {
+  margin: 0;
+  font: inherit;
+}
+
+.masthead p {
+  margin: 0;
+}
+
+.masthead p + p {
+  margin-top: 12px;
+}
+
+.masthead nav ul,
+.work__links,
+.links,
+.case__end {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.masthead nav ul {
+  justify-content: center;
+  margin-top: 12px;
+}
+
+main {
+  max-width: var(--simple-max);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* The index of projects. */
+.works {
+  margin: 0;
+  padding: var(--space-simple-gap) 0 0;
+  list-style: none;
+}
+
+.work {
+  margin: 0 0 var(--space-simple-gap);
+}
+
+.work--a {
+  width: 72%;
+  margin-inline: auto;
+}
+
+.work--b {
+  width: 54%;
+  margin-left: 4%;
+}
+
+.work--c {
+  width: 60%;
+  margin-left: auto;
+  margin-right: 2%;
+}
+
+.work__image {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.work__title {
+  margin: 0;
+  font-size: var(--size-simple-body);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.work__title a {
+  text-decoration: none;
+}
+
+.work__title a:hover {
+  text-decoration: underline;
+}
+
+.work__year {
+  font-size: 0.7em;
+  font-weight: 400;
+  vertical-align: super;
+  letter-spacing: 0;
+}
+
+.work__summary {
+  margin: 4px 0 0;
+  max-width: var(--simple-measure);
+}
+
+.work__meta {
+  margin: 4px 0 0;
+  color: var(--simple-dim);
+  font-size: var(--size-simple-small);
+}
+
+.work__links {
+  margin-top: 8px;
+  font-size: var(--size-simple-small);
+}
+
+/* About and Contact on the index, and every case study: one readable column. */
+.page,
+.case {
+  max-width: var(--simple-measure);
+  margin: 0 auto var(--space-simple-gap);
+}
+
+.page {
+  padding-top: 32px;
+  border-top: 1px solid var(--simple-line);
+}
+
+h2 {
+  margin: 0 0 16px;
+  font-size: var(--size-simple-heading);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+h3 {
+  margin: 40px 0 8px;
+  font-size: var(--size-simple-body);
+  font-weight: 700;
+}
+
+.page h3 {
+  margin-top: 28px;
+}
+
+p,
+ul {
+  margin: 0 0 12px;
+}
+
+.page ul,
+.case section ul:not(.links) {
+  padding-left: 1.2em;
+}
+
+figure {
+  margin: 24px 0;
+}
+
+figcaption {
+  margin-top: 8px;
+  color: var(--simple-dim);
+  font-size: var(--size-simple-small);
+}
+
+.embed iframe {
+  aspect-ratio: 16 / 9;
+  border: 0;
+}
+
+.links {
+  margin: 12px 0;
+}
+
+/* Case studies: hidden until a link points at one (#plinth), then shown instead
+   of the index. Works without JavaScript. */
+.case {
+  display: none;
+  padding-top: 56px;
+}
+
+.case:target {
+  display: block;
+}
+
+main:has(.case:target) .index {
+  display: none;
+}
+
+.case__back {
+  font-size: var(--size-simple-small);
+}
+
+.case__header {
+  margin: 24px 0 8px;
+}
+
+.case__header h2 {
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.case__lead {
+  font-size: var(--size-simple-heading);
+  line-height: 1.4;
+}
+
+.case__end {
+  margin-top: 56px;
+  padding-top: 16px;
+  border-top: 1px solid var(--simple-line);
+  font-size: var(--size-simple-small);
+}
+
+.footer {
+  padding: 32px 16px 48px;
+  text-align: center;
+  color: var(--simple-dim);
+  font-size: var(--size-simple-small);
+}
+
+/* Phones: one full-width column. */
+@media (max-width: 700px) {
+  .work--a,
+  .work--b,
+  .work--c {
+    width: 100%;
+    margin-inline: 0;
+  }
+
+  .works {
+    padding-top: 64px;
+  }
+
+  .work {
+    margin-bottom: 72px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

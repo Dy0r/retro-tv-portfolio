@@ -3,50 +3,108 @@
   "slug": "this-portfolio",
   "title": "This Portfolio",
   "year": 2026,
-  "role": "[COPY: your role]",
-  "genre": "[COPY: genre tag]",
-  "summary": "[COPY: one-line summary, max 120 characters]",
+  "role": "Designer and creative director, built with an AI coding agent",
+  "genre": "UX · 3D web · AI",
+  "summary": "A 3D retro-TV portfolio designed to stay usable: familiar controls, WCAG AAA text, Lighthouse 100 accessibility.",
   "cartridgeColor": "#4a4a52",
   "labelImage": "/projects/this-portfolio/label.svg",
-  "thumbnail": "/projects/this-portfolio/thumbnail.svg",
+  "thumbnail": "/projects/this-portfolio/thumbnail.jpg",
   "hero": {
     "type": "image",
-    "src": "/projects/this-portfolio/hero.svg",
-    "alt": "[COPY: describe the hero image for people who can't see it]"
+    "src": "/og-image.jpg",
+    "alt": "A dim late-90s bedroom at night: a CRT TV and a grey console on a low stand, coloured cartridges beside it, a neon-lit city through the blinds and a Resume poster on the wall."
   },
   "sections": [
     {
-      "heading": "[COPY: heading for \"the problem\"]",
+      "heading": "The Problem",
       "body": [
-        "[COPY: paragraph]",
-        "[COPY: paragraph]"
+        "3D portfolios look impressive, but many are slow, confusing and hard to use. Recruiters review a lot of portfolios quickly. They don’t want to learn a new interface just to find the work, and a site that feels like a puzzle loses them before they see a single project.",
+        "My goal was a portfolio that is memorable and fun, but just as functional as a plain website: easy to navigate, fast, accessible and readable on any device."
       ],
       "media": null
     },
     {
-      "heading": "[COPY: heading for \"my role\"]",
+      "heading": "My Role",
       "body": [
-        "[COPY: paragraph]"
+        "I designed and directed the whole experience: concept, art direction, interaction design, content and testing. I built it with Claude Code, an AI coding agent, which wrote the code from my brief while I made every design decision.",
+        "We worked in short passes. Each pass was one feature, which I reviewed in the browser before approving it or sending it back. AI made it possible to build a real-time 3D site as a designer; the judgement about what to build and why stayed with me."
       ],
       "media": null
     },
     {
-      "heading": "[COPY: heading for \"process\"]",
+      "heading": "Concept: A Metaphor People Already Know",
       "body": [
-        "[COPY: paragraph]",
-        "[COPY: paragraph]"
+        "Instead of inventing new navigation, the site borrows one almost everyone understands: a TV, a console and a row of game cartridges. Each project is a game. You pick one, it goes into the console, and the TV shows it. Nobody has to be taught how to load a game.",
+        "The setting is a dim late-90s bedroom at night with cyberpunk touches: red neon outside the window, teal light strips inside. The console and cartridges are original designs, not copies of any real brand."
       ],
       "media": {
         "type": "image",
-        "src": "/projects/this-portfolio/process-1.svg",
-        "alt": "[COPY: describe this image]",
-        "caption": "[COPY: optional caption, or delete this line]"
+        "src": "/projects/this-portfolio/menu.jpg",
+        "alt": "Close-up of the TV showing the Plinth menu screen with pixel arrows either side, and the console with a row of coloured cartridges beside it.",
+        "caption": "The menu: one project at a time, with its cartridge in the row below."
       }
     },
     {
-      "heading": "[COPY: heading for \"outcome\"]",
+      "heading": "Ideation and Prototyping",
       "body": [
-        "[COPY: paragraph]"
+        "I began with a moodboard and a written brief that set the rules: original assets only, no stock design defaults, and strict budgets for accessibility and performance. The first prototype used simple placeholder shapes so the flow could be tested before any detailed modelling.",
+        "Some ideas were tested and dropped. I built a version where a first-person hand picks up and inserts the cartridge, and compared it with one where the cartridge moves by itself. Side by side, the simpler version felt more natural, so the hand went. I also removed glowing cartridges and TV scanlines after review: they pulled attention from the work and made text harder to read."
+      ],
+      "media": {
+        "type": "image",
+        "src": "/projects/this-portfolio/loading.jpg",
+        "alt": "The loading screen: an olive-yellow dot-matrix star on black with pixel dust, the word “Loading” and a row of pixel progress blocks.",
+        "caption": "A loading screen that shows real progress."
+      }
+    },
+    {
+      "heading": "Signifiers: No Guessing",
+      "body": [
+        "Every action is signposted, because a 3D scene gives no clues by default:",
+        "– On arrival the TV flickers to draw the eye, with a “Scroll to switch on” hint (“Tap to switch on” on phones).",
+        "– Pixel arrows sit either side of the TV menu, and a bobbing arrow points at the selected cartridge.",
+        "– An Insert button with an Enter key cap, and a Zoom out button with an Esc key cap; key caps are hidden on touch screens, where they mean nothing.",
+        "– Arrows above an inserted cartridge show it can be ejected.",
+        "– A small “Click to play music” hint until the player has been used.",
+        "Every action also works the familiar way: click, tap, keyboard or game controller."
+      ],
+      "media": null
+    },
+    {
+      "heading": "Respecting a Recruiter’s Time",
+      "body": [
+        "– The resume is a poster on the wall, one click away from the first screen, and opens straight away as a PDF.",
+        "– Every project has its own link that opens it directly, skipping the intro.",
+        "– Case studies open as ordinary, scrollable web pages with real headings, a progress bar, a section list and images that enlarge.",
+        "– The intro takes about two seconds and any key skips it."
+      ],
+      "media": null
+    },
+    {
+      "heading": "Accessibility and Readability",
+      "body": [
+        "Readability came first, even on a pixel-art TV screen. All text on the TV meets WCAG AAA contrast (at least 7:1), and the case studies do too. I set a minimum text size for the TV menu, removed the screen effects that made text blurry, and kept the screen’s glitch effect rare and short.",
+        "The whole site works by keyboard with visible focus, a screen reader hears each project as it’s selected, and animation calms down for anyone who has reduced motion turned on. Case-study body text uses Atkinson Hyperlegible, a typeface designed for legibility."
+      ],
+      "media": null
+    },
+    {
+      "heading": "Mobile and Performance",
+      "body": [
+        "On phones the camera frames the TV screen itself and the menu switches to a larger layout, taking the smallest text from about 9px to about 16px. Buttons rearrange so nothing overlaps, whichever way the phone is held.",
+        "I tested with Google Lighthouse: 100 for Accessibility, 100 for Best Practices and 100 for SEO, on both mobile and desktop. Smaller thumbnails cut the start-up download from 1.7 MB to 0.7 MB, and the loading screen now appears in under a second on desktop."
+      ],
+      "media": {
+        "type": "image",
+        "src": "/projects/this-portfolio/phone.jpg",
+        "alt": "The site on a phone screen: the TV fills the width, showing the menu in large pixel type, with the console below and Music and Insert buttons at the bottom.",
+        "caption": "On a phone, the TV fills the screen."
+      }
+    },
+    {
+      "heading": "Outcome",
+      "body": [
+        "The result is a portfolio that people remember, without asking them to work for it. It shows how I approach UX: start from what people already know, signpost every action, test for accessibility and performance rather than assume, and use AI to extend what I can build while keeping design decisions human."
       ],
       "media": null
     }

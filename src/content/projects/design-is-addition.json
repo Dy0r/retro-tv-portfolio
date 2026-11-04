@@ -3,43 +3,67 @@
   "slug": "design-is-addition",
   "title": "Design is Addition",
   "year": 2023,
-  "role": "[COPY: your role]",
+  "role": "Brand Designer (coursework, AGDA brief)",
   "genre": "Branding",
-  "summary": "[COPY: one-line summary, max 120 characters]",
+  "summary": "An event identity for AGDA: two brackets meet to form a plus, because design adds our ideas together.",
   "cartridgeColor": "#5b6b3a",
   "labelImage": "/projects/design-is-addition/label.svg",
   "thumbnail": "/projects/design-is-addition/thumbnail.jpg",
   "hero": {
     "type": "image",
     "src": "/projects/design-is-addition/hero.jpg",
-    "alt": "[COPY: describe the hero image for people who can't see it]"
+    "alt": "An Instagram post by agdagram on bright blue: “Design is + Addition, on now, 1–10 November, presented by AGDA.”"
   },
   "sections": [
     {
-      "heading": "Design is Addition Branding",
+      "heading": "The Brief",
       "body": [
-        "Design is Addition is a coursework where AGDA is the client and I was tasked to create branding based on the prompt of Design is... the word I chose was addition. Design is Addition reflects upon the idea of coming together and adding our thoughts out to the world. The plus symbol is a direct representation of addition whilst also represents two rectangles merging together to form the icon. The logo itself consists of 2 brackets coming together and forming a plus symbol through the white space. The brackets represent our individual minds and the ideas that lie within those set of brackets. We then bring these ideas to life and visualize it digitally or through traditional methods."
+        "Design is Addition is a coursework project with AGDA (the Australian Graphic Design Association) as the client. The prompt was to complete the phrase “Design is…” and build an identity around it. I chose “addition”: design brings people together and adds our thoughts to the world."
+      ],
+      "media": null
+    },
+    {
+      "heading": "The Logo",
+      "body": [
+        "The logo is two brackets coming together, and the white space between them forms a plus sign. The brackets stand for our individual minds and the ideas held inside them. When they meet, the ideas combine and are brought to life, digitally or by hand.",
+        "The plus is the most direct symbol of addition, and it is also two rectangles merging into one."
+      ],
+      "media": {
+        "type": "image",
+        "src": "/projects/design-is-addition/04.png",
+        "alt": "The Design is Addition logo: two black square brackets facing each other, with “Design is Addi+ion” beside them, the t replaced by a plus.",
+        "caption": "Two brackets, one plus."
+      }
+    },
+    {
+      "heading": "Typography",
+      "body": [
+        "The typeface is Gabarito, a geometric sans-serif designed by Álvaro Franca, Leandro Assis and Felipe Casaprima. Its clean, simple shapes suit AGDA’s professional voice, and it fits the theme too: it has been reworked by different designers over time, each adding ideas of their own."
+      ],
+      "media": {
+        "type": "image",
+        "src": "/projects/design-is-addition/03.jpg",
+        "alt": "Typography spread: a blue panel about Gabarito, a large pangram, and the Regular and Black character sets.",
+        "caption": "Gabarito Regular and Black."
+      }
+    },
+    {
+      "heading": "Applications",
+      "body": [
+        "The identity runs from social media to the exhibition space and a printed publication, using bold AGDA blue, the plus and the brackets throughout."
       ],
       "media": [
         {
           "type": "image",
           "src": "/projects/design-is-addition/01.jpg",
-          "alt": "[COPY: describe this image]"
+          "alt": "Exhibition wall in AGDA blue reading “Design is Addi+ion, 1–10 November 2023”, with a large white plus holding a block of text and a person standing in front.",
+          "caption": "Exhibition wall."
         },
         {
           "type": "image",
           "src": "/projects/design-is-addition/02.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/design-is-addition/03.jpg",
-          "alt": "[COPY: describe this image]"
-        },
-        {
-          "type": "image",
-          "src": "/projects/design-is-addition/04.png",
-          "alt": "[COPY: describe this image]"
+          "alt": "An open magazine with a feature on Gordon Andrews and blue bracket graphics, next to its cover showing a large plus between “Design is” and “Addition”.",
+          "caption": "Printed publication."
         }
       ]
     }

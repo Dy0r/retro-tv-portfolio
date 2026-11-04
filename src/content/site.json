@@ -1,15 +1,15 @@
 {
   "name": "Dylan Prasodjo",
   "pageTitle": "Dylan Prasodjo's Portfolio",
-  "metaDescription": "I solve complex problems by creating unique digital experiences that goes beyond aesthetics.",
+  "metaDescription": "I solve complex problems by creating unique digital experiences that go beyond aesthetics.",
   "siteUrl": "https://dy0r.github.io/retro-tv-portfolio/",
   "shareImage": "og-image.jpg",
-  "shareImageAlt": "[COPY: describe the share image, e.g. what the room shot shows]",
-  "tagline": "I solve complex problems by creating unique digital experiences that goes beyond aesthetics.",
+  "shareImageAlt": "A dim late-90s bedroom at night with a CRT TV, a retro console and cartridges, lit by neon from the city outside.",
+  "tagline": "I solve complex problems by creating unique digital experiences that go beyond aesthetics.",
   "introLines": [
-    "[COPY: short line about you #1]",
-    "[COPY: short line about you #2]",
-    "[COPY: short line about you #3]"
+    "UX/UI and product designer based in Sydney.",
+    "Final-year Design / Media student at UNSW.",
+    "I design for people first, and use AI to build more."
   ],
   "loadingLabel": "Loading",
   "pressStart": "Scroll to switch on",
@@ -39,37 +39,63 @@
     "enlargeLabel": "Enlarge",
     "enlargeImageLabel": "Enlarge image",
     "imageCloseLabel": "Close image",
-    "linksHeading": "[COPY: heading above the project links]"
+    "linksHeading": "Links"
   },
   "menuPages": [
     {
       "id": "about",
       "title": "About",
-      "summary": "[COPY: one line that invites people to read about you]",
+      "summary": "Who I am, where I’ve worked and what I bring to a team.",
       "thumbnail": "/about/portrait-thumb.jpg",
       "hero": {
         "type": "image",
         "src": "/about/portrait.jpg",
-        "alt": "Dylan"
+        "alt": "Dylan in a dimly lit restaurant, wearing glasses, a black leather jacket and a white T-shirt."
       },
       "sections": [
         {
           "heading": "About Me",
           "body": [
-            "Dylan Prasodjo is penultimate year student at UNSW studying design and media. He is a dedicated designer who loves to solve problems with design. Specialising in UX Design, and Graphic Design.",
-            "He values collaboration with peers to come up with solutions that properly address problems. Firmly believing that design is more than the aesthetics and has the power to impact peoples lives."
+            "I’m Dylan, a UX/UI and product designer and a final-year Bachelor of Design / Media student at UNSW, specialising in Graphics and Interaction and in PR and Advertising.",
+            "I believe design is more than aesthetics: it has the power to make everyday things easier for people. I love solving problems with research, testing and iteration, and I value working closely with others to find solutions that really address the problem.",
+            "I also bring AI into my process, from producing campaign assets with AI tools to building this portfolio with an AI coding agent, while keeping the design decisions human."
           ],
           "media": null
         },
         {
-          "heading": "Exprience",
+          "heading": "Experience",
           "body": [
-            "Freelancer  ·  Jan 2025 - Present",
-            "UI/UX Intern @ OpenOnion  ·  Sep 2024 - Feb 2025",
-            "PR & Advertising Intern @ AHRC  ·  Apr 2024 - Jun 2024",
-            "Graphics & Comms. @ ScreenApp  ·  Feb 2024 - Apr 2024",
-            "Graphic Designer Intern @ Paideia  ·  Sep 2022 - Oct 2022",
-            "Graphic Designer Intern @ Notre.id  ·  Dec 2019 - Jan 2020"
+            "Marketing Intern @ IBM  ·  May 2026 – Present",
+            "UX/UI & Graphic Design Intern @ Process Creative  ·  Aug 2025 – Dec 2025",
+            "UI/UX Designer Intern @ OpenOnion  ·  Sep 2024 – Feb 2025",
+            "PR & Advertising Intern @ Australian Human Rights Commission  ·  Apr 2024 – Jun 2024",
+            "Graphics & Communication Volunteer @ ScreenApp  ·  Feb 2024 – Apr 2024",
+            "Graphic Designer Intern @ Notre.id  ·  Dec 2019 – Jan 2020"
+          ],
+          "media": null
+        },
+        {
+          "heading": "Highlights",
+          "body": [
+            "– IBM: delivered 40+ campaign visuals and videos explaining AI and quantum concepts, using Figma and IBM Bob, and launched “Dylan Does…”, an internal workshop series that upskills colleagues.",
+            "– Process Creative: designed and iterated interface components, personas and user journeys for 4 retainer clients, with annotated prototypes for clear developer handoff.",
+            "– OpenOnion: ran usability testing and interviews for a Chrome extension, cutting task completion time by 30% through iterative design while keeping to WCAG standards."
+          ],
+          "media": null
+        },
+        {
+          "heading": "Education",
+          "body": [
+            "Bachelor of Design / Media, University of New South Wales  ·  2022 – 2026",
+            "HR Subcommittee, UNSW Design Society  ·  Mar 2024 – Dec 2025"
+          ],
+          "media": null
+        },
+        {
+          "heading": "Skills",
+          "body": [
+            "Figma, Adobe Photoshop, Illustrator, InDesign, After Effects, Python, basic HTML and CSS.",
+            "Methods: user research, interviews, usability testing, card sorting, A/B testing, wireframing, prototyping, accessibility audits (WCAG)."
           ],
           "media": null
         }
@@ -78,11 +104,13 @@
     {
       "id": "contact",
       "title": "Contact",
-      "summary": "[COPY: one line that invites people to get in touch]",
+      "summary": "Open to UX/UI and product design roles. Let’s talk.",
       "sections": [
         {
-          "heading": "Let's Talk",
-          "body": [],
+          "heading": "Let’s Talk",
+          "body": [
+            "I’m open to UX/UI and product design roles and collaborations. The quickest way to reach me is by email or LinkedIn."
+          ],
           "media": null,
           "links": [
             {
@@ -96,6 +124,10 @@
             {
               "label": "Instagram",
               "url": "https://www.instagram.com/dylanprasodjo"
+            },
+            {
+              "label": "Download my resume (PDF)",
+              "url": "/resume/dylan-prasodjo-resume.pdf"
             }
           ]
         }
@@ -104,19 +136,24 @@
     {
       "id": "credits",
       "title": "Credits",
-      "summary": "[COPY: one line introducing the credits]",
+      "summary": "The tools, typefaces and people behind this site.",
       "sections": [
         {
-          "heading": "[COPY: credits heading]",
+          "heading": "Credits",
           "body": [
-            "[COPY: credits, e.g. fonts, libraries and anyone who helped]"
+            "Design, art direction and content: Dylan Prasodjo.",
+            "Built with Claude Code, an AI coding agent, directed by Dylan.",
+            "3D and motion: Three.js, GSAP and Lenis.",
+            "Typefaces: Pixelify Sans and Atkinson Hyperlegible, both under the SIL Open Font License.",
+            "Sound effects are synthesised live in the browser. Music plays through Spotify’s official player.",
+            "Thanks to Prarthana Johnson for her mentorship on Plinth."
           ],
           "media": null
         }
       ]
     }
   ],
-  "skipLink": "[COPY: label for the 'skip to projects' link]",
+  "skipLink": "Skip to projects",
   "contact": {
     "email": "dylanprasodjo@gmail.com"
   },
@@ -140,5 +177,18 @@
     "nextLabel": "Shuffle to another song",
     "closeLabel": "Hide player",
     "regionLabel": "Music player"
+  },
+  "simple": {
+    "pageTitle": "Dylan Prasodjo — Portfolio",
+    "skipLink": "Skip to work",
+    "workHeading": "Work",
+    "aboutHeading": "About",
+    "contactHeading": "Contact",
+    "readCase": "Read case study",
+    "view3d": "View in 3D",
+    "open3d": "3D version",
+    "backToWork": "All work",
+    "resume": "Resume",
+    "footer": "Also available as a 3D retro-TV portfolio."
   }
 }

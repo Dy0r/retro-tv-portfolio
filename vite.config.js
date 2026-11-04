@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import { readFileSync, readdirSync, existsSync, writeFileSync } from 'node:fs';
+import { renderSimpleSite } from './src/simple/render.mjs';
 
 // Same order as src/content/projects.js: one JSON file per project, sorted by `order`.
 function readProjects() {
@@ -26,6 +27,7 @@ function htmlFromContent() {
       const attr = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
       return html
         .replaceAll('%PAGE_TITLE%', attr(site.pageTitle))
+        .replaceAll('%SIMPLE_TITLE%', attr(site.simple.pageTitle))
         .replaceAll('%META_DESCRIPTION%', attr(site.metaDescription))
         .replaceAll('%SITE_NAME%', attr(site.name))
         .replaceAll('%SITE_URL%', attr(site.siteUrl))
@@ -34,6 +36,28 @@ function htmlFromContent() {
         .replaceAll('<!--LOADING_LABEL-->', site.loadingLabel)
         .replace('<!--NOSCRIPT_NAME-->', site.name)
         .replace('<!--NOSCRIPT_PROJECTS-->', `<ul>\n        ${items}\n      </ul>`);
+    },
+  };
+}
+
+// Fills simple/index.html (the text-only site) with the index and every case study,
+// built from the same content files. Re-renders whenever a content file changes.
+function simpleSite() {
+  let base = '/';
+  return {
+    name: 'simple-site',
+    configResolved(config) {
+      base = config.base;
+    },
+    transformIndexHtml(html) {
+      if (!html.includes('<!--SIMPLE_SITE-->')) return html;
+      const site = JSON.parse(readFileSync('src/content/site.json', 'utf8'));
+      return html.replace('<!--SIMPLE_SITE-->', renderSimpleSite({ site, projects: readProjects(), base }));
+    },
+    configureServer(server) {
+      server.watcher.on('change', (file) => {
+        if (file.includes('/src/content/') || file.includes('/src/simple/render')) server.ws.send({ type: 'full-reload' });
+      });
     },
   };
 }
@@ -91,5 +115,11 @@ function shareImageSaver() {
 
 export default defineConfig({
   base: process.env.BASE_PATH || '/',
-  plugins: [htmlFromContent(), availableModels(), shareImageSaver()],
+  plugins: [htmlFromContent(), simpleSite(), availableModels(), shareImageSaver()],
+  // Two pages: the 3D site and the text-only site.
+  build: {
+    rollupOptions: {
+      input: { main: 'index.html', simple: 'simple/index.html' },
+    },
+  },
 });
