@@ -1,4 +1,5 @@
 import site from '../content/site.json';
+import { assetUrl } from '../assetUrl.js';
 
 // The "back" button, top-left. In the menu it's "Zoom out" (back to the opening
 // room shot); once a cartridge is in, it's "Eject" (back to the menu). Esc and
@@ -98,6 +99,32 @@ export function createInsertButton({ onActivate }) {
     setVisible(on) {
       button.inert = !on;
       button.classList.toggle('is-visible', on);
+    },
+  };
+}
+
+// Three lines of text: "read it as a page".
+function linesIcon() {
+  const cells = [];
+  for (const [y, w] of [[1, 9], [4, 9], [7, 6]]) for (let x = 0; x < w; x++) cells.push([x, y]);
+  return pixelIcon(cells);
+}
+
+// Top-right link to the text-only site (simple/), same look as the buttons above.
+// Shown once loading has finished.
+export function createPlainSiteLink() {
+  const link = document.createElement('a');
+  link.className = 'zoom-out zoom-out--plain';
+  link.href = assetUrl(site.plainSite.url);
+  link.title = site.plainSite.title;
+  link.innerHTML = `${linesIcon()}<span></span>`;
+  link.querySelector('span').textContent = site.plainSite.label;
+  link.inert = true;
+  document.body.appendChild(link);
+  return {
+    setVisible(on) {
+      link.classList.toggle('is-visible', on);
+      link.inert = !on;
     },
   };
 }

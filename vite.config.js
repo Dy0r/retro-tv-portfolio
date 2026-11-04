@@ -62,6 +62,52 @@ function simpleSite() {
   };
 }
 
+// Exposes `virtual:image-sizes`: { "/projects/plinth/01.jpg": [width, height], … } for
+// every JPEG and PNG in public/. The case study gives each image its size before it
+// loads, so the page doesn't grow as images arrive (which made the progress bar jump).
+function imageSize(file) {
+  const buf = readFileSync(file);
+  if (buf.readUInt32BE(0) === 0x89504e47) return [buf.readUInt32BE(16), buf.readUInt32BE(20)];
+  let i = 2;
+  while (i < buf.length - 9) {
+    if (buf[i] !== 0xff) {
+      i++;
+      continue;
+    }
+    const marker = buf[i + 1];
+    if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker)) return [buf.readUInt16BE(i + 7), buf.readUInt16BE(i + 5)];
+    i += 2 + buf.readUInt16BE(i + 2);
+  }
+  return null;
+}
+
+function imageSizes() {
+  const id = 'virtual:image-sizes';
+  const resolvedId = '\0' + id;
+  return {
+    name: 'image-sizes',
+    resolveId(source) {
+      if (source === id) return resolvedId;
+    },
+    load(loadId) {
+      if (loadId !== resolvedId) return;
+      const sizes = {};
+      const walk = (dir) => {
+        for (const entry of readdirSync(dir, { withFileTypes: true })) {
+          const path = `${dir}/${entry.name}`;
+          if (entry.isDirectory()) walk(path);
+          else if (/\.(jpe?g|png)$/i.test(entry.name)) {
+            const size = imageSize(path);
+            if (size) sizes[path.slice('public'.length)] = size;
+          }
+        }
+      };
+      walk('public');
+      return `export default ${JSON.stringify(sizes)};`;
+    },
+  };
+}
+
 // Exposes `virtual:available-models`: the list of .glb files in public/models.
 // Scene code uses it to pick a real model or fall back to a placeholder, so dropping
 // a new tv.glb / console.glb / cartridge.glb / room.glb in needs no code change.
@@ -115,7 +161,7 @@ function shareImageSaver() {
 
 export default defineConfig({
   base: process.env.BASE_PATH || '/',
-  plugins: [htmlFromContent(), simpleSite(), availableModels(), shareImageSaver()],
+  plugins: [htmlFromContent(), simpleSite(), availableModels(), imageSizes(), shareImageSaver()],
   // Two pages: the 3D site and the text-only site.
   build: {
     rollupOptions: {

@@ -39,6 +39,7 @@
 - Menu thumbnails are 640 px copies of the heroes (`node scripts/make-thumbnails.mjs`), so start-up downloads ~0.7 MB instead of ~1.7 MB. Lighthouse (Nov 2026, live site): Accessibility 100, Best Practices 100, SEO 100 on phone and desktop; Performance 65 desktop with GPU (first paint 0.3 s). Remaining blocking time is scene set-up and shader warm-up behind the loading screen.
 - Copy (Nov 2026): Dylan asked Claude to write all site copy (overrides the brief's [COPY] rule for this pass), grounded only in his resume, process slides and old site; no invented facts. Phone number deliberately left off the public site.
 - Text-only site, direction A (ctpt.co-style index, approved): `simple/index.html`, live at `<site>/simple/`. Rendered at build time by `src/simple/render.mjs` from the same content files, so editing a project updates both sites. Works without JavaScript (case studies are `:target` articles). White page, Atkinson Hyperlegible, tokens `--simple-*`. Labels in site.json `simple`.
+- 3D site has a top-right "Text version" link to /simple/ (label in site.json `plainSite`). Case-study images get their real size before loading (`virtual:image-sizes`), so the reader's progress bar stays accurate; it reaches 100% at the end of the content.
 - City life in the window: a plane with blinking lights, an elevated train every 8-14 s, office lights switching on and off. Placed where the opening shot sees them (lower half of the window). Off under reduced motion.
 
 ---

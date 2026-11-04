@@ -2,6 +2,7 @@ import { gsap } from 'gsap';
 import Lenis from 'lenis';
 import site from '../content/site.json';
 import { assetUrl } from '../assetUrl.js';
+import imageSizes from 'virtual:image-sizes';
 import { EASES, DURATIONS } from '../motion/eases.js';
 import { createFramedDialog } from './framedDialog.js';
 import { createLightbox } from './lightbox.js';
@@ -95,9 +96,14 @@ export function createCaseStudy({ onOpened, onClosing, onClosed }) {
   let sections = []; // { node, button }
   let current = -1;
 
+  function endRoom() {
+    return parseFloat(getComputedStyle(content).paddingBottom) || 0;
+  }
+
   function updateIndicators() {
-    const max = scrollEl.scrollHeight - scrollEl.clientHeight;
-    const progress = max > 0 ? scrollEl.scrollTop / max : 1;
+    // Full once the end of the content is in view (the blank room below doesn't count).
+    const max = scrollEl.scrollHeight - scrollEl.clientHeight - endRoom();
+    const progress = max > 0 ? Math.min(1, scrollEl.scrollTop / max) : 1;
     bar.style.transform = `scaleX(${progress})`;
     hint.classList.toggle('is-hidden', max <= 0 || scrollEl.scrollTop > HINT_HIDE_AFTER);
 
@@ -170,6 +176,9 @@ export function createCaseStudy({ onOpened, onClosing, onClosed }) {
       img.decoding = 'async';
       img.src = src;
       img.alt = media.alt ?? '';
+      // Known size up front, so the page doesn't grow as images load (see vite.config.js).
+      const size = imageSizes[media.src];
+      if (size) [img.width, img.height] = size;
       const tag = el('span', 'case__zoom-tag', labels.enlargeLabel);
       tag.setAttribute('aria-hidden', 'true');
       button.append(img, tag);

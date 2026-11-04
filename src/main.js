@@ -28,7 +28,7 @@ import { createMenu } from './screen/menu.js';
 import { createLoader } from './ui/loader.js';
 import { createEnterHint } from './ui/enterHint.js';
 import { createAnnouncer } from './ui/announcer.js';
-import { createZoomOutButton, createInsertButton } from './ui/zoomOutButton.js';
+import { createZoomOutButton, createInsertButton, createPlainSiteLink } from './ui/zoomOutButton.js';
 import { createCartMarker } from './scene/cartMarker.js';
 import { listenForStart } from './input/start.js';
 import { createMenuInput } from './input/menuInput.js';
@@ -149,6 +149,7 @@ function setLed(level) {
 // as browsers require). Music only plays when someone presses play on the player.
 const sfx = createSfx();
 const music = createMusicPlayer();
+const plainSiteLink = createPlainSiteLink();
 dialogEvents.addEventListener('open', () => sfx.open());
 dialogEvents.addEventListener('close', () => sfx.close());
 
@@ -607,6 +608,7 @@ Promise.all([buildScene(), menu.ready])
   })
   .then(() => {
     music.setVisible(true);
+    plainSiteLink.setVisible(true);
     if (getState() !== STATES.BOOT) return;
     const deepLink = slugFromHash();
     if (deepLink) enterProjectDirectly(deepLink);

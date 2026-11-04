@@ -640,7 +640,7 @@ dialog.framed.is-open .framed__glow {
 /* Keyboard-only route to the resume: hidden until focused with Tab. */
 .resume-launch {
   position: fixed;
-  top: 16px;
+  top: 72px; /* below the Text version link */
   right: 16px;
   z-index: 50;
   padding: 10px 14px;
@@ -904,4 +904,11 @@ dialog.framed.is-open .framed__glow {
     clip: rect(0 0 0 0);
     white-space: nowrap;
   }
+}
+
+/* Top-right link to the text-only site; same look as Zoom out. */
+.zoom-out--plain {
+  left: auto;
+  right: 16px;
+  text-decoration: none;
 }

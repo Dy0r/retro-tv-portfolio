@@ -190,5 +190,10 @@
     "backToWork": "All work",
     "resume": "Resume",
     "footer": "Also available as a 3D retro-TV portfolio."
+  },
+  "plainSite": {
+    "label": "Text version",
+    "url": "/simple/",
+    "title": "Open the simple text version of this portfolio"
   }
 }
