@@ -132,25 +132,6 @@
           ]
         }
       ]
-    },
-    {
-      "id": "credits",
-      "title": "Credits",
-      "summary": "The tools, typefaces and people behind this site.",
-      "sections": [
-        {
-          "heading": "Credits",
-          "body": [
-            "Design, art direction and content: Dylan Prasodjo.",
-            "Built with Claude Code, an AI coding agent, directed by Dylan.",
-            "3D and motion: Three.js, GSAP and Lenis.",
-            "Typefaces: Pixelify Sans and Atkinson Hyperlegible, both under the SIL Open Font License.",
-            "Sound effects are synthesised live in the browser. Music plays through Spotify’s official player.",
-            "Thanks to Prarthana Johnson for her mentorship on Plinth."
-          ],
-          "media": null
-        }
-      ]
     }
   ],
   "skipLink": "Skip to projects",
