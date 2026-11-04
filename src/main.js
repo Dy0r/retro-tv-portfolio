@@ -56,8 +56,12 @@ const plainSiteLink = createPlainSiteLink();
 plainSiteLink.setVisible(true);
 loadingManager.onProgress = (_url, loaded, total) => loader.setProgress((loaded / total) * 0.9);
 // Let the browser paint the loading screen before the heavy scene set-up below,
-// so it shows straight away even on slow phones.
-await new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve)));
+// so it shows straight away even on slow phones. (Background tabs draw no frames,
+// so a short timer also lets the set-up start there.)
+await new Promise((resolve) => {
+  requestAnimationFrame(() => setTimeout(resolve));
+  setTimeout(resolve, 150);
+});
 
 // --- Renderer ---------------------------------------------------------------
 const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;

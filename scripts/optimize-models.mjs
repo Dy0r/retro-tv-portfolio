@@ -18,7 +18,10 @@ if (!input) {
 const output = join('public/models', `${name ?? basename(input, extname(input))}.glb`);
 const result = spawnSync(
   'npx',
-  ['gltf-transform', 'optimize', input, output, '--compress', 'meshopt', '--texture-compress', 'webp', '--texture-size', '2048'],
+  // No joining, flattening, palettes or simplifying: those merge or rename meshes and
+  // materials, and the scene code finds parts by name (Screen, Slot, LED, Label).
+  ['gltf-transform', 'optimize', input, output, '--compress', 'meshopt', '--texture-compress', 'webp', '--texture-size', '2048',
+    '--join', 'false', '--flatten', 'false', '--palette', 'false', '--simplify', 'false'],
   { stdio: 'inherit' },
 );
 if (result.status !== 0) process.exit(result.status ?? 1);
