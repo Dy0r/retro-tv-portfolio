@@ -38,15 +38,9 @@ import { createCaseStudy } from './ui/caseStudy.js';
 import { createSfx } from './audio/sfx.js';
 import { createMusicPlayer } from './audio/musicPlayer.js';
 import { dialogEvents } from './ui/framedDialog.js';
-import { hasWebGL, createFallbackOffer } from './ui/fallbackOffer.js';
+import { graphicsSupport, createFallbackOffer } from './ui/fallbackOffer.js';
 import { assetUrl } from './assetUrl.js';
 import { EASES, DURATIONS } from './motion/eases.js';
-
-// --- No WebGL: the 3D site can't run, so go straight to the text version ------------
-if (!hasWebGL()) {
-  window.location.replace(assetUrl(site.plainSite.url));
-  await new Promise(() => {}); // stop here; the browser is leaving
-}
 
 // --- Loading screen ---------------------------------------------------------------
 // Starts straight away; real progress comes from the shared LoadingManager.
@@ -55,13 +49,28 @@ const loader = createLoader();
 const plainSiteLink = createPlainSiteLink();
 plainSiteLink.setVisible(true);
 loadingManager.onProgress = (_url, loaded, total) => loader.setProgress((loaded / total) * 0.9);
-// Let the browser paint the loading screen before the heavy scene set-up below,
-// so it shows straight away even on slow phones. (Background tabs draw no frames,
-// so a short timer also lets the set-up start there.)
+const fallbackOffer = createFallbackOffer();
+// Wait for the browser to confirm the loading screen is on screen before touching
+// WebGL: without a graphics chip, starting it can hold up painting for many seconds.
+// (Background tabs draw no frames, so they only get a short timer.)
 await new Promise((resolve) => {
-  requestAnimationFrame(() => setTimeout(resolve));
-  setTimeout(resolve, 150);
+  const firstPaint = new PerformanceObserver(() => {
+    firstPaint.disconnect();
+    resolve();
+  });
+  firstPaint.observe({ type: 'paint', buffered: true });
+  setTimeout(resolve, document.hidden ? 150 : 4000);
 });
+
+// --- Graphics check ---------------------------------------------------------------
+// No WebGL: the 3D site can't run, so go straight to the text version.
+// No graphics chip: the room would crawl, so ask before building any of it.
+const graphics = graphicsSupport();
+if (graphics === 'none') {
+  window.location.replace(assetUrl(site.plainSite.url));
+  await new Promise(() => {}); // stop here; the browser is leaving
+}
+if (graphics === 'software') await fallbackOffer.askBeforeLoading();
 
 // --- Renderer ---------------------------------------------------------------
 const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
@@ -163,7 +172,6 @@ function setLed(level) {
 // as browsers require). Music only plays when someone presses play on the player.
 const sfx = createSfx();
 const music = createMusicPlayer();
-const fallbackOffer = createFallbackOffer();
 dialogEvents.addEventListener('open', () => sfx.open());
 dialogEvents.addEventListener('close', () => sfx.close());
 
@@ -599,6 +607,7 @@ onStateChange(({ from, to, data }) => {
   }
 });
 
+let booted = false; // nothing to draw until the set-up below is done; the loading screen covers it
 // --- Boot sequence -----------------------------------------------------------------------
 // Build the scene and the menu, swap in the TV screen, compile every shader up
 // front (so the first moves don't stutter), then let the loading screen finish.
@@ -614,7 +623,10 @@ Promise.all([buildScene(), menu.ready])
       poses.resume = { position: center.clone().add(new THREE.Vector3(0, 0.02, 0.9)), lookAt: center, width: 0.5 };
     }
     setLed(LED_STANDBY);
-    return renderer.compileAsync(scene, camera).then(() => postFx.render(0)); // warm up the post passes too
+    return renderer.compileAsync(scene, camera).then(() => {
+      postFx.render(0); // warm up the post passes too
+      booted = true;
+    });
   })
   .then(() => {
     loader.setProgress(1);
@@ -646,7 +658,7 @@ document.addEventListener('visibilitychange', updatePaused);
 onStateChange(updatePaused);
 
 function tick(_time, deltaMs) {
-  if (renderPaused) return;
+  if (renderPaused || !booted) return;
   const dt = deltaMs / 1000;
   gamepad.update(dt);
   rig.update(dt);

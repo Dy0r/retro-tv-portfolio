@@ -3,7 +3,9 @@ import { assetUrl } from '../assetUrl.js';
 import { createFramedDialog } from './framedDialog.js';
 
 // The text-only site (simple/) as a fallback, as the brief asks:
-//  - no WebGL at all: main.js sends the visitor straight there (hasWebGL);
+//  - no WebGL at all: main.js sends the visitor straight there (graphicsSupport);
+//  - no graphics chip (WebGL drawn in software): the same pop-up as below, but before
+//    any of the 3D is built, because building it is what's slow;
 //  - reduced motion turned on, or a low-power device / data saver: once loading has
 //    finished, a small framed pop-up offers the text version. "Stay in 3D" is
 //    remembered, so it only asks once.
@@ -11,13 +13,20 @@ import { createFramedDialog } from './framedDialog.js';
 // Words live in site.json `fallback`.
 
 const REMEMBER_KEY = 'portfolio-stay-in-3d';
+const SOFTWARE_RENDERERS = /swiftshader|llvmpipe|softpipe|software|basic render/i;
 
-export function hasWebGL() {
+// 'none' (no WebGL), 'software' (WebGL with no graphics chip behind it) or 'hardware'.
+export function graphicsSupport() {
   try {
     const canvas = document.createElement('canvas');
-    return Boolean(canvas.getContext('webgl2') || canvas.getContext('webgl'));
+    const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
+    if (!gl) return 'none';
+    const info = gl.getExtension('WEBGL_debug_renderer_info');
+    const renderer = info ? gl.getParameter(info.UNMASKED_RENDERER_WEBGL) : '';
+    gl.getExtension('WEBGL_lose_context')?.loseContext(); // browsers only allow a few at once
+    return SOFTWARE_RENDERERS.test(renderer) ? 'software' : 'hardware';
   } catch {
-    return false;
+    return 'none';
   }
 }
 
@@ -65,13 +74,25 @@ export function createFallbackOffer() {
   const stay = $('.offer__stay');
   stay.textContent = text.stayLabel;
   stay.addEventListener('click', () => frame.close());
-  frame.dialog.addEventListener('close', remember);
+  let answered = false; // also covers visitors whose browser blocks remembering
+  frame.dialog.addEventListener('close', () => {
+    answered = true;
+    remember();
+  });
 
   return {
+    // Asks before the 3D is built; resolves once the visitor chooses to stay.
+    askBeforeLoading() {
+      if (remembered()) return Promise.resolve();
+      $('.offer__body').textContent = text.deviceBody;
+      frame.open();
+      return new Promise((resolve) => frame.dialog.addEventListener('close', resolve, { once: true }));
+    },
+
     // Opens the offer if this visitor might prefer the text version.
     maybeOpen() {
       const reason = offerReason();
-      if (!reason || remembered()) return;
+      if (!reason || answered || remembered()) return;
       $('.offer__body').textContent = reason === 'motion' ? text.motionBody : text.deviceBody;
       frame.open();
     },

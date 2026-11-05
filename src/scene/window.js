@@ -28,7 +28,7 @@ function canvasLayer(width, height, draw, density = PX_PER_METRE) {
   const canvas = document.createElement('canvas');
   canvas.width = Math.round(width * density);
   canvas.height = Math.round(height * density);
-  draw(canvas.getContext('2d'), canvas.width, canvas.height);
+  draw(canvas.getContext('2d', { willReadFrequently: true }), canvas.width, canvas.height); // onBuilding reads pixels back
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
   texture.anisotropy = 4;
