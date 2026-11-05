@@ -32,10 +32,10 @@
       "media": null
     },
     {
-      "heading": "Concept: A Metaphor People Already Know",
+      "heading": "Concept: My Childhood, Rebuilt",
       "body": [
-        "Instead of inventing new navigation, the site borrows one almost everyone understands: a TV, a console and a row of game cartridges. Each project is a game. You pick one, it goes into the console, and the TV shows it. Nobody has to be taught how to load a game.",
-        "The setting is a dim late-90s bedroom at night with cyberpunk touches: red neon outside the window, teal light strips inside. The console and cartridges are original designs, not copies of any real brand."
+        "The idea comes from my childhood: evenings in my room playing console games on a CRT TV, picking a cartridge, pushing it in and waiting for the screen to light up. I wanted to recreate that feeling, and mix it with the cyberpunk look I love from the game Cyberpunk 2077 and the series Cyberpunk: Edgerunners.",
+        "The visuals blend retro and modern: a chunky CRT, pixel type and cartridges, set in a real-time 3D room with soft lighting, neon and a living city outside. Red neon glows through the window and teal light strips run inside. Each project is a game. You pick one, it goes into the console, and the TV shows it. It’s also a metaphor almost everyone already understands, so nobody has to be taught how to load a game."
       ],
       "media": {
         "type": "image",
@@ -47,7 +47,7 @@
     {
       "heading": "Ideation and Prototyping",
       "body": [
-        "I began with a moodboard and a written brief that set the rules: original assets only, no stock design defaults, and strict budgets for accessibility and performance. The first prototype used simple placeholder shapes so the flow could be tested before any detailed modelling.",
+        "I began with a moodboard and a written brief that set the rules: no stock assets or design defaults, and strict budgets for accessibility and performance. The first prototype used simple placeholder shapes so the flow could be tested before any detailed modelling.",
         "Some ideas were tested and dropped. I built a version where a first-person hand picks up and inserts the cartridge, and compared it with one where the cartridge moves by itself. Side by side, the simpler version felt more natural, so the hand went. I also removed glowing cartridges and TV scanlines after review: they pulled attention from the work and made text harder to read."
       ],
       "media": {
