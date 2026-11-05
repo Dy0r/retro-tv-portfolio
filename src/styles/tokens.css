@@ -108,6 +108,9 @@
   --scene-plant: #2f5a3a;
   --scene-pot: #8a5a3c;
   --scene-poster-paper: #e6dac2;
+  /* Multiplies cartridge label art: keeps white label text under the bloom cut-off,
+     even on the cartridge nearest the desk lamp. */
+  --scene-label-tint: #b4b4b4;
 
   /* Neon: red outside, teal inside (provisional) */
   --neon-red: #ff2a3d;

@@ -3,6 +3,7 @@ import { loadModel, loadingManager } from './models.js';
 import { buildCartridge, CARTRIDGE_SIZE } from './placeholders.js';
 import { DAMPING } from '../motion/eases.js';
 import { assetUrl } from '../assetUrl.js';
+import { tokenColor } from '../styles/tokens.js';
 
 // One cartridge per project, standing in a fanned row next to the console.
 // Colour and label art come from each project's file in content/projects/, never from code.
@@ -33,7 +34,10 @@ export async function buildCartridges(projects, origin) {
         map.colorSpace = THREE.SRGBColorSpace;
         map.anisotropy = 4;
         obj.material.map = map;
-        obj.material.color.set(0xffffff);
+        // Slightly dimmed and fully matte, so lamp light on white label text never glows.
+        obj.material.color.copy(tokenColor('--scene-label-tint'));
+        obj.material.roughness = 1;
+        obj.material.metalness = 0;
       } else {
         obj.material.color.set(project.cartridgeColor);
       }
