@@ -20,8 +20,10 @@ const result = spawnSync(
   'npx',
   // No joining, flattening, palettes or simplifying: those merge or rename meshes and
   // materials, and the scene code finds parts by name (Screen, Slot, LED, Label).
+  // Keep UVs even where no texture uses them yet: the site draws the menu onto Screen
+  // and each project's label art onto Label.
   ['gltf-transform', 'optimize', input, output, '--compress', 'meshopt', '--texture-compress', 'webp', '--texture-size', '2048',
-    '--join', 'false', '--flatten', 'false', '--palette', 'false', '--simplify', 'false'],
+    '--join', 'false', '--flatten', 'false', '--palette', 'false', '--simplify', 'false', '--prune-attributes', 'false'],
   { stdio: 'inherit' },
 );
 if (result.status !== 0) process.exit(result.status ?? 1);
